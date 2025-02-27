@@ -1,6 +1,6 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -22,19 +22,18 @@ import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
 import { NotificationsPopover } from '../components/notifications-popover';
+import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
+import { Outlet, useLocation } from 'react-router-dom';
+import { LineProgress } from 'src/components/lineProgress';
 
 // ----------------------------------------------------------------------
 
-export type DashboardLayoutProps = {
-  sx?: SxProps<Theme>;
-  children: React.ReactNode;
-  header?: {
-    sx?: SxProps<Theme>;
-  };
-};
+export type DashboardLayoutProps = { sx?: SxProps<Theme>; header?: { sx?: SxProps<Theme> } };
 
-export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
+export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
   const theme = useTheme();
+  const location = useLocation();
+  useScrollToTop();
 
   const [navOpen, setNavOpen] = useState(false);
 
@@ -48,12 +47,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
       headerSection={
         <HeaderSection
           layoutQuery={layoutQuery}
-          slotProps={{
-            container: {
-              maxWidth: false,
-              sx: { px: { [layoutQuery]: 5 } },
-            },
-          }}
+          slotProps={{ container: { maxWidth: false, sx: { px: { [layoutQuery]: 5 } } } }}
           sx={header?.sx}
           slots={{
             topArea: (
@@ -65,10 +59,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
               <>
                 <MenuButton
                   onClick={() => setNavOpen(true)}
-                  sx={{
-                    ml: -1,
-                    [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
-                  }}
+                  sx={{ ml: -1, [theme.breakpoints.up(layoutQuery)]: { display: 'none' } }}
                 />
                 <NavMobile
                   data={navData}
@@ -128,14 +119,16 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
       }}
       sx={{
         [`& .${layoutClasses.hasSidebar}`]: {
-          [theme.breakpoints.up(layoutQuery)]: {
-            pl: 'var(--layout-nav-vertical-width)',
-          },
+          [theme.breakpoints.up(layoutQuery)]: { pl: 'var(--layout-nav-vertical-width)' },
         },
         ...sx,
       }}
     >
-      <Main>{children}</Main>
+      <Main>
+        <Suspense key={location.key} fallback={<LineProgress />}>
+          <Outlet />
+        </Suspense>
+      </Main>
     </LayoutSection>
   );
 }

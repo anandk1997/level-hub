@@ -21,19 +21,9 @@ import { WorkspacesPopover } from '../components/workspaces-popover';
 
 import type { WorkspacesPopoverProps } from '../components/workspaces-popover';
 
-// ----------------------------------------------------------------------
-
 export type NavContentProps = {
-  data: {
-    path: string;
-    title: string;
-    icon: React.ReactNode;
-    info?: React.ReactNode;
-  }[];
-  slots?: {
-    topArea?: React.ReactNode;
-    bottomArea?: React.ReactNode;
-  };
+  data: { path: string; title: string; icon: React.ReactNode; info?: React.ReactNode }[];
+  slots?: { topArea?: React.ReactNode; bottomArea?: React.ReactNode };
   workspaces: WorkspacesPopoverProps['data'];
   sx?: SxProps<Theme>;
 };
@@ -62,9 +52,7 @@ export function NavDesktop({
         zIndex: 'var(--layout-nav-zIndex)',
         width: 'var(--layout-nav-vertical-width)',
         borderRight: `1px solid var(--layout-nav-border-color, ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)})`,
-        [theme.breakpoints.up(layoutQuery)]: {
-          display: 'flex',
-        },
+        [theme.breakpoints.up(layoutQuery)]: { display: 'flex' },
         ...sx,
       }}
     >
@@ -72,8 +60,6 @@ export function NavDesktop({
     </Box>
   );
 }
-
-// ----------------------------------------------------------------------
 
 export function NavMobile({
   sx,
@@ -112,8 +98,6 @@ export function NavMobile({
   );
 }
 
-// ----------------------------------------------------------------------
-
 export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
   const pathname = usePathname();
 
@@ -151,9 +135,7 @@ export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
                         fontWeight: 'fontWeightSemiBold',
                         bgcolor: 'var(--layout-nav-item-active-bg)',
                         color: 'var(--layout-nav-item-active-color)',
-                        '&:hover': {
-                          bgcolor: 'var(--layout-nav-item-hover-bg)',
-                        },
+                        '&:hover': { bgcolor: 'var(--layout-nav-item-hover-bg)' },
                       }),
                     }}
                   >
