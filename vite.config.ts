@@ -2,12 +2,15 @@ import path from 'path';
 import checker from 'vite-plugin-checker';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import { configDotenv } from 'dotenv';
+import tailwindcss from '@tailwindcss/vite';
 
-const PORT = 3039;
+configDotenv();
 
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     checker({
       typescript: true,
       overlay: {
@@ -16,6 +19,11 @@ export default defineConfig({
       },
     }),
   ],
+
+  define: {
+    'process.env': process.env,
+  },
+
   resolve: {
     alias: [
       {
@@ -28,6 +36,7 @@ export default defineConfig({
       },
     ],
   },
-  server: { port: PORT, host: true },
-  preview: { port: PORT, host: true },
+
+  server: { port: 3000, host: true },
+  preview: { port: 3000, host: true },
 });

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, CircularProgress } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
@@ -20,9 +20,9 @@ export function SignInView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = useCallback(() => {
+  const handleSignIn = () => {
     router.push('/');
-  }, [router]);
+  };
 
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
@@ -58,16 +58,21 @@ export function SignInView() {
         sx={{ mb: 3 }}
       />
 
-      <LoadingButton
+      <Button
         fullWidth
         size="large"
         type="submit"
         color="inherit"
         variant="contained"
         onClick={handleSignIn}
+        className="group h-5 !border !border-transparent hover:!bg-white hover:!border-black hover:!text-black"
       >
-        Sign in
-      </LoadingButton>
+        {showPassword ? (
+          <CircularProgress className="!text-white group-hover:!text-black" sx={{ scale: '.5' }} />
+        ) : (
+          'Sign in'
+        )}
+      </Button>
     </Box>
   );
 
