@@ -7,6 +7,7 @@ import { DashboardLayout } from 'src/layouts/dashboard';
 // ----------------------------------------------------------------------
 
 const HomePage = lazy(() => import('src/pages/home'));
+const Dashboard = lazy(() => import('src/pages/dashboard'));
 const BlogPage = lazy(() => import('src/pages/blog'));
 const UserPage = lazy(() => import('src/pages/user'));
 const SignInPage = lazy(() => import('src/pages/sign-in'));
@@ -16,6 +17,8 @@ const Page404 = lazy(() => import('src/pages/page-not-found'));
 // ----------------------------------------------------------------------
 
 export const router = createBrowserRouter([
+  { path: '/dashboard', element: <Dashboard /> },
+
   {
     path: '/',
     element: <DashboardLayout />,
