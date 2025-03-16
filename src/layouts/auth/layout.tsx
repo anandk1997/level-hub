@@ -1,29 +1,18 @@
-import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
-
-import Link from '@mui/material/Link';
-import Alert from '@mui/material/Alert';
-
-import { RouterLink } from 'src/routes/components';
+import type { Breakpoint } from '@mui/material/styles';
 
 import { stylesMode } from 'src/theme/styles';
 
-import { Logo } from 'src/components/logo';
-
 import { Main } from './main';
-import { HeaderSection } from '../core/header-section';
 import { LayoutSection } from '../core/layout-section';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Navbar } from 'src/components/navbar';
+import { Footer } from 'src/components/footer';
+import { Suspense } from 'react';
+import { LineProgress } from 'src/components/lineProgress';
 
-// ----------------------------------------------------------------------
+export function AuthLayout() {
+  const location = useLocation();
 
-export type AuthLayoutProps = {
-  sx?: SxProps<Theme>;
-  header?: {
-    sx?: SxProps<Theme>;
-  };
-};
-
-export function AuthLayout({ sx, header }: AuthLayoutProps) {
   const layoutQuery: Breakpoint = 'md';
 
   return (
@@ -31,42 +20,11 @@ export function AuthLayout({ sx, header }: AuthLayoutProps) {
       /** **************************************
        * Header
        *************************************** */
-      headerSection={
-        <HeaderSection
-          layoutQuery={layoutQuery}
-          slotProps={{
-            container: { maxWidth: false },
-            toolbar: { sx: { bgcolor: 'transparent', backdropFilter: 'unset' } },
-          }}
-          sx={{
-            position: { [layoutQuery]: 'fixed' },
-
-            ...header?.sx,
-          }}
-          slots={{
-            topArea: (
-              <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
-                This is an info Alert.
-              </Alert>
-            ),
-            leftArea: <Logo />,
-            rightArea: (
-              <Link
-                component={RouterLink}
-                href="#"
-                color="inherit"
-                sx={{ typography: 'subtitle2' }}
-              >
-                Need help?
-              </Link>
-            ),
-          }}
-        />
-      }
+      headerSection={<Navbar />}
       /** **************************************
        * Footer
        *************************************** */
-      footerSection={null}
+      footerSection={<Footer />}
       /** **************************************
        * Style
        *************************************** */
@@ -85,11 +43,12 @@ export function AuthLayout({ sx, header }: AuthLayoutProps) {
           backgroundImage: `url(/assets/background/overlay.jpg)`,
           [stylesMode.dark]: { opacity: 0.08 },
         },
-        ...sx,
       }}
     >
       <Main layoutQuery={layoutQuery}>
-        <Outlet />
+        <Suspense key={location.key} fallback={<LineProgress />}>
+          <Outlet />
+        </Suspense>
       </Main>
     </LayoutSection>
   );

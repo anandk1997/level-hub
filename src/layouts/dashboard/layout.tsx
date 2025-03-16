@@ -33,6 +33,7 @@ export type DashboardLayoutProps = { sx?: SxProps<Theme>; header?: { sx?: SxProp
 export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
   const theme = useTheme();
   const location = useLocation();
+
   useScrollToTop();
 
   const [navOpen, setNavOpen] = useState(false);

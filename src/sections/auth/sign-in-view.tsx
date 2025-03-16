@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import {
   Button,
   CircularProgress,
+  Container,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -86,19 +87,37 @@ export function SignInView() {
   );
 
   return (
-    <>
-      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
-        <Typography variant="h5">Sign in</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Don’t have an account?
-          <Link to="/sign-up" className="text-[#1877F2] ml-1">
-            Get started
-          </Link>
-        </Typography>
-      </Box>
+    <Container
+      sx={{
+        m: 5,
+      }}
+    >
+      <Box
+        sx={{
+          py: 5,
+          px: 3,
+          width: 1,
+          borderRadius: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          bgcolor: 'background.default',
+          margin: 'auto',
+          maxWidth: 'var(--layout-auth-content-width)',
+        }}
+      >
+        <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
+          <Typography variant="h5">Sign in</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Don’t have an account?
+            <Link to="/sign-up" className="text-[#1877F2] ml-1">
+              Get started
+            </Link>
+          </Typography>
+        </Box>
 
-      {renderForm}
-    </>
+        {renderForm}
+      </Box>
+    </Container>
   );
 }
 

@@ -5,9 +5,7 @@ import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 
 import { layoutClasses } from 'src/layouts/classes';
-import { Container } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { usePathname } from 'src/routes/hooks';
 
 type MainProps = BoxProps & {
   layoutQuery: Breakpoint;
@@ -16,24 +14,7 @@ type MainProps = BoxProps & {
 export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
   const theme = useTheme();
 
-  const renderContent = (
-    <Container>
-      <Box
-        sx={{
-          py: 5,
-          px: 3,
-          width: 1,
-          borderRadius: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          bgcolor: 'background.default',
-          // maxWidth: 'var(--layout-auth-content-width)',
-        }}
-      >
-        {children}
-      </Box>
-    </Container>
-  );
+  const pathname = usePathname();
 
   return (
     <Box
@@ -44,16 +25,20 @@ export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
         flex: '1 1 auto',
         alignItems: 'center',
         flexDirection: 'column',
-        p: theme.spacing(3, 2, 10, 2),
+
+        background:
+          pathname === '/sign-in' || pathname === '/sign-up'
+            ? 'linear-gradient(to right, #EF9324, #30817D)'
+            : 'white',
+
         [theme.breakpoints.up(layoutQuery)]: {
           justifyContent: 'center',
-          p: theme.spacing(10, 0, 10, 0),
         },
         ...sx,
       }}
       {...other}
     >
-      {renderContent}
+      {children}
     </Box>
   );
 }

@@ -1,15 +1,15 @@
-import { Box, Button, Container, Typography } from '@mui/material';
-import Navbar10 from 'src/components/navbar/Navbar10';
-import NavbarContent10 from 'src/components/navbar/NavbarContent10';
+import { Button, Container, Typography } from '@mui/material';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+import { Iconify } from 'src/components/iconify';
+import { CONFIG } from 'src/config-global';
 
 const Dashboard = () => {
   return (
     <>
-      <Box sx={{ bgcolor: 'grey.100' }}>
-        <Navbar10>
-          <NavbarContent10 navItems={navItems} />
-        </Navbar10>
-      </Box>
+      <Helmet>
+        <title> {`Dashboard - ${CONFIG.appName}`}</title>
+      </Helmet>
 
       <Container>
         <section className="flex flex-col md:flex-row justify-around items-center gap-2 mt-4 p-3">
@@ -81,15 +81,11 @@ const Dashboard = () => {
             <span>run a successful school or office.</span>
           </span>
 
-          <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-10 md:gap-6 mt-12">
-            {[
-              { title: 'SINGLE USER', icon: '/assets/images/dashboard/user_icon.png' },
-              { title: 'COACHES', icon: '/assets/images/dashboard/coaches_icon.png' },
-              { title: 'BUSINESS/TEAMS', icon: '/assets/images/dashboard/business_teams_icon.png' },
-            ].map((item, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-10 md:gap-6 mt-12 justify-center">
+            {roles.map((item, index) => (
               <div
                 key={index}
-                className="relative flex flex-col justify-center items-center gap-2 rounded-2xl md:w-[30%] shadow-lg p-6 bg-white border border-gray-200"
+                className="relative flex flex-col justify-center items-center gap-2 rounded-2xl shadow-lg p-3 bg-white border border-gray-200"
               >
                 <img
                   src={item.icon}
@@ -101,6 +97,15 @@ const Dashboard = () => {
                   Schedule and reserve classrooms at one campus or multiple campuses. Keep detailed
                   records of student attendance.
                 </p>
+                <Link to={item.path} className="rounded-lg bg-gray-100 px-2 py-1 text-sm">
+                  Learn More
+                  <Iconify
+                    icon="solar:arrow-right-linear"
+                    width="24"
+                    className="ml-1"
+                    height="24"
+                  />
+                </Link>
               </div>
             ))}
           </div>
@@ -184,15 +189,53 @@ const Dashboard = () => {
           </div>
         </section>
       </Container>
+
+      <section className="w-full bg-[#09C0F0]">
+        <Container>
+          <div className="flex flex-col md:flex-row justify-around items-center gap-2  w-full">
+            <div className="flex flex-col flex-1 gap-2">
+              <h2 className="text-4xl text-white flex flex-col">
+                <span className="font-extralight">About the</span>
+                <span className="font-extrabold">Level Hub</span>
+              </h2>
+
+              <p className="text-white font-extralight max-w-52">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo non molestias in, iste
+                explicabo deserunt quis labore dolorum iure debitis velit, quos, soluta vitae
+                obcaecati quae. Illo dignissimos voluptate sapiente earum dicta non laboriosam! Quae
+                quam, ullam debitis voluptas rem iusto nostrum incidunt? Praesentium quo similique
+                omnis eligendi quam corrupti distinctio harum error necessitatibus rem! Ullam a
+                numquam voluptates
+              </p>
+
+              <button className="bg-black px-2 py-1 w-15 text-white rounded-lg text-sm flex justify-center items-center">
+                Learn More
+              </button>
+            </div>
+
+            <div className="flex justify-center flex-1">
+              <img src="/assets/images/dashboard/about_lh.png" className="" alt="" />
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 };
 
 export default Dashboard;
 
-export const navItems = [
-  { link: 'home', title: 'Home' },
-  { link: 'features', title: 'Features' },
-  { link: 'reviews', title: 'Reviews' },
-  { link: 'about-us', title: 'About Us' },
+const roles = [
+  {
+    title: 'Gym Owner',
+    icon: '/assets/images/dashboard/business_teams_icon.png',
+    path: '/gym-owner',
+  },
+  { title: 'Coach', icon: '/assets/images/dashboard/coaches_icon.png', path: '/coach' },
+  {
+    title: 'Single User',
+    icon: '/assets/images/dashboard/user_icon.png',
+    path: '/single-user',
+  },
+  { title: 'Parent', icon: '/assets/images/dashboard/user_icon.png', path: '/parent' },
 ];
