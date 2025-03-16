@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 // @next
 
-
 // @mui
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 /***************************  NAVBAR - PRIMARY BUTTON  ***************************/
 
-export default function NavPrimaryButton({ sx, children, ...rest }:any) {
+export default function NavPrimaryButton({ sx, children, ...rest }: any) {
   return (
     <Button
       variant="contained"

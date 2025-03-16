@@ -17,7 +17,7 @@ export default function NavbarContent10({ navItems }: any) {
 
   return (
     <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', width: 1 }}>
-      <img src="/assets/logo.png" alt="logo" className="h-7.5 w-12 rounded-md" />
+      <img src="/assets/images/dashboard/logo.png" alt="logo" className="h-7.5 w-12 rounded-md" />
 
       {!downMD && navItems && (
         <Box sx={{ borderRadius: 10 }}>

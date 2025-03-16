@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState } from 'src/store/initialState';
+import { initialState } from 'src/store/redux/initialState';
 
 const submittalDrawingSlice = createSlice({
   name: 'submittalDrawing',

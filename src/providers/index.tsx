@@ -2,7 +2,7 @@ import { ReactNode, Suspense } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from 'src/store';
+import { persistor, store } from 'src/store/redux';
 import { Provider } from 'react-redux';
 
 import { LineProgress } from 'src/components/lineProgress';

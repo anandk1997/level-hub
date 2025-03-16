@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 
 import { layoutClasses } from 'src/layouts/classes';
+import { Container } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -16,20 +17,22 @@ export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
   const theme = useTheme();
 
   const renderContent = (
-    <Box
-      sx={{
-        py: 5,
-        px: 3,
-        width: 1,
-        borderRadius: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        bgcolor: 'background.default',
-        maxWidth: 'var(--layout-auth-content-width)',
-      }}
-    >
-      {children}
-    </Box>
+    <Container>
+      <Box
+        sx={{
+          py: 5,
+          px: 3,
+          width: 1,
+          borderRadius: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          bgcolor: 'background.default',
+          // maxWidth: 'var(--layout-auth-content-width)',
+        }}
+      >
+        {children}
+      </Box>
+    </Container>
   );
 
   return (

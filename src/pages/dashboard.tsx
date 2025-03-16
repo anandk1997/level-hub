@@ -15,7 +15,7 @@ const Dashboard = () => {
         <section className="flex flex-col md:flex-row justify-around items-center gap-2 mt-4 p-3">
           <div className="flex flex-col gap-3">
             <Typography className="text-[#FF991F] !font-semibold">START TO SUCCESS</Typography>
-            <img src="/assets/images/Introducing_level_hub.png" alt="" />
+            <img src="/assets/images/dashboard/Introducing_level_hub.png" alt="" />
 
             <span className="">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, magni?
@@ -27,7 +27,11 @@ const Dashboard = () => {
               </Button>
 
               <Button className="!flex !mt-3">
-                <img src="/assets/images/play_icon.png" className="h-14 ml-[-10px]" alt="" />
+                <img
+                  src="/assets/images/dashboard/play_icon.png"
+                  className="h-14 ml-[-10px]"
+                  alt=""
+                />
 
                 <span className="text-gray-700 font-medium text-md mb-3 ml-[-10px]">
                   Watch how it works
@@ -37,17 +41,21 @@ const Dashboard = () => {
           </div>
 
           <div className="">
-            <img src="/assets/images/phone_level_hub.png" alt="" />
+            <img src="/assets/images/dashboard/phone_level_hub.png" alt="" />
           </div>
         </section>
 
         <section className="flex flex-col md:flex-row justify-around items-center gap-2 p-3">
           <div className="flex justify-center flex-1">
-            <img src="/assets/images/productivity_partner.png" className="" alt="" />
+            <img src="/assets/images/dashboard/productivity_partner.png" className="" alt="" />
           </div>
 
           <div className="flex flex-col flex-1 gap-2">
-            <img src="/assets/images/your_productivity_partner.png" className="h-10 w-40" alt="" />
+            <img
+              src="/assets/images/dashboard/your_productivity_partner.png"
+              className="h-10 w-40"
+              alt=""
+            />
 
             <p className="text-gray-600 max-w-52">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo non molestias in, iste
@@ -75,9 +83,9 @@ const Dashboard = () => {
 
           <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-10 md:gap-6 mt-12">
             {[
-              { title: 'SINGLE USER', icon: '/assets/images/user_icon.png' },
-              { title: 'COACHES', icon: '/assets/images/coaches_icon.png' },
-              { title: 'BUSINESS/TEAMS', icon: '/assets/images/business_teams_icon.png' },
+              { title: 'SINGLE USER', icon: '/assets/images/dashboard/user_icon.png' },
+              { title: 'COACHES', icon: '/assets/images/dashboard/coaches_icon.png' },
+              { title: 'BUSINESS/TEAMS', icon: '/assets/images/dashboard/business_teams_icon.png' },
             ].map((item, index) => (
               <div
                 key={index}
@@ -100,12 +108,16 @@ const Dashboard = () => {
 
         <section className="flex flex-col md:flex-row justify-between items-center gap-4 p-6">
           <div className="flex justify-center flex-1 min-w-0">
-            <img src="/assets/images/testimonials.png" className="max-w-full" alt="Testimonials" />
+            <img
+              src="/assets/images/dashboard/testimonials.png"
+              className="max-w-full"
+              alt="Testimonials"
+            />
           </div>
 
           <div className="flex flex-col flex-1 min-w-0 gap-4 w-full">
             <img
-              src="/assets/images/testimonials_title.png"
+              src="/assets/images/dashboard/testimonials_title.png"
               className="h-10 w-40"
               alt="Testimonials Title"
             />
@@ -133,9 +145,12 @@ const Dashboard = () => {
                 className="flex gap-6 overflow-x-auto h-auto max-h-[300px] w-full pb-4 pr-2 scrollbar-hide snap-x snap-mandatory"
               >
                 {[
-                  { title: 'SINGLE USER', icon: '/assets/images/user_icon.png' },
-                  { title: 'COACHES', icon: '/assets/images/coaches_icon.png' },
-                  { title: 'BUSINESS/TEAMS', icon: '/assets/images/business_teams_icon.png' },
+                  { title: 'SINGLE USER', icon: '/assets/images/dashboard/user_icon.png' },
+                  { title: 'COACHES', icon: '/assets/images/dashboard/coaches_icon.png' },
+                  {
+                    title: 'BUSINESS/TEAMS',
+                    icon: '/assets/images/dashboard/business_teams_icon.png',
+                  },
                 ].map((item, index) => (
                   <div
                     key={index}

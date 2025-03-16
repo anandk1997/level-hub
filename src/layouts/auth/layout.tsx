@@ -12,18 +12,18 @@ import { Logo } from 'src/components/logo';
 import { Main } from './main';
 import { HeaderSection } from '../core/header-section';
 import { LayoutSection } from '../core/layout-section';
+import { Outlet } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 export type AuthLayoutProps = {
   sx?: SxProps<Theme>;
-  children: React.ReactNode;
   header?: {
     sx?: SxProps<Theme>;
   };
 };
 
-export function AuthLayout({ sx, children, header }: AuthLayoutProps) {
+export function AuthLayout({ sx, header }: AuthLayoutProps) {
   const layoutQuery: Breakpoint = 'md';
 
   return (
@@ -88,7 +88,9 @@ export function AuthLayout({ sx, children, header }: AuthLayoutProps) {
         ...sx,
       }}
     >
-      <Main layoutQuery={layoutQuery}>{children}</Main>
+      <Main layoutQuery={layoutQuery}>
+        <Outlet />
+      </Main>
     </LayoutSection>
   );
 }

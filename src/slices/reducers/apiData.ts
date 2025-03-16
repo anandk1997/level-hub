@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initialState } from 'src/store/initialState';
+import { initialState } from 'src/store/redux/initialState';
 import { apiSlice } from '../apis/auth.api';
 
 const apiDataSlice = createSlice({

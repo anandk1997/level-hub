@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 /***************************  NAVBAR - SECONDARY BUTTON  ***************************/
 
-export default function NavSecondaryButton({ sx, children, ...rest }:any) {
+export default function NavSecondaryButton({ sx, children, ...rest }: any) {
   return (
     <Button
       variant="outlined"

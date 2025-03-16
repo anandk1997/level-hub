@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 /***************************  COMMON - BUTTON ANIMATION  ***************************/
 
-export default function ButtonAnimationWrapper({ children, style }:any) {
+export default function ButtonAnimationWrapper({ children, style }: any) {
   return (
     <motion.div
       whileHover={{ scale: 1 }}

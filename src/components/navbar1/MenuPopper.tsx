@@ -26,13 +26,13 @@ export default function MenuPopper({
   offset = 0,
   offsetX = 0,
   // menuTextColor
-}:any) {
+}: any) {
   const theme = useTheme();
 
   const anchorRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event:any) => {
+  const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
@@ -51,7 +51,11 @@ export default function MenuPopper({
         onClick={handleClick}
         size="small"
         {...toggleProps}
-        sx={{ ...toggleProps.sx, ...(toggleProps.endIcon && { pr: 4 }), ...(open && { color: 'primary.main', fontWeight: 600 }) }}
+        sx={{
+          ...toggleProps.sx,
+          ...(toggleProps.endIcon && { pr: 4 }),
+          ...(open && { color: 'primary.main', fontWeight: 600 }),
+        }}
         {...(toggleProps.endIcon && {
           position: 'relative',
           endIcon: (
@@ -61,7 +65,7 @@ export default function MenuPopper({
                 top: '56%',
                 transform: 'translateY(-70%)',
                 transition: `transform 0.15s`,
-                ...(open && { transform: 'translateY(-74%) rotate(-180deg)' })
+                ...(open && { transform: 'translateY(-74%) rotate(-180deg)' }),
               }}
             >
               {/* {typeof toggleProps.endIcon === 'boolean' ? (
@@ -75,7 +79,7 @@ export default function MenuPopper({
                 toggleProps.endIcon
               )} */}
             </Box>
-          )
+          ),
         })}
       />
       <Popper
@@ -96,13 +100,13 @@ export default function MenuPopper({
                 width: { xs: 1, md: popperWidth },
                 ...(border && {
                   border: '1px solid',
-                  borderColor: theme.palette.grey[200]
+                  borderColor: theme.palette.grey[200],
                 }),
                 [theme.breakpoints.down('md')]: {
                   borderTop: 'none',
                   borderTopLeftRadius: 0,
-                  borderTopRightRadius: 0
-                }
+                  borderTopRightRadius: 0,
+                },
               }}
             >
               <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
@@ -124,5 +128,5 @@ MenuPopper.propTypes = {
   popperWidth: PropTypes.number,
   offset: PropTypes.number,
   offsetX: PropTypes.number,
-  menuTextColor: PropTypes.string
+  menuTextColor: PropTypes.string,
 };

@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 // @next
 
-
 // @mui
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -32,7 +31,7 @@ const navItemSX = { py: 1.5, borderRadius: { xs: 0, sm: 4 } };
 
 /***************************  MENU - EXPANDED  ***************************/
 
-function ExpanedList({ item, menuTextColor }:any) {
+function ExpanedList({ item, menuTextColor }: any) {
   const [open, setOpen] = useState(item.expanded || false);
 
   const handleClick = () => {
@@ -42,7 +41,10 @@ function ExpanedList({ item, menuTextColor }:any) {
   return (
     <>
       <ListItemButton sx={navItemSX} onClick={handleClick}>
-        <ListItemText primary={item.title} primaryTypographyProps={{ variant: 'caption2', color: menuTextColor || 'text.primary' }} />
+        <ListItemText
+          primary={item.title}
+          primaryTypographyProps={{ variant: 'caption2', color: menuTextColor || 'text.primary' }}
+        />
         <Box
           sx={{
             position: 'absolute',
@@ -51,7 +53,7 @@ function ExpanedList({ item, menuTextColor }:any) {
             transform: 'translateY(-50%)',
             transition: `transform 0.15s`,
             mr: 2.5,
-            ...(open && { transform: 'translateY(-62%) rotate(-180deg)' })
+            ...(open && { transform: 'translateY(-62%) rotate(-180deg)' }),
           }}
         >
           {/* <SvgIcon name="tabler-chevron-down" size={16} color={menuTextColor || 'text.primary'} stroke={2.5} /> */}
@@ -73,15 +75,23 @@ function ExpanedList({ item, menuTextColor }:any) {
 
 /***************************  NAVBAR - DRAWER  ***************************/
 
-function MenuDrawer({ item, menuTextColor }:any) {
+function MenuDrawer({ item, menuTextColor }: any) {
   return (
     <>
       {!item.megaMenu ? (
         <ListItemButton
-          {...(item.link && { component: Link, to: item.link, underline: 'none', ...(item?.target && { target: item.target }) })}
+          {...(item.link && {
+            component: Link,
+            to: item.link,
+            underline: 'none',
+            ...(item?.target && { target: item.target }),
+          })}
           sx={navItemSX}
         >
-          <ListItemText primary={item.title} primaryTypographyProps={{ variant: 'caption2', color: menuTextColor || 'text.primary' }} />
+          <ListItemText
+            primary={item.title}
+            primaryTypographyProps={{ variant: 'caption2', color: menuTextColor || 'text.primary' }}
+          />
         </ListItemButton>
       ) : (
         <ExpanedList item={item} menuTextColor={menuTextColor} />
@@ -92,24 +102,34 @@ function MenuDrawer({ item, menuTextColor }:any) {
 
 /***************************  NAVBAR - LIST  ***************************/
 
-function NavList({ item, menuTextColor }:any) {
+function NavList({ item, menuTextColor }: any) {
   const theme = useTheme();
   const downMD = useMediaQuery(theme.breakpoints.down('md'));
 
   const currentPath = usePathname(); // Get the current path
-  const toggleProps = { color: menuTextColor || 'text.primary', py: 1.5, ...theme.typography.caption2, pl: { md: 2.25, lg: 3 } };
+  const toggleProps = {
+    color: menuTextColor || 'text.primary',
+    py: 1.5,
+    ...theme.typography.caption2,
+    pl: { md: 2.25, lg: 3 },
+  };
   const buttonProps = {
     sx: {
       ...toggleProps,
       pr: { md: 2.25, lg: 3 },
       ...(item.icon && { justifyContent: 'center', gap: 0.75 }),
       ...(item.link &&
-        (currentPath === item.link || (item.link === '/sections' && currentPath.includes('/sections'))) && {
+        (currentPath === item.link ||
+          (item.link === '/sections' && currentPath.includes('/sections'))) && {
           color: 'primary.main',
-          fontWeight: 600
-        })
+          fontWeight: 600,
+        }),
     },
-    ...(item.link && { component: Link, href: item.link, ...(item?.target && { target: item.target }) })
+    ...(item.link && {
+      component: Link,
+      href: item.link,
+      ...(item?.target && { target: item.target }),
+    }),
   };
 
   return (
@@ -125,14 +145,14 @@ function NavList({ item, menuTextColor }:any) {
         <MenuPopper
           menuTextColor={menuTextColor}
           {...(downMD && item.megaMenu?.popperOffset && { offset: item.megaMenu?.popperOffset })}
-          {...(!downMD && item.megaMenu?.popperOffsetX && { offsetX: item.megaMenu?.popperOffsetX })}
+          {...(!downMD &&
+            item.megaMenu?.popperOffsetX && { offsetX: item.megaMenu?.popperOffsetX })}
           toggleProps={{ ...item.megaMenu.toggleBtn, sx: toggleProps, endIcon: true }}
           // {...(item.megaMenu.type === MegaMenuType.MEGAMENU4 && { popperWidth: item.megaMenu.popperWidth || 936 })}
           // {...(item.megaMenu.type === MegaMenuType.MEGAMENU5 && { popperWidth: item.megaMenu.popperWidth || 750 })}
         >
           <>
-
-          jkhkjhkjhkjhkj
+            jkhkjhkjhkjhkj
             {/* {item.megaMenu.type === MegaMenuType.MEGAMENU4 && (
               // <MegaMenu4 {...{ ...item.megaMenu, footerData: item.megaMenu.footerData }} popperWidth={item.megaMenu.popperWidth || 936} />
             )}
@@ -148,17 +168,18 @@ function NavList({ item, menuTextColor }:any) {
 
 /***************************  NAVBAR - MENUS  ***************************/
 
-export function NavMenu({ navItems, menuTextColor }:any) {
-  return navItems.map((item:any, index:any) => <NavList key={index} {...{ item, menuTextColor }} />);
+export function NavMenu({ navItems, menuTextColor }: any) {
+  return navItems.map((item: any, index: any) => (
+    <NavList key={index} {...{ item, menuTextColor }} />
+  ));
 }
 
-export function NavMenuDrawer({ navItems, menuTextColor }:any) {
+export function NavMenuDrawer({ navItems, menuTextColor }: any) {
   return (
     <List>
-      {navItems?.map((item:any, index:any) => (
+      {navItems?.map((item: any, index: any) => (
         <MenuDrawer key={index} {...{ item, menuTextColor }} />
       ))}
     </List>
   );
 }
-

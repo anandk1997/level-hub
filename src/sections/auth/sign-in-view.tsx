@@ -1,17 +1,24 @@
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { Button, CircularProgress } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  OutlinedInput,
+} from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
+import { Link } from 'react-router-dom';
+import { Checkbox } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -26,36 +33,35 @@ export function SignInView() {
 
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
-      <TextField
-        fullWidth
-        name="email"
-        label="Email address"
-        defaultValue="hello@gmail.com"
-        InputLabelProps={{ shrink: true }}
-        sx={{ mb: 3 }}
-      />
+      <TextField fullWidth name="email" label="Email address" sx={{ mb: 3, ...autofillStyles }} />
 
-      <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
+      <Link to="/forgot-password" color="inherit" className="mb-1.5 hover:underline">
         Forgot password?
       </Link>
 
-      <TextField
-        fullWidth
-        name="password"
-        label="Password"
-        defaultValue="@demo1234"
-        InputLabelProps={{ shrink: true }}
-        type={showPassword ? 'text' : 'password'}
-        InputProps={{
-          endAdornment: (
+      <FormControl fullWidth variant="outlined">
+        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+
+        <OutlinedInput
+          fullWidth
+          name="password"
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          endAdornment={
             <InputAdornment position="end">
               <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                <Iconify icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
               </IconButton>
             </InputAdornment>
-          ),
-        }}
-        sx={{ mb: 3 }}
+          }
+          sx={{ mb: 3, ...autofillStyles }}
+        />
+      </FormControl>
+
+      <FormControlLabel
+        className="!flex !mr-auto !mb-2"
+        control={<Checkbox />}
+        label={'Remember me'}
       />
 
       <Button
@@ -65,12 +71,15 @@ export function SignInView() {
         color="inherit"
         variant="contained"
         onClick={handleSignIn}
-        className="group h-5 !border !border-transparent hover:!bg-white hover:!border-black hover:!text-black"
+        className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
       >
         {showPassword ? (
-          <CircularProgress className="!text-white group-hover:!text-black" sx={{ scale: '.5' }} />
+          <CircularProgress
+            className="!text-white group-hover:!text-[#09C0F0]"
+            sx={{ scale: '.5' }}
+          />
         ) : (
-          'Sign in'
+          'Login'
         )}
       </Button>
     </Box>
@@ -78,38 +87,29 @@ export function SignInView() {
 
   return (
     <>
-      <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 5 }}>
+      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
         <Typography variant="h5">Sign in</Typography>
         <Typography variant="body2" color="text.secondary">
           Don’t have an account?
-          <Link variant="subtitle2" sx={{ ml: 0.5 }}>
+          <Link to="/sign-up" className="text-[#1877F2] ml-1">
             Get started
           </Link>
         </Typography>
       </Box>
 
       {renderForm}
-
-      <Divider sx={{ my: 3, '&::before, &::after': { borderTopStyle: 'dashed' } }}>
-        <Typography
-          variant="overline"
-          sx={{ color: 'text.secondary', fontWeight: 'fontWeightMedium' }}
-        >
-          OR
-        </Typography>
-      </Divider>
-
-      <Box gap={1} display="flex" justifyContent="center">
-        <IconButton color="inherit">
-          <Iconify icon="logos:google-icon" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="eva:github-fill" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="ri:twitter-x-fill" />
-        </IconButton>
-      </Box>
     </>
   );
 }
+
+const autofillStyles = {
+  '& input:-webkit-autofill': {
+    WebkitBoxShadow: '0 0 0 1000px #f4f4f4 inset',
+    WebkitTextFillColor: '#000',
+    borderRadius: '4px',
+  },
+  '& input:-webkit-autofill:focus': {
+    WebkitBoxShadow: '0 0 0 1000px #e0e0e0 inset',
+    WebkitTextFillColor: '#000',
+  },
+};
