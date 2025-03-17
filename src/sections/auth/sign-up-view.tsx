@@ -29,6 +29,9 @@ import { RoleSection } from './_components/RoleSection';
 import { MuiStyledPhoneInput } from './_components/PhoneInput';
 import { ErrorCaption } from './_components/ErrorCaption';
 import clsx from 'clsx';
+import { useSignupMutation } from 'src/slices/apis/app.api';
+import { getErrorMessage } from 'src/slices/apis/types';
+import toast from 'react-hot-toast';
 
 export function SignUpView() {
   const router = useRouter();
@@ -37,6 +40,8 @@ export function SignUpView() {
   const [isPassword1, setIsPassword1] = useReducer((show) => !show, false);
 
   const { formState, setFormState, errorState, setErrorState } = useSignupAtom();
+
+  const [signup, { isLoading }] = useSignupMutation();
 
   const handleChange = (key: keyof IFormAtom, value: any) => {
     setFormState((prev) => ({ ...prev, [key]: value }));
@@ -143,10 +148,23 @@ export function SignUpView() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validate()) {
+      const { error } = await signup({
+        firstName: formState.firstName,
+        lastName: formState.lastName,
+        email: formState.email,
+        password: formState.password,
+        gender: formState.gender,
+        age: 20,
+        category: 'Physics',
+        type: formState.role,
+      });
+
+      if (error) return toast.error(getErrorMessage(error));
+
       setFormState(initialFormState);
       router.push('/');
     }
@@ -162,7 +180,6 @@ export function SignUpView() {
         sx={{
           py: 5,
           px: 3,
-          // m:5,
           width: 1,
           borderRadius: 2,
           display: 'flex',
@@ -328,7 +345,7 @@ export function SignUpView() {
             variant="contained"
             className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
           >
-            {isPassword ? (
+            {isLoading ? (
               <CircularProgress
                 className="!text-white group-hover:!text-[#09C0F0]"
                 sx={{ scale: '.5' }}
@@ -370,7 +387,6 @@ export const PhoneInputss = () => {
   return (
     <div>
       <Autocomplete
-        // options={monthsData}
         options={[]}
         getOptionLabel={(option: any) => option.label}
         value={selectedCountry}

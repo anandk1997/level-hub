@@ -20,15 +20,25 @@ import { useRouter } from 'src/routes/hooks';
 import { Iconify } from 'src/components/iconify';
 import { Link } from 'react-router-dom';
 import { Checkbox } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { useSigninMutation } from 'src/slices/apis/app.api';
+import toast from 'react-hot-toast';
+import { getErrorMessage } from 'src/slices/apis/types';
 
 export function SignInView() {
   const router = useRouter();
 
+  const [signin, { isLoading }] = useSigninMutation();
+
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
+    const { error } = await signin({
+      email: '',
+      password: '',
+    });
+
+    if (error) return toast.error(getErrorMessage(error));
+
     router.push('/');
   };
 
@@ -74,7 +84,7 @@ export function SignInView() {
         onClick={handleSignIn}
         className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
       >
-        {showPassword ? (
+        {isLoading ? (
           <CircularProgress
             className="!text-white group-hover:!text-[#09C0F0]"
             sx={{ scale: '.5' }}

@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook } from 'react-redux';
 
-import { apiSlice } from 'src/slices/apis/auth.api';
-import { tagDataSlice } from 'src/slices/apis/public.api';
+import { apiSlice } from 'src/slices/apis/app.api';
 
 import { apiData } from 'src/slices/reducers/apiData';
 import { submittalDrawing } from 'src/slices/reducers/SubmittalDrawing';
@@ -27,7 +26,6 @@ const reducer = combineReducers({
   submittalDrawing,
 
   [apiSlice.reducerPath]: apiSlice.reducer,
-  [tagDataSlice.reducerPath]: tagDataSlice.reducer,
 });
 
 const serialize = {

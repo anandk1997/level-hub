@@ -1,25 +1,41 @@
 import Cookies from 'js-cookie';
 
-export const createPostQuery = (url: string) => ({
-  query: (args: any) => ({
+export const createMutationQuery = <T>(url: string, method: 'POST' | 'PUT' | 'PATCH' = 'POST') => ({
+  query: (args: T) => ({
     url,
-    method: 'POST',
+    method,
     body: args,
   }),
 });
 
-export const createGetQuery = (url: string) => ({
-  query: () => ({
-    url,
-    method: 'GET',
-  }),
+export const createGetQuery = <T extends Record<string, any>>(url: string) => ({
+  query: (params?: T) => {
+    const queryString = params
+      ? '?' +
+        Object.entries(params)
+          .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+          .join('&')
+      : '';
+
+    return {
+      url: `${url}${queryString}`,
+      method: 'GET',
+    };
+  },
 });
 
-export const createGetArgsQuery = (url: string) => ({
-  query: (args: string) => ({
-    url: `${url}/${args}`,
-    method: 'GET',
-  }),
+export const createGetWithParamsQuery = <T extends Record<string, any>>(url: string) => ({
+  query: (params: T) => {
+    const resolvedUrl = Object.entries(params).reduce(
+      (acc, [key, value]) => acc.replace(`:${key}`, encodeURIComponent(value)),
+      url
+    );
+
+    return {
+      url: resolvedUrl,
+      method: 'GET',
+    };
+  },
 });
 
 export const headers = (headers: Headers) => {
