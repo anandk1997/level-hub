@@ -50,6 +50,7 @@ export function SignUpView() {
       setErrorState((prev) => ({
         ...prev,
         gymName: '',
+        dob: '',
         month: '',
         day: '',
         year: '',
@@ -79,12 +80,14 @@ export function SignUpView() {
     const roleSpecificFields: Partial<Record<RoleType, [keyof IFormAtom, string][]>> = {
       gym: [['gymName', 'Gym Name is required']],
       coach: [
+        ['dob', 'Date of Birth is required'],
         ['month', 'Month is required'],
         ['day', 'Day is required'],
         ['year', 'Year is required'],
         ['gender', 'Gender is required'],
       ],
       single_user: [
+        ['dob', 'Date of Birth is required'],
         ['month', 'Month is required'],
         ['day', 'Day is required'],
         ['year', 'Year is required'],

@@ -1,13 +1,17 @@
-import { FormLabel, Radio } from '@mui/material';
+import { FormHelperText, FormLabel, Radio } from '@mui/material';
 import { Alert, FormControl, FormControlLabel, RadioGroup, TextField } from '@mui/material';
 import clsx from 'clsx';
 import { IFormAtom, RoleType, useSignupAtom } from 'src/store/jotai/signup';
-import { DateOfBirthInput, generateOptions } from './DateOfBirth';
+import { generateOptions } from './DateOfBirth';
 import { ErrorCaption } from './ErrorCaption';
 import { autofillStyles } from '../sign-up-view';
 import { useId } from 'react';
 import { Box } from '@mui/material';
 import { Autocomplete } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export const RoleSection = ({
   handleChange,
@@ -30,31 +34,29 @@ export const RoleSection = ({
     setNumberOfChildren(count);
   };
 
+  const roles = rolesData.reduce<IRole[][]>((rows, role, index) => {
+    if (index % 2 === 0) rows.push([role]);
+    else rows[rows.length - 1].push(role);
+
+    return rows;
+  }, []);
+
   return (
     <>
       {/* Role Selection */}
       <div className="flex flex-col gap-2">
-        {roles
-          .reduce<Role[][]>((rows, role, index) => {
-            if (index % 2 === 0) {
-              rows.push([role]);
-            } else {
-              rows[rows.length - 1].push(role);
-            }
-            return rows;
-          }, [])
-          .map((row, index) => (
-            <div key={index} className="flex flex-col md:flex-row gap-2">
-              {row.map((role) => (
-                <RoleButton
-                  key={role.key}
-                  role={role}
-                  selectedRole={formState.role}
-                  onSelect={handleChange}
-                />
-              ))}
-            </div>
-          ))}
+        {roles.map((row, index) => (
+          <div key={index} className="flex flex-col md:flex-row gap-2">
+            {row.map((role) => (
+              <RoleButton
+                key={role.key}
+                role={role}
+                selectedRole={formState.role}
+                onSelect={handleChange}
+              />
+            ))}
+          </div>
+        ))}
       </div>
 
       {!!errorState.role && (
@@ -67,10 +69,36 @@ export const RoleSection = ({
       {isRole(['coach', 'single_user']) && (
         <div className="flex flex-col md:flex-row gap-2">
           <div className="flex-1">
-            <DateOfBirthInput onChange={handleChange} />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                className="!hidden md:!flex"
+                label="Select Date of Birth"
+                value={formState.dob}
+                onChange={(newValue) => handleChange('dob', newValue)}
+                slotProps={{
+                  textField: {
+                    error: !!errorState.dob,
+                    helperText: errorState.dob,
+                  },
+                }}
+              />
+
+              <MobileDatePicker
+                className={clsx('md:!hidden !flex')}
+                label="Select Date of Birth"
+                value={formState.dob}
+                onChange={(newValue) => handleChange('dob', newValue)}
+                slotProps={{
+                  textField: {
+                    error: !!errorState.dob,
+                    helperText: errorState.dob,
+                  },
+                }}
+              />
+            </LocalizationProvider>
           </div>
 
-          <FormControl sx={{ flex: 1, padding: 2 }}>
+          <FormControl sx={{ flex: 1 }}>
             <FormLabel id={genderId} className="!text-sm !font-bold !mb-2">
               What's your gender? (Optional)
             </FormLabel>
@@ -117,7 +145,7 @@ export const RoleSection = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={'Number of Children'}
+                  label="Number of Children"
                   variant="outlined"
                   fullWidth
                   error={!!errorState.childrens}
@@ -151,7 +179,7 @@ export const RoleSection = ({
               </div>
 
               {/* Gender */}
-              <FormControl sx={{ flex: 1 }}>
+              <FormControl sx={{ flex: 1 }} error={!!errorState.childrenData?.[index]?.gender}>
                 <FormLabel className="!text-sm !font-bold !mb-2">
                   Child {index + 1} Gender
                 </FormLabel>
@@ -161,12 +189,17 @@ export const RoleSection = ({
                   name={`child${index + 1}Gender`}
                   value={child.gender}
                   onChange={(e) => updateChildrenData(index, 'gender', e.target.value)}
+                  sx={{
+                    '& .MuiFormControlLabel-label, .MuiRadio-root': {
+                      color: errorState.childrenData?.[index]?.gender ? 'red !important' : '',
+                    },
+                  }}
                 >
                   <FormControlLabel value="female" control={<Radio />} label="Female" />
                   <FormControlLabel value="male" control={<Radio />} label="Male" />
                 </RadioGroup>
 
-                <ErrorCaption caption={errorState.childrenData?.[index]?.gender} />
+                <FormHelperText>{errorState.childrenData?.[index]?.gender}</FormHelperText>
               </FormControl>
             </div>
           ))}
@@ -176,14 +209,14 @@ export const RoleSection = ({
   );
 };
 
-type Role = {
+type IRole = {
   key: string;
   label: string;
   description: string;
   icon: string;
 };
 
-const roles: Role[] = [
+const rolesData: IRole[] = [
   {
     key: 'gym',
     label: 'Gym Owner',
@@ -211,7 +244,7 @@ const roles: Role[] = [
 ];
 
 type RoleButtonProps = {
-  role: Role;
+  role: IRole;
   selectedRole: string;
   onSelect: (key: keyof IFormAtom, value: string) => void;
 };
