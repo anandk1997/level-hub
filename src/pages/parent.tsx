@@ -1,14 +1,11 @@
-import { Helmet } from 'react-helmet-async';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 
-import { CONFIG } from 'src/config-global';
 import { RoleDetails } from 'src/sections/roleDetails';
 
 export default function Parent() {
   return (
     <>
-      <Helmet>
-        <title> {`Parent Details - ${CONFIG.appName}`}</title>
-      </Helmet>
+      <HelmetTitle title="Parent Details" />
 
       <RoleDetails
         icon="/assets/images/role_images/parent_icon.png"

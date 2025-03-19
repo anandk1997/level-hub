@@ -1,15 +1,12 @@
 import { Button, Container, Typography } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 import { Iconify } from 'src/components/iconify';
-import { CONFIG } from 'src/config-global';
 
 const Dashboard = () => {
   return (
     <>
-      <Helmet>
-        <title> {`Dashboard - ${CONFIG.appName}`}</title>
-      </Helmet>
+      <HelmetTitle title="Dashboard" />
 
       <Container>
         <section className="flex flex-col md:flex-row justify-around items-center gap-2 mt-4 p-3">

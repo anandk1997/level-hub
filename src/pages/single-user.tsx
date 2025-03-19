@@ -1,15 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-
-import { CONFIG } from 'src/config-global';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 
 import { RoleDetails } from 'src/sections/roleDetails';
 
 export default function SingleUser() {
   return (
     <>
-      <Helmet>
-        <title> {`Single User Details - ${CONFIG.appName}`}</title>
-      </Helmet>
+      <HelmetTitle title="Single User Details" />
 
       <RoleDetails
         icon="/assets/images/role_images/single_user_icon.png"

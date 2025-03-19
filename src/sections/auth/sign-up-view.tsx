@@ -171,11 +171,7 @@ export function SignUpView() {
   };
 
   return (
-    <Container
-      sx={{
-        m: 5,
-      }}
-    >
+    <Container sx={{ m: 5 }}>
       <Box
         sx={{
           py: 5,

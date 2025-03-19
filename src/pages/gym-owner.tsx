@@ -1,15 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-
-import { CONFIG } from 'src/config-global';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 
 import { RoleDetails } from 'src/sections/roleDetails';
 
 export default function GymOwner() {
   return (
     <>
-      <Helmet>
-        <title> {`Gym Owner Details - ${CONFIG.appName}`}</title>
-      </Helmet>
+      <HelmetTitle title="Gym Owner Details" />
 
       <RoleDetails
         icon="/assets/images/role_images/gym_owner_icon.png"

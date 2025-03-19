@@ -1,15 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-
-import { CONFIG } from 'src/config-global';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 
 import { RoleDetails } from 'src/sections/roleDetails';
 
 export default function Coach() {
   return (
     <>
-      <Helmet>
-        <title> {`Coach Details - ${CONFIG.appName}`}</title>
-      </Helmet>
+      <HelmetTitle title="Coach Details" />
 
       <RoleDetails
         icon="/assets/images/role_images/coach_icon.png"

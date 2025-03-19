@@ -1,17 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-
-import { CONFIG } from 'src/config-global';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 
 import { SignInView } from 'src/sections/auth';
-
-// ----------------------------------------------------------------------
 
 export default function Page() {
   return (
     <>
-      <Helmet>
-        <title> {`Sign in - ${CONFIG.appName}`}</title>
-      </Helmet>
+      <HelmetTitle title="Sign in" />
 
       <SignInView />
     </>
