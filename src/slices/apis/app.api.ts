@@ -23,7 +23,9 @@ export const apiSlice = createApi({
     signin: builder.mutation(createMutationQuery<ISigninArgs>('/signin')),
     signup: builder.mutation<void, ISignupArgs>(createMutationQuery('/signup')),
 
-    verifyOtp: builder.mutation<void, IVerifyOtpArgs>(createMutationQuery('/otp/verify')),
+    verifyOtp: builder.mutation<{ message: string }, IVerifyOtpArgs>(
+      createMutationQuery('/otp/verify')
+    ),
     resendOtp: builder.mutation<void, IResendOtpArgs>(createMutationQuery('/otp/resend')),
 
     forgotPassword: builder.mutation<void, IForgotPasswordArgs>(

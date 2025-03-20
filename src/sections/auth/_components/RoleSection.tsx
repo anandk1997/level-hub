@@ -66,7 +66,7 @@ export const RoleSection = ({
       )}
 
       {/* Coach and Single User Section */}
-      {isRole(['coach', 'single_user']) && (
+      {isRole(['coach', 'individual']) && (
         <div className="flex flex-col md:flex-row gap-2">
           <div className="flex-1">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -230,7 +230,7 @@ const rolesData: IRole[] = [
     icon: '/assets/icons/sign_up/coach_icon.png',
   },
   {
-    key: 'single_user',
+    key: 'individual',
     label: 'Single User',
     description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
     icon: '/assets/icons/sign_up/single_user_icon.png',

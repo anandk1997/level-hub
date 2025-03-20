@@ -27,7 +27,7 @@ export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
         flexDirection: 'column',
 
         background:
-          pathname === '/sign-in' || pathname === '/sign-up'
+          pathname === '/sign-in' || pathname === '/sign-up' || pathname === '/otp'
             ? 'linear-gradient(to right, #EF9324, #30817D)'
             : 'white',
 

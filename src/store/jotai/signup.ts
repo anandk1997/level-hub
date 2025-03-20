@@ -2,7 +2,7 @@ import { atom, useAtom } from 'jotai';
 import { Dayjs } from 'dayjs';
 
 export type OptionType = { label: string; value: string };
-export type RoleType = '' | 'gym' | 'coach' | 'single_user' | 'parent';
+export type RoleType = '' | 'gym' | 'coach' | 'individual' | 'parent';
 
 export type ChildType = {
   age: OptionType | null;

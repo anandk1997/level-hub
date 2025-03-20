@@ -81,16 +81,10 @@ export function SignUpView() {
       gym: [['gymName', 'Gym Name is required']],
       coach: [
         ['dob', 'Date of Birth is required'],
-        ['month', 'Month is required'],
-        ['day', 'Day is required'],
-        ['year', 'Year is required'],
         ['gender', 'Gender is required'],
       ],
-      single_user: [
+      individual: [
         ['dob', 'Date of Birth is required'],
-        ['month', 'Month is required'],
-        ['day', 'Day is required'],
-        ['year', 'Year is required'],
         ['gender', 'Gender is required'],
       ],
       parent: [['childrens', 'Please specify no. of childrens']],
@@ -154,6 +148,8 @@ export function SignUpView() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const formattedDate = formState.dob!.toDate().toISOString().split('T')[0];
+
     if (validate()) {
       const { error } = await signup({
         firstName: formState.firstName,
@@ -161,15 +157,15 @@ export function SignUpView() {
         email: formState.email,
         password: formState.password,
         gender: formState.gender,
-        age: 20,
-        category: 'Physics',
+        dob: formattedDate,
+        phone: formState.phone,
         type: formState.role,
       });
 
       if (error) return toast.error(getErrorMessage(error));
 
       setFormState(initialFormState);
-      router.push('/');
+      router.push(`/otp?email=${encodeURIComponent(formState.email)}`);
     }
   };
 

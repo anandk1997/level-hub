@@ -59,8 +59,8 @@ export interface ISignupArgs {
   email: string;
   password: string;
   gender: string;
-  age: number;
-  category: string;
+  dob: string;
+  phone: string;
   type: string;
 }
 

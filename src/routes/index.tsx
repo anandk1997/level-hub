@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
+import Otp from 'src/pages/otp';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
     children: [
       { path: '/dashboard', element: <Dashboard /> },
       { path: '/sign-in', element: <SignInPage /> },
+      { path: '/otp', element: <Otp /> },
       { path: '/sign-up', element: <SignUpPage /> },
       { path: '/gym-owner', element: <GymOwnerPage /> },
       { path: '/coach', element: <CoachPage /> },
