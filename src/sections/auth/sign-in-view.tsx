@@ -69,7 +69,9 @@ export function SignInView() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (validate()) {
       const { error, data } = await signin(formState);
 
@@ -82,80 +84,8 @@ export function SignInView() {
     }
   };
 
-  const renderForm = (
-    <Box display="flex" flexDirection="column" alignItems="flex-end">
-      <TextField
-        fullWidth
-        name="email"
-        label="Email address"
-        error={!!errorState.email}
-        helperText={errorState.email}
-        value={formState.email}
-        onChange={(e) => handleChange('email', e.target.value)}
-        sx={{ mb: 3, ...autofillStyles }}
-      />
-
-      <Link to="/forgot-password" color="inherit" className="mb-1.5 hover:underline">
-        Forgot password?
-      </Link>
-
-      <FormControl fullWidth variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-
-        <OutlinedInput
-          fullWidth
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          error={!!errorState.password}
-          value={formState.password}
-          onChange={(e) => handleChange('password', e.target.value)}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                <Iconify icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
-              </IconButton>
-            </InputAdornment>
-          }
-          sx={{ mb: 3, ...autofillStyles }}
-        />
-
-        <ErrorCaption caption={errorState.password} />
-      </FormControl>
-
-      <FormControlLabel
-        className="!flex !mr-auto !mb-2"
-        control={<Checkbox />}
-        label={'Remember me'}
-      />
-
-      <Button
-        fullWidth
-        size="large"
-        type="submit"
-        color="inherit"
-        variant="contained"
-        onClick={handleSignIn}
-        className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
-      >
-        {isLoading ? (
-          <CircularProgress
-            className="!text-white group-hover:!text-[#09C0F0]"
-            sx={{ scale: '.5' }}
-          />
-        ) : (
-          'Login'
-        )}
-      </Button>
-    </Box>
-  );
-
   return (
-    <Container
-      sx={{
-        m: 5,
-      }}
-    >
+    <Container sx={{ m: 5 }}>
       <Box
         sx={{
           py: 5,
@@ -179,7 +109,72 @@ export function SignInView() {
           </Typography>
         </Box>
 
-        {renderForm}
+        <form onSubmit={handleSignIn}>
+          <Box display="flex" flexDirection="column" alignItems="flex-end">
+            <TextField
+              fullWidth
+              name="email"
+              label="Email address"
+              error={!!errorState.email}
+              helperText={errorState.email}
+              value={formState.email}
+              onChange={(e) => handleChange('email', e.target.value)}
+              sx={{ mb: 3, ...autofillStyles }}
+            />
+
+            <Link to="/forgot-password" color="inherit" className="mb-1.5 hover:underline">
+              Forgot password?
+            </Link>
+
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+
+              <OutlinedInput
+                fullWidth
+                name="password"
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                error={!!errorState.password}
+                value={formState.password}
+                onChange={(e) => handleChange('password', e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                      <Iconify icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
+                    </IconButton>
+                  </InputAdornment>
+                }
+                sx={{ mb: 3, ...autofillStyles }}
+              />
+
+              <ErrorCaption caption={errorState.password} />
+            </FormControl>
+
+            <FormControlLabel
+              className="!flex !mr-auto !mb-2"
+              control={<Checkbox />}
+              label={'Remember me'}
+            />
+
+            <Button
+              fullWidth
+              size="large"
+              type="submit"
+              color="inherit"
+              variant="contained"
+              className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
+            >
+              {isLoading ? (
+                <CircularProgress
+                  className="!text-white group-hover:!text-[#09C0F0]"
+                  sx={{ scale: '.5' }}
+                />
+              ) : (
+                'Login'
+              )}
+            </Button>
+          </Box>
+        </form>
       </Box>
     </Container>
   );

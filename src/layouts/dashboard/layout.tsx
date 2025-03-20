@@ -55,6 +55,7 @@ export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
     }
   }, [token]);
 
+  if (!token) return <LineProgress />;
   return (
     <LayoutSection
       /** **************************************

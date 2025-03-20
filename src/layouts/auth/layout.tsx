@@ -7,14 +7,23 @@ import { LayoutSection } from '../core/layout-section';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from 'src/components/navbar';
 import { Footer } from 'src/components/footer';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { LineProgress } from 'src/components/lineProgress';
+import { useRouter } from 'src/routes/hooks';
+import { useAppSelector } from 'src/store/redux';
 
 export function AuthLayout() {
   const location = useLocation();
+  const router = useRouter();
+  const token = useAppSelector((state) => state.auth.token);
 
   const layoutQuery: Breakpoint = 'md';
 
+  useEffect(() => {
+    if (token) router.push('/');
+  }, [token]);
+
+  if (token) return <LineProgress />;
   return (
     <LayoutSection
       /** **************************************
