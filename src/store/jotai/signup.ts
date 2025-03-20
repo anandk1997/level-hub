@@ -16,7 +16,7 @@ export interface IFormAtom {
   phone: string;
   password: string;
   confirmPassword: string;
-  dob: Dayjs | null,
+  dob: Dayjs | null;
   day: OptionType | null;
   month: OptionType | null;
   year: OptionType | null;
@@ -35,7 +35,7 @@ export interface IErrorAtom {
   phone: string;
   password: string;
   confirmPassword: string;
-  dob: string,
+  dob: string;
   day: string;
   month: string;
   year: string;
@@ -54,7 +54,7 @@ export const initialFormState: IFormAtom = {
   phone: '',
   password: '',
   confirmPassword: '',
-  dob:  null,
+  dob: null,
   day: null,
   month: null,
   year: null,

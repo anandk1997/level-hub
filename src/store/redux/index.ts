@@ -6,8 +6,7 @@ import { TypedUseSelectorHook } from 'react-redux';
 
 import { apiSlice } from 'src/slices/apis/app.api';
 
-import { apiData } from 'src/slices/reducers/apiData';
-import { submittalDrawing } from 'src/slices/reducers/SubmittalDrawing';
+import { authReducer } from 'src/slices/reducers/auth.reducer';
 
 import { persistReducer, persistStore } from 'redux-persist';
 
@@ -22,8 +21,7 @@ const persistConfig = {
 };
 
 const reducer = combineReducers({
-  apiData,
-  submittalDrawing,
+  auth: authReducer,
 
   [apiSlice.reducerPath]: apiSlice.reducer,
 });

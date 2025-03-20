@@ -1,6 +1,6 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -25,6 +25,10 @@ import { NotificationsPopover } from '../components/notifications-popover';
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 import { Outlet, useLocation } from 'react-router-dom';
 import { LineProgress } from 'src/components/lineProgress';
+import Cookies from 'js-cookie';
+import { logoutUser } from 'src/slices/reducers/auth.reducer';
+import { useAppDispatch } from 'src/store/redux';
+import { useRouter } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -33,12 +37,23 @@ export type DashboardLayoutProps = { sx?: SxProps<Theme>; header?: { sx?: SxProp
 export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
   const theme = useTheme();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useScrollToTop();
 
   const [navOpen, setNavOpen] = useState(false);
 
   const layoutQuery: Breakpoint = 'lg';
+
+  const token = Cookies.get('token');
+
+  useEffect(() => {
+    if (!token) {
+      dispatch(logoutUser());
+      router.push('/sign-in');
+    }
+  }, [token]);
 
   return (
     <LayoutSection

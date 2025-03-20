@@ -22,29 +22,78 @@ import { Link } from 'react-router-dom';
 import { Checkbox } from '@mui/material';
 import { useSigninMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
-import { getErrorMessage } from 'src/slices/apis/types';
+import { getErrorMessage, ISigninRes } from 'src/slices/apis/types';
+import { IFormAtom, useSigninAtom } from 'src/store/jotai/signin';
+import { ErrorCaption } from './_components/ErrorCaption';
+import Cookies from 'js-cookie';
 
 export function SignInView() {
   const router = useRouter();
+
+  const { formState, setFormState, errorState, setErrorState } = useSigninAtom();
 
   const [signin, { isLoading }] = useSigninMutation();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = async () => {
-    const { error } = await signin({
-      email: '',
-      password: '',
+  const handleChange = (key: keyof IFormAtom, value: any) => {
+    setFormState((prev) => ({ ...prev, [key]: value }));
+
+    setErrorState((prev) => ({ ...prev, [key]: '' }));
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, string | Record<string, string>[] | undefined> = {};
+
+    // Common required fields
+    const requiredFields: [keyof IFormAtom, string][] = [
+      ['email', 'Email is required'],
+      ['password', 'Password is required'],
+    ];
+
+    // ✅ Validate required fields
+    requiredFields.forEach(([key, message]) => {
+      if (!formState[key]) newErrors[key] = message;
     });
 
-    if (error) return toast.error(getErrorMessage(error));
+    // ✅ Email validation
+    const email = formState.email?.trim();
+    if (!email) newErrors.email = 'Email is required';
+    else if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      newErrors.email = 'Invalid email address';
+    }
 
-    router.push('/');
+    // ✅ Set error state
+    setErrorState(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSignIn = async () => {
+    if (validate()) {
+      const { error, data } = await signin(formState);
+
+      if (error) return toast.error(getErrorMessage(error));
+
+      const response: ISigninRes = data;
+
+      Cookies.set('token', response.resultData.token, { expires: 7 });
+      router.push('/');
+    }
   };
 
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
-      <TextField fullWidth name="email" label="Email address" sx={{ mb: 3, ...autofillStyles }} />
+      <TextField
+        fullWidth
+        name="email"
+        label="Email address"
+        error={!!errorState.email}
+        helperText={errorState.email}
+        value={formState.email}
+        onChange={(e) => handleChange('email', e.target.value)}
+        sx={{ mb: 3, ...autofillStyles }}
+      />
 
       <Link to="/forgot-password" color="inherit" className="mb-1.5 hover:underline">
         Forgot password?
@@ -58,6 +107,9 @@ export function SignInView() {
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          error={!!errorState.password}
+          value={formState.password}
+          onChange={(e) => handleChange('password', e.target.value)}
           endAdornment={
             <InputAdornment position="end">
               <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
@@ -67,6 +119,8 @@ export function SignInView() {
           }
           sx={{ mb: 3, ...autofillStyles }}
         />
+
+        <ErrorCaption caption={errorState.password} />
       </FormControl>
 
       <FormControlLabel

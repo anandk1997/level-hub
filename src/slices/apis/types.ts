@@ -1,7 +1,7 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 interface ErrorResponse {
-  error: string;
+  message: string;
 }
 
 interface IErrorData {
@@ -23,9 +23,9 @@ export function getErrorMessage(error: unknown): string {
     if (
       typeof fetchError.data === 'object' &&
       fetchError.data !== null &&
-      'error' in fetchError.data
+      'message' in fetchError.data
     ) {
-      return (fetchError.data as ErrorResponse).error;
+      return (fetchError.data as ErrorResponse).message;
     }
   }
 
@@ -35,6 +35,17 @@ export function getErrorMessage(error: unknown): string {
   }
 
   return 'An unexpected error occurred.';
+}
+
+export interface ISigninRes {
+  resultData: {
+    user: {
+      email: string;
+      fullName: string;
+      role: string;
+    };
+    token: string;
+  };
 }
 
 export interface ISigninArgs {

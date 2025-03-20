@@ -12,7 +12,7 @@ import {
 } from './types';
 
 export const apiSlice = createApi({
-  reducerPath: 'auth',
+  reducerPath: 'api',
 
   baseQuery: fetchBaseQuery({
     baseUrl: env.API_URL,

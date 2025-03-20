@@ -39,7 +39,7 @@ export const createGetWithParamsQuery = <T extends Record<string, any>>(url: str
 });
 
 export const headers = (headers: Headers) => {
-  const token = Cookies.get('auth_token');
+  const token = Cookies.get('token');
 
   headers.set('Authorization', `Bearer ${token}`);
   headers.set('Content-Type', 'application/json');
