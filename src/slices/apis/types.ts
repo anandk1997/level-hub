@@ -37,7 +37,12 @@ export function getErrorMessage(error: unknown): string {
   return 'An unexpected error occurred.';
 }
 
-export interface ISigninRes {
+export interface ISuccessRes {
+  success: boolean;
+  message: string;
+}
+
+export interface ISigninRes extends ISuccessRes {
   resultData: {
     user: {
       email: string;
@@ -81,7 +86,6 @@ export interface IResetPasswordArgs {
   email: string;
   otp: string;
   password: string;
-  confirmPassword: string;
 }
 
 export interface IChangePasswordArgs {

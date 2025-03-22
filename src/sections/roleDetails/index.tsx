@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { route } from 'src/utils/constants/routes';
 
 export const RoleDetails = ({
   title,
@@ -21,7 +22,7 @@ export const RoleDetails = ({
         <p className="text-gray-600 max-w-52">{description}</p>
 
         <Link
-          to="/sign-up"
+          to={route.signUp}
           className="bg-gray-100 text-black px-2 py-1 w-13 rounded-xl flex justify-center items-center"
         >
           Sign Up

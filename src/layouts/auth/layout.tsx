@@ -11,6 +11,7 @@ import { Suspense, useEffect } from 'react';
 import { LineProgress } from 'src/components/lineProgress';
 import { useRouter } from 'src/routes/hooks';
 import { useAppSelector } from 'src/store/redux';
+import { route } from 'src/utils/constants/routes';
 
 export function AuthLayout() {
   const location = useLocation();
@@ -20,7 +21,7 @@ export function AuthLayout() {
   const layoutQuery: Breakpoint = 'md';
 
   useEffect(() => {
-    if (token) router.push('/');
+    if (token) router.push(route.index);
   }, [token]);
 
   if (token) return <LineProgress />;

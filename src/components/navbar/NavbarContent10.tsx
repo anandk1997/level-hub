@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { Iconify } from '../iconify';
 import { NavMenu, NavMenuDrawer } from './NavItems';
 import MenuPopper from './MenuPopper';
+import { route } from 'src/utils/constants/routes';
 
 export default function NavbarContent10({ navItems }: any) {
   const theme = useTheme();
@@ -17,7 +18,7 @@ export default function NavbarContent10({ navItems }: any) {
 
   return (
     <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', width: 1 }}>
-      <Link to="/dashboard">
+      <Link to={route.dashboard}>
         <img src="/assets/images/header_logo.png" alt="logo" className="h-7.5 w-12 rounded-md" />
       </Link>
 
@@ -72,14 +73,14 @@ export const AuthLinks = () => (
     }}
   >
     <Link
-      to="/sign-in"
+      to={route.signIn}
       className="bg-[#080808] px-3.5 py-1.5 rounded-xl text-white !border !border-white hover:!bg-white hover:!border-black hover:!text-black"
     >
       Login
     </Link>
 
     <Link
-      to="/sign-up"
+      to={route.signUp}
       className="bg-[#09C0F0] px-3.5 py-1.5 rounded-xl text-white !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
     >
       Signup

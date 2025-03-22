@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import {
   Button,
   CircularProgress,
-  Container,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -22,10 +21,12 @@ import { Link } from 'react-router-dom';
 import { Checkbox } from '@mui/material';
 import { useSigninMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
-import { getErrorMessage, ISigninRes } from 'src/slices/apis/types';
+import { getErrorMessage } from 'src/slices/apis/types';
 import { IFormAtom, useSigninAtom } from 'src/store/jotai/signin';
 import { ErrorCaption } from './_components/ErrorCaption';
 import Cookies from 'js-cookie';
+import { route } from 'src/utils/constants/routes';
+import { CardLayout } from 'src/layouts/auth/cardLayout';
 
 export function SignInView() {
   const router = useRouter();
@@ -77,106 +78,91 @@ export function SignInView() {
 
       if (error) return toast.error(getErrorMessage(error));
 
-      const response: ISigninRes = data;
-
-      Cookies.set('token', response.resultData.token, { expires: 7 });
-      router.push('/');
+      Cookies.set('token', data.resultData.token, { expires: 7 });
+      router.push(route.index);
     }
   };
 
   return (
-    <Container sx={{ m: 5 }}>
-      <Box
-        sx={{
-          py: 5,
-          px: 3,
-          width: 1,
-          borderRadius: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          bgcolor: 'background.default',
-          margin: 'auto',
-          maxWidth: 'var(--layout-auth-content-width)',
-        }}
-      >
-        <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
-          <Typography variant="h5">Sign in</Typography>
-          <Typography variant="body2" color="text.secondary">
-            Don’t have an account?
-            <Link to="/sign-up" className="text-[#1877F2] ml-1">
-              Get started
-            </Link>
-          </Typography>
-        </Box>
+    <CardLayout>
+      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
+        <Typography variant="h5">Sign in</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Don’t have an account?
+          <Link to={route.signUp} className="text-[#1877F2] ml-1">
+            Get started
+          </Link>
+        </Typography>
+      </Box>
 
-        <form onSubmit={handleSignIn}>
-          <Box display="flex" flexDirection="column" alignItems="flex-end">
-            <TextField
+      <form onSubmit={handleSignIn}>
+        <Box display="flex" flexDirection="column" alignItems="flex-end">
+          <TextField
+            fullWidth
+            name="email"
+            label="Email address"
+            error={!!errorState.email}
+            helperText={errorState.email}
+            value={formState.email}
+            onChange={(e) => handleChange('email', e.target.value)}
+            sx={{ mb: 3, ...autofillStyles }}
+          />
+
+          <Link to={route.forgot} color="inherit" className="mb-1.5 hover:underline">
+            Forgot password?
+          </Link>
+
+          <FormControl fullWidth variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+
+            <OutlinedInput
               fullWidth
-              name="email"
-              label="Email address"
-              error={!!errorState.email}
-              helperText={errorState.email}
-              value={formState.email}
-              onChange={(e) => handleChange('email', e.target.value)}
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              error={!!errorState.password}
+              value={formState.password}
+              onChange={(e) => handleChange('password', e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    <Iconify icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
+                  </IconButton>
+                </InputAdornment>
+              }
               sx={{ mb: 3, ...autofillStyles }}
             />
 
-            <Link to="/forgot-password" color="inherit" className="mb-1.5 hover:underline">
-              Forgot password?
-            </Link>
+            <ErrorCaption caption={errorState.password} />
+          </FormControl>
 
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <FormControlLabel
+            className="!flex !mr-auto !mb-2"
+            control={<Checkbox />}
+            label={'Remember me'}
+          />
 
-              <OutlinedInput
-                fullWidth
-                name="password"
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                error={!!errorState.password}
-                value={formState.password}
-                onChange={(e) => handleChange('password', e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                      <Iconify icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                sx={{ mb: 3, ...autofillStyles }}
+          <Button
+            fullWidth
+            size="large"
+            type="submit"
+            color="inherit"
+            variant="contained"
+            disabled={isLoading}
+            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
+          >
+            {isLoading ? (
+              <CircularProgress
+                className="!text-white group-hover:!text-[#09C0F0]"
+                sx={{ scale: '.5' }}
               />
-
-              <ErrorCaption caption={errorState.password} />
-            </FormControl>
-
-            <FormControlLabel
-              className="!flex !mr-auto !mb-2"
-              control={<Checkbox />}
-              label={'Remember me'}
-            />
-
-            <Button
-              fullWidth
-              size="large"
-              type="submit"
-              color="inherit"
-              variant="contained"
-              className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
-            >
-              {isLoading ? (
-                <CircularProgress
-                  className="!text-white group-hover:!text-[#09C0F0]"
-                  sx={{ scale: '.5' }}
-                />
-              ) : (
-                'Login'
-              )}
-            </Button>
-          </Box>
-        </form>
-      </Box>
-    </Container>
+            ) : (
+              'Login'
+            )}
+          </Button>
+        </Box>
+      </form>
+    </CardLayout>
   );
 }
 

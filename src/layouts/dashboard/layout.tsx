@@ -29,6 +29,7 @@ import Cookies from 'js-cookie';
 import { logoutUser } from 'src/slices/reducers/auth.reducer';
 import { useAppDispatch } from 'src/store/redux';
 import { useRouter } from 'src/routes/hooks';
+import { route } from 'src/utils/constants/routes';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
   useEffect(() => {
     if (!token) {
       dispatch(logoutUser());
-      router.push('/sign-in');
+      router.push(route.signIn);
     }
   }, [token]);
 

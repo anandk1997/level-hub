@@ -2,6 +2,7 @@ import { Button, Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { HelmetTitle } from 'src/components/HelmetTitle';
 import { Iconify } from 'src/components/iconify';
+import { route } from 'src/utils/constants/routes';
 
 const Dashboard = () => {
   return (
@@ -226,13 +227,13 @@ const roles = [
   {
     title: 'Gym Owner',
     icon: '/assets/images/dashboard/business_teams_icon.png',
-    path: '/gym-owner',
+    path: route.gym,
   },
-  { title: 'Coach', icon: '/assets/images/dashboard/coaches_icon.png', path: '/coach' },
+  { title: 'Coach', icon: '/assets/images/dashboard/coaches_icon.png', path: route.coach },
   {
     title: 'Single User',
     icon: '/assets/images/dashboard/user_icon.png',
-    path: '/single-user',
+    path: route.individual,
   },
-  { title: 'Parent', icon: '/assets/images/dashboard/user_icon.png', path: '/parent' },
+  { title: 'Parent', icon: '/assets/images/dashboard/user_icon.png', path: route.parent },
 ];

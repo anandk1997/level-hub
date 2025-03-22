@@ -8,7 +8,6 @@ import {
   Autocomplete,
   Button,
   CircularProgress,
-  Container,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -32,6 +31,8 @@ import clsx from 'clsx';
 import { useSignupMutation } from 'src/slices/apis/app.api';
 import { getErrorMessage } from 'src/slices/apis/types';
 import toast from 'react-hot-toast';
+import { route } from 'src/utils/constants/routes';
+import { CardLayout } from 'src/layouts/auth/cardLayout';
 
 export function SignUpView() {
   const router = useRouter();
@@ -148,7 +149,7 @@ export function SignUpView() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formattedDate = formState.dob!.toDate().toISOString().split('T')[0];
+    const formattedDate = formState.dob!?.toDate().toISOString().split('T')[0];
 
     if (validate()) {
       const { error } = await signup({
@@ -165,193 +166,182 @@ export function SignUpView() {
       if (error) return toast.error(getErrorMessage(error));
 
       setFormState(initialFormState);
-      router.push(`/otp?email=${encodeURIComponent(formState.email)}`);
+      router.push(`${route.otp}?email=${btoa(formState.email)}`);
     }
   };
 
   return (
-    <Container sx={{ m: 5 }}>
-      <Box
-        sx={{
-          py: 5,
-          px: 3,
-          width: 1,
-          borderRadius: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          bgcolor: 'background.default',
-        }}
-      >
-        <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
-          <Typography variant="h5">Sign up</Typography>
-          <Typography variant="body2" color="text.secondary">
-            Already have an account?
-            <Link to="/sign-in" className="text-[#1877F2] ml-1">
-              Login
-            </Link>
-          </Typography>
-        </Box>
-
-        <form className="flex flex-col gap-2" onSubmit={handleSignIn}>
-          <div className="flex flex-col md:flex-row gap-2">
-            <TextField
-              fullWidth
-              error={!!errorState.firstName}
-              helperText={errorState.firstName}
-              name="firstName"
-              label="First Name"
-              value={formState.firstName}
-              onChange={(e) => handleChange('firstName', e.target.value)}
-              sx={{ ...autofillStyles }}
-            />
-
-            <TextField
-              fullWidth
-              error={!!errorState.lastName}
-              helperText={errorState.lastName}
-              name="lastName"
-              label="Last Name"
-              value={formState.lastName}
-              onChange={(e) => handleChange('lastName', e.target.value)}
-              sx={{ ...autofillStyles }}
-            />
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-2">
-            <TextField
-              fullWidth
-              error={!!errorState.email}
-              helperText={errorState.email}
-              name="email"
-              label="Email address"
-              value={formState.email}
-              onChange={(e) => handleChange('email', e.target.value)}
-              sx={{ ...autofillStyles }}
-            />
-
-            <div className="w-full flex flex-col">
-              <MuiStyledPhoneInput
-                className="z-10 w-full bg-transparent"
-                defaultCountry="in"
-                value={formState.phone}
-                onChange={(phone) => handleChange('phone', phone)}
-                sx={{
-                  '& .react-international-phone-input': {
-                    borderTop: !!errorState.phone ? '1px solid red !important' : '',
-                    borderRight: !!errorState.phone ? '1px solid red !important' : '',
-                    borderBottom: !!errorState.phone ? '1px solid red !important' : '',
-                    color: !!errorState.phone ? 'red !important' : '',
-                  },
-
-                  '& .react-international-phone-country-selector-button': {
-                    borderTop: !!errorState.phone ? '1px solid red !important' : '',
-                    borderLeft: !!errorState.phone ? '1px solid red !important' : '',
-                    borderBottom: !!errorState.phone ? '1px solid red !important' : '',
-                  },
-                }}
-              />
-
-              <ErrorCaption caption={errorState.phone} />
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-2">
-            <FormControl fullWidth variant="outlined">
-              <InputLabel
-                className={clsx({ '!text-red-500': errorState.password })}
-                htmlFor="outlined-adornment-password"
-              >
-                Password
-              </InputLabel>
-
-              <OutlinedInput
-                fullWidth
-                name="password"
-                label="Create Password"
-                type={isPassword ? 'text' : 'password'}
-                value={formState.password}
-                onChange={(e) => handleChange('password', e.target.value)}
-                error={!!errorState.password}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton onClick={setIsPassword} edge="end">
-                      <Iconify icon={isPassword ? 'tabler:eye' : 'tabler:eye-off'} />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                sx={{ ...autofillStyles }}
-              />
-
-              <ErrorCaption caption={errorState.password} />
-            </FormControl>
-
-            <FormControl fullWidth variant="outlined">
-              <InputLabel
-                className={clsx({ '!text-red-500': errorState.confirmPassword })}
-                htmlFor="outlined-adornment-confirm-password"
-              >
-                Confirm Password
-              </InputLabel>
-
-              <OutlinedInput
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type={isPassword1 ? 'text' : 'password'}
-                value={formState.confirmPassword}
-                onChange={(e) => handleChange('confirmPassword', e.target.value)}
-                error={!!errorState.confirmPassword}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton onClick={setIsPassword1} edge="end">
-                      <Iconify icon={isPassword1 ? 'tabler:eye' : 'tabler:eye-off'} />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                sx={{ ...autofillStyles }}
-              />
-
-              <ErrorCaption caption={errorState.confirmPassword} />
-            </FormControl>
-          </div>
-
-          <RoleSection handleChange={handleChange} />
-
-          <>
-            <FormControlLabel
-              className="!flex !mr-auto"
-              control={
-                <Checkbox
-                  checked={formState.agreeToTerms}
-                  onChange={(e) => handleChange('agreeToTerms', e.target.checked)}
-                />
-              }
-              label={'I agree to all the Terms and Privacy policies'}
-            />
-
-            <ErrorCaption caption={errorState.agreeToTerms} />
-          </>
-
-          <Button
-            fullWidth
-            size="large"
-            type="submit"
-            color="inherit"
-            variant="contained"
-            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
-          >
-            {isLoading ? (
-              <CircularProgress
-                className="!text-white group-hover:!text-[#09C0F0]"
-                sx={{ scale: '.5' }}
-              />
-            ) : (
-              'Signup'
-            )}
-          </Button>
-        </form>
+    <CardLayout>
+      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
+        <Typography variant="h5">Sign up</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Already have an account?
+          <Link to={route.signIn} className="text-[#1877F2] ml-1">
+            Login
+          </Link>
+        </Typography>
       </Box>
-    </Container>
+
+      <form className="flex flex-col gap-2" onSubmit={handleSignIn}>
+        <div className="flex flex-col md:flex-row gap-2">
+          <TextField
+            fullWidth
+            error={!!errorState.firstName}
+            helperText={errorState.firstName}
+            name="firstName"
+            label="First Name"
+            value={formState.firstName}
+            onChange={(e) => handleChange('firstName', e.target.value)}
+            sx={{ ...autofillStyles }}
+          />
+
+          <TextField
+            fullWidth
+            error={!!errorState.lastName}
+            helperText={errorState.lastName}
+            name="lastName"
+            label="Last Name"
+            value={formState.lastName}
+            onChange={(e) => handleChange('lastName', e.target.value)}
+            sx={{ ...autofillStyles }}
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-2">
+          <TextField
+            fullWidth
+            error={!!errorState.email}
+            helperText={errorState.email}
+            name="email"
+            label="Email address"
+            value={formState.email}
+            onChange={(e) => handleChange('email', e.target.value)}
+            sx={{ ...autofillStyles }}
+          />
+
+          <div className="w-full flex flex-col">
+            <MuiStyledPhoneInput
+              className="z-10 w-full bg-transparent"
+              defaultCountry="in"
+              value={formState.phone}
+              onChange={(phone) => handleChange('phone', phone)}
+              sx={{
+                '& .react-international-phone-input': {
+                  borderTop: !!errorState.phone ? '1px solid red !important' : '',
+                  borderRight: !!errorState.phone ? '1px solid red !important' : '',
+                  borderBottom: !!errorState.phone ? '1px solid red !important' : '',
+                  color: !!errorState.phone ? 'red !important' : '',
+                },
+
+                '& .react-international-phone-country-selector-button': {
+                  borderTop: !!errorState.phone ? '1px solid red !important' : '',
+                  borderLeft: !!errorState.phone ? '1px solid red !important' : '',
+                  borderBottom: !!errorState.phone ? '1px solid red !important' : '',
+                },
+              }}
+            />
+
+            <ErrorCaption caption={errorState.phone} />
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-2">
+          <FormControl fullWidth variant="outlined">
+            <InputLabel
+              className={clsx({ '!text-red-500': errorState.password })}
+              htmlFor="outlined-adornment-password"
+            >
+              Password
+            </InputLabel>
+
+            <OutlinedInput
+              fullWidth
+              name="password"
+              label="Create Password"
+              type={isPassword ? 'text' : 'password'}
+              value={formState.password}
+              onChange={(e) => handleChange('password', e.target.value)}
+              error={!!errorState.password}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={setIsPassword} edge="end">
+                    <Iconify icon={isPassword ? 'tabler:eye' : 'tabler:eye-off'} />
+                  </IconButton>
+                </InputAdornment>
+              }
+              sx={{ ...autofillStyles }}
+            />
+
+            <ErrorCaption caption={errorState.password} />
+          </FormControl>
+
+          <FormControl fullWidth variant="outlined">
+            <InputLabel
+              className={clsx({ '!text-red-500': errorState.confirmPassword })}
+              htmlFor="outlined-adornment-confirm-password"
+            >
+              Confirm Password
+            </InputLabel>
+
+            <OutlinedInput
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type={isPassword1 ? 'text' : 'password'}
+              value={formState.confirmPassword}
+              onChange={(e) => handleChange('confirmPassword', e.target.value)}
+              error={!!errorState.confirmPassword}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={setIsPassword1} edge="end">
+                    <Iconify icon={isPassword1 ? 'tabler:eye' : 'tabler:eye-off'} />
+                  </IconButton>
+                </InputAdornment>
+              }
+              sx={{ ...autofillStyles }}
+            />
+
+            <ErrorCaption caption={errorState.confirmPassword} />
+          </FormControl>
+        </div>
+
+        <RoleSection handleChange={handleChange} />
+
+        <>
+          <FormControlLabel
+            className="!flex !mr-auto"
+            control={
+              <Checkbox
+                checked={formState.agreeToTerms}
+                onChange={(e) => handleChange('agreeToTerms', e.target.checked)}
+              />
+            }
+            label={'I agree to all the Terms and Privacy policies'}
+          />
+
+          <ErrorCaption caption={errorState.agreeToTerms} />
+        </>
+
+        <Button
+          fullWidth
+          size="large"
+          type="submit"
+          color="inherit"
+          variant="contained"
+          disabled={isLoading}
+          className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
+        >
+          {isLoading ? (
+            <CircularProgress
+              className="!text-white group-hover:!text-[#09C0F0]"
+              sx={{ scale: '.5' }}
+            />
+          ) : (
+            'Signup'
+          )}
+        </Button>
+      </form>
+    </CardLayout>
   );
 }
 

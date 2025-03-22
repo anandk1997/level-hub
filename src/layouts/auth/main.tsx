@@ -6,6 +6,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { layoutClasses } from 'src/layouts/classes';
 import { usePathname } from 'src/routes/hooks';
+import { route } from 'src/utils/constants/routes';
 
 type MainProps = BoxProps & {
   layoutQuery: Breakpoint;
@@ -15,6 +16,8 @@ export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
   const theme = useTheme();
 
   const pathname = usePathname();
+
+  const rolesPath = [route.coach, route.individual, route.parent, route.gym, route.dashboard];
 
   return (
     <Box
@@ -26,11 +29,9 @@ export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
         alignItems: 'center',
         flexDirection: 'column',
 
-        background:
-          pathname === '/sign-in' || pathname === '/sign-up' || pathname === '/otp'
-            ? 'linear-gradient(to right, #EF9324, #30817D)'
-            : 'white',
-
+        background: rolesPath.includes(pathname as (typeof rolesPath)[number])
+          ? 'white'
+          : 'linear-gradient(to right, #EF9324, #30817D)',
         [theme.breakpoints.up(layoutQuery)]: {
           justifyContent: 'center',
         },
