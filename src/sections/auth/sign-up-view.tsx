@@ -3,7 +3,6 @@ import { useEffect, useReducer, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import {
   Autocomplete,
   Button,
@@ -18,7 +17,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
-import { Link } from 'react-router-dom';
 import { Checkbox } from '@mui/material';
 
 import { MenuItem } from '@mui/material';
@@ -33,6 +31,7 @@ import { getErrorMessage } from 'src/slices/apis/types';
 import toast from 'react-hot-toast';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
+import { encodeQueryParams } from 'src/utils';
 
 export function SignUpView() {
   const router = useRouter();
@@ -166,22 +165,20 @@ export function SignUpView() {
       if (error) return toast.error(getErrorMessage(error));
 
       setFormState(initialFormState);
-      router.push(`${route.otp}?email=${btoa(formState.email)}`);
+
+      const path = encodeQueryParams(route.otpSignup, { email: formState.email });
+
+      router.push(path);
     }
   };
 
   return (
-    <CardLayout>
-      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
-        <Typography variant="h5">Sign up</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Already have an account?
-          <Link to={route.signIn} className="text-[#1877F2] ml-1">
-            Login
-          </Link>
-        </Typography>
-      </Box>
-
+    <CardLayout
+      title="Create an account"
+      message="Let’s get you all set up so you can access your personal account."
+      to={route.signIn}
+      linkTitle="Login"
+    >
       <form className="flex flex-col gap-2" onSubmit={handleSignIn}>
         <div className="flex flex-col md:flex-row gap-2">
           <TextField

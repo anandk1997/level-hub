@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { tokenKey } from 'src/utils/constants';
 
 export const createMutationQuery = <T>(url: string, method: 'POST' | 'PUT' | 'PATCH' = 'POST') => ({
   query: (args: T) => ({
@@ -39,7 +40,7 @@ export const createGetWithParamsQuery = <T extends Record<string, any>>(url: str
 });
 
 export const headers = (headers: Headers) => {
-  const token = Cookies.get('token');
+  const token = Cookies.get(tokenKey);
 
   headers.set('Authorization', `Bearer ${token}`);
   headers.set('Content-Type', 'application/json');

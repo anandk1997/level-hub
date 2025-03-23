@@ -12,12 +12,14 @@ const SignInPage = lazy(() => import('src/pages/sign-in'));
 const SignUpPage = lazy(() => import('src/pages/sign-up'));
 const ForgotPassword = lazy(() => import('src/pages/forgot-password'));
 const ResetPassword = lazy(() => import('src/pages/reset-password'));
-const Otp = lazy(() => import('src/pages/otp'));
+const OtpSignupPage = lazy(() => import('src/pages/otp-signup'));
+const OtpResetPage = lazy(() => import('src/pages/otp-reset'));
 
 const GymOwnerPage = lazy(() => import('src/pages/gym-owner'));
 const CoachPage = lazy(() => import('src/pages/coach'));
 const ParentPage = lazy(() => import('src/pages/parent'));
 const SingleUserPage = lazy(() => import('src/pages/single-user'));
+const WelcomePage = lazy(() => import('src/pages/welcome'));
 
 const HomePage = lazy(() => import('src/pages/home'));
 const BlogPage = lazy(() => import('src/pages/blog'));
@@ -48,13 +50,15 @@ export const router = createBrowserRouter([
       { path: route.dashboard, element: <Dashboard /> },
       { path: route.signIn, element: <SignInPage /> },
       { path: route.signUp, element: <SignUpPage /> },
-      { path: route.otp, element: <Otp /> },
+      { path: route.otpSignup, element: <OtpSignupPage /> },
+      { path: route.otpReset, element: <OtpResetPage /> },
       { path: route.forgot, element: <ForgotPassword /> },
       { path: route.reset, element: <ResetPassword /> },
       { path: route.gym, element: <GymOwnerPage /> },
       { path: route.coach, element: <CoachPage /> },
       { path: route.parent, element: <ParentPage /> },
       { path: route.individual, element: <SingleUserPage /> },
+      { path: route.welcome, element: <WelcomePage /> },
     ],
   },
 

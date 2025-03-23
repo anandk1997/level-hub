@@ -1,14 +1,5 @@
-import {
-  CircularProgress,
-  Button,
-  Typography,
-  Box,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-} from '@mui/material';
-import { OTPInput } from '../components/otpInput';
-import { Link, useLocation } from 'react-router-dom';
+import { CircularProgress, Button, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import { useResetPasswordMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
 import { FormEvent, useReducer, useState } from 'react';
@@ -18,17 +9,18 @@ import { InputLabel } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { Iconify } from 'src/components/iconify';
 import { autofillStyles } from 'src/sections/auth/sign-up-view';
-import { cn, decodeParam } from 'src/utils';
+import { cn, decodeQueryParams } from 'src/utils';
 import { ErrorCaption } from 'src/sections/auth/_components/ErrorCaption';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
+import useFocusInput from 'src/hooks/useFocusInput';
 
 const ResetPassword = () => {
   const location = useLocation();
   const router = useRouter();
+  const { inputsRef } = useFocusInput();
 
-  const emailParam = new URLSearchParams(location.search).get('email')!;
-  const email = decodeParam(emailParam);
+  const decodedParams = decodeQueryParams(location.search);
 
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
@@ -68,7 +60,7 @@ const ResetPassword = () => {
     }
 
     // ✅ Email validation
-    const emailValue = email?.trim();
+    const emailValue = decodedParams?.email?.trim();
     if (!emailValue) {
       toast.error('Email is required');
       return false;
@@ -94,45 +86,39 @@ const ResetPassword = () => {
     if (!validate()) return;
 
     const { error, data } = await resetPassword({
-      email,
-      otp: formState.otp,
+      email: decodedParams.email,
+      otp: decodedParams.otp,
       password: formState.password,
     });
 
     if (error) return toast.error(getErrorMessage(error));
 
     toast.success(data.message);
-    router.push(route.signIn);
+    router.push(route.welcome);
   };
 
   return (
-    <CardLayout>
-      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
-        <Typography variant="h5">Reset Password</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Back to Login?
-          <Link to={route.signIn} className="text-[#1877F2] ml-1">
-            Login
-          </Link>
-        </Typography>
-      </Box>
-
+    <CardLayout
+      title="Reset Password"
+      message="Your previous password has been reseted. Please set a new password for your account."
+      to={route.signIn}
+      linkTitle="Login"
+    >
       <form onSubmit={handleSubmit}>
-        <OTPInput length={6} onComplete={(otp) => handleChange('otp', otp)} value={formState.otp} />
-
         <FormControl fullWidth variant="outlined" className="!my-2">
           <InputLabel
             className={cn({ '!text-red-500': errorState.password })}
             htmlFor="outlined-adornment-password"
           >
-            Password
+            New Password
           </InputLabel>
 
           <OutlinedInput
             fullWidth
             name="password"
-            label="Password"
+            label="New Password"
             type={isPassword ? 'text' : 'password'}
+            inputRef={(el) => (inputsRef.current = el)}
             error={!!errorState.password}
             value={formState.password}
             onChange={(e) => handleChange('password', e.target.value)}

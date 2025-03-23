@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, FC, KeyboardEvent } from 'react';
 import { TextField, Box } from '@mui/material';
 
 interface OTPInputProps {
@@ -7,7 +7,7 @@ interface OTPInputProps {
   value?: string;
 }
 
-export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete, value = '' }) => {
+export const OTPInput: FC<OTPInputProps> = ({ length = 6, onComplete, value = '' }) => {
   const [otp, setOtp] = useState<string[]>(new Array(length).fill(''));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -38,6 +38,24 @@ export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete, valu
     }
   };
 
+  const handleKeyDown = (index: number, e: KeyboardEvent) => {
+    const target = e.target as HTMLInputElement;
+
+    if (e.key === 'Backspace' && !target.value && index > 0) {
+      inputsRef.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowRight' && index < length - 1) {
+      inputsRef.current[index + 1]?.focus();
+      setTimeout(() => inputsRef.current[index + 1]?.setSelectionRange(1, 1), 0);
+    } else if (e.key === 'ArrowLeft' && index > 0) {
+      inputsRef.current[index - 1]?.focus();
+      setTimeout(() => inputsRef.current[index - 1]?.setSelectionRange(1, 1), 0);
+    }
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setTimeout(() => e.target.setSelectionRange(1, 1), 0);
+  };
+
   return (
     <Box display="flex" gap={1} justifyContent="center">
       {otp.map((digit, index) => (
@@ -46,10 +64,11 @@ export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete, valu
           inputRef={(el) => (inputsRef.current[index] = el)}
           value={digit}
           onChange={(e) => handleChange(index, e.target.value)}
-          onKeyDown={(e) => handleChange(index, (e.target as HTMLInputElement).value)}
+          onKeyDown={(e) => handleKeyDown(index, e)}
+          onFocus={handleFocus}
           variant="outlined"
           inputProps={{ maxLength: 1, style: { textAlign: 'center', fontSize: '1.5rem' } }}
-          sx={{ width: 50 }}
+          sx={{ width: '16.66%' }}
         />
       ))}
     </Box>

@@ -30,6 +30,7 @@ import { logoutUser } from 'src/slices/reducers/auth.reducer';
 import { useAppDispatch } from 'src/store/redux';
 import { useRouter } from 'src/routes/hooks';
 import { route } from 'src/utils/constants/routes';
+import { tokenKey } from 'src/utils/constants';
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +48,7 @@ export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
 
   const layoutQuery: Breakpoint = 'lg';
 
-  const token = Cookies.get('token');
+  const token = Cookies.get(tokenKey);
 
   useEffect(() => {
     if (!token) {

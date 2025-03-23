@@ -1,5 +1,4 @@
-import { CircularProgress, Button, Typography, Box, TextField } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { CircularProgress, Button, TextField } from '@mui/material';
 import { useForgotPasswordMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
 import { FormEvent, useState } from 'react';
@@ -8,9 +7,12 @@ import { useRouter } from 'src/routes/hooks';
 import { autofillStyles } from 'src/sections/auth/sign-up-view';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
+import useFocusInput from 'src/hooks/useFocusInput';
+import { encodeQueryParams } from 'src/utils';
 
 const ForgotPassword = () => {
   const router = useRouter();
+  const { inputsRef } = useFocusInput();
 
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -44,23 +46,22 @@ const ForgotPassword = () => {
     if (error) return toast.error(getErrorMessage(error));
 
     toast.success(data.message);
-    router.push(`${route.reset}?email=${btoa(email)}`);
+
+    const path = encodeQueryParams(route.otpReset, { email });
+
+    router.push(path);
   };
 
   return (
-    <CardLayout>
-      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 3 }}>
-        <Typography variant="h5">Forgot Password</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Back to Login?
-          <Link to={route.signIn} className="text-[#1877F2] ml-1">
-            Login
-          </Link>
-        </Typography>
-      </Box>
-
+    <CardLayout
+      title="Forgot Password"
+      message="Don’t worry, happens to all of us. Enter your email below to recover your password"
+      to={route.signIn}
+      linkTitle="Login"
+    >
       <form onSubmit={handleSubmit}>
         <TextField
+          inputRef={(el) => (inputsRef.current = el)}
           fullWidth
           name="email"
           label="Email address"

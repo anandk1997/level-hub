@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import {
   Button,
   CircularProgress,
@@ -27,6 +26,7 @@ import { ErrorCaption } from './_components/ErrorCaption';
 import Cookies from 'js-cookie';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
+import { tokenKey } from 'src/utils/constants';
 
 export function SignInView() {
   const router = useRouter();
@@ -78,23 +78,18 @@ export function SignInView() {
 
       if (error) return toast.error(getErrorMessage(error));
 
-      Cookies.set('token', data.resultData.token, { expires: 7 });
+      Cookies.set(tokenKey, data.resultData.token, { expires: 7 });
       router.push(route.index);
     }
   };
 
   return (
-    <CardLayout>
-      <Box gap={1.5} display="flex" flexDirection="column" sx={{ mb: 5 }}>
-        <Typography variant="h5">Sign in</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Don’t have an account?
-          <Link to={route.signUp} className="text-[#1877F2] ml-1">
-            Get started
-          </Link>
-        </Typography>
-      </Box>
-
+    <CardLayout
+      title="Login"
+      message="Login to access your account"
+      to={route.signUp}
+      linkTitle="Signup"
+    >
       <form onSubmit={handleSignIn}>
         <Box display="flex" flexDirection="column" alignItems="flex-end">
           <TextField
@@ -107,10 +102,6 @@ export function SignInView() {
             onChange={(e) => handleChange('email', e.target.value)}
             sx={{ mb: 3, ...autofillStyles }}
           />
-
-          <Link to={route.forgot} color="inherit" className="mb-1.5 hover:underline">
-            Forgot password?
-          </Link>
 
           <FormControl fullWidth variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -136,11 +127,17 @@ export function SignInView() {
             <ErrorCaption caption={errorState.password} />
           </FormControl>
 
-          <FormControlLabel
-            className="!flex !mr-auto !mb-2"
-            control={<Checkbox />}
-            label={'Remember me'}
-          />
+          <div className="flex justify-between items-center w-full">
+            <FormControlLabel className="!mb-2" control={<Checkbox />} label={'Remember me'} />
+
+            <Link
+              to={route.forgot}
+              color="inherit"
+              className="mb-1.5 hover:underline text-[#FF991F] text-sm"
+            >
+              Forgot password?
+            </Link>
+          </div>
 
           <Button
             fullWidth

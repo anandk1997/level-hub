@@ -19,6 +19,7 @@ import { logoutUser } from 'src/slices/reducers/auth.reducer';
 import { useAppDispatch } from 'src/store/redux';
 import Cookies from 'js-cookie';
 import { route } from 'src/utils/constants/routes';
+import { tokenKey } from 'src/utils/constants';
 
 // ----------------------------------------------------------------------
 
@@ -55,7 +56,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
   );
 
   const handleLogout = () => {
-    Cookies.remove('token');
+    Cookies.remove(tokenKey);
     dispatch(logoutUser());
     router.push(route.signIn);
   };
