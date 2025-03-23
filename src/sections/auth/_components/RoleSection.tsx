@@ -3,15 +3,10 @@ import { Alert, FormControl, FormControlLabel, RadioGroup, TextField } from '@mu
 import clsx from 'clsx';
 import { IFormAtom, RoleType, useSignupAtom } from 'src/store/jotai/signup';
 import { generateOptions } from './DateOfBirth';
-import { ErrorCaption } from './ErrorCaption';
 import { autofillStyles } from '../sign-up-view';
-import { useId } from 'react';
 import { Box } from '@mui/material';
 import { Autocomplete } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { route } from 'src/utils/constants/routes';
 
 export const RoleSection = ({
   handleChange,
@@ -19,8 +14,6 @@ export const RoleSection = ({
   handleChange: <K extends keyof IFormAtom>(key: K, value: IFormAtom[K]) => void;
 }) => {
   const { formState, errorState, updateChildrenData, setNumberOfChildren } = useSignupAtom();
-
-  const genderId = useId();
 
   const isRole = <T extends RoleType>(validRoles: T[]) => validRoles.includes(formState.role as T);
 
@@ -62,60 +55,6 @@ export const RoleSection = ({
       {!!errorState.role && (
         <div className="flex justify-center items-center m-auto border border-red-500 m-w-50 rounded-md">
           <Alert severity="error">{errorState.role}</Alert>
-        </div>
-      )}
-
-      {/* Coach and Single User Section */}
-      {isRole(['coach', 'individual']) && (
-        <div className="flex flex-col md:flex-row gap-2">
-          <div className="flex-1">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                className="!hidden md:!flex"
-                label="Select Date of Birth"
-                value={formState.dob}
-                onChange={(newValue) => handleChange('dob', newValue)}
-                slotProps={{
-                  textField: {
-                    error: !!errorState.dob,
-                    helperText: errorState.dob,
-                  },
-                }}
-              />
-
-              <MobileDatePicker
-                className={clsx('md:!hidden !flex')}
-                label="Select Date of Birth"
-                value={formState.dob}
-                onChange={(newValue) => handleChange('dob', newValue)}
-                slotProps={{
-                  textField: {
-                    error: !!errorState.dob,
-                    helperText: errorState.dob,
-                  },
-                }}
-              />
-            </LocalizationProvider>
-          </div>
-
-          <FormControl sx={{ flex: 1 }}>
-            <FormLabel id={genderId} className="!text-sm !font-bold !mb-2">
-              What's your gender? (Optional)
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby={genderId}
-              name="row-radio-buttons-group"
-              value={formState.gender}
-              onChange={(e) => handleChange('gender', e.target.value)}
-            >
-              <FormControlLabel value="female" control={<Radio />} label="Female" />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-            </RadioGroup>
-
-            <ErrorCaption caption={errorState.gender} />
-          </FormControl>
         </div>
       )}
 
@@ -218,25 +157,25 @@ type IRole = {
 
 const rolesData: IRole[] = [
   {
-    key: 'gym',
+    key: route.gym.split('/')[1],
     label: 'Gym Owner',
     description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
     icon: '/assets/icons/sign_up/gym_icon.png',
   },
   {
-    key: 'coach',
+    key: route.coach.split('/')[1],
     label: 'Coach',
     description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
     icon: '/assets/icons/sign_up/coach_icon.png',
   },
   {
-    key: 'individual',
-    label: 'Single User',
+    key: route.individual.split('/')[1],
+    label: 'Individual',
     description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
-    icon: '/assets/icons/sign_up/single_user_icon.png',
+    icon: '/assets/icons/sign_up/individual_icon.png',
   },
   {
-    key: 'parent',
+    key: route.parent.split('/')[1],
     label: 'Parent',
     description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
     icon: '/assets/icons/sign_up/parent_icon.png',

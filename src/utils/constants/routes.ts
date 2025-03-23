@@ -10,7 +10,7 @@ export const route = Object.freeze({
   otpReset: '/otp-reset',
   forgot: '/forgot-password',
   reset: '/reset-password',
-  gym: '/gym-owner',
+  gym: '/gym',
   coach: '/coach',
   parent: '/parent',
   individual: '/individual',

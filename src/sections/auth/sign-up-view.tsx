@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useId, useReducer, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -9,8 +9,10 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
+  FormLabel,
   InputLabel,
   OutlinedInput,
+  Radio,
 } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -33,8 +35,15 @@ import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
 import { encodeQueryParams } from 'src/utils';
 
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { RadioGroup } from '@mui/material';
+
 export function SignUpView() {
   const router = useRouter();
+  const genderId = useId();
 
   const [isPassword, setIsPassword] = useReducer((show) => !show, false);
   const [isPassword1, setIsPassword1] = useReducer((show) => !show, false);
@@ -79,14 +88,6 @@ export function SignUpView() {
     // Role-specific fields using a Record for better type safety
     const roleSpecificFields: Partial<Record<RoleType, [keyof IFormAtom, string][]>> = {
       gym: [['gymName', 'Gym Name is required']],
-      coach: [
-        ['dob', 'Date of Birth is required'],
-        ['gender', 'Gender is required'],
-      ],
-      individual: [
-        ['dob', 'Date of Birth is required'],
-        ['gender', 'Gender is required'],
-      ],
       parent: [['childrens', 'Please specify no. of childrens']],
     };
 
@@ -116,9 +117,9 @@ export function SignUpView() {
     }
 
     // ✅ Phone number validation
-    const phone = formState.phone?.trim();
-    if (!phone || phone.length <= 3) newErrors.phone = 'Phone number is required';
-    else if (!/^\+\d{4,}$/.test(phone)) newErrors.phone = 'Invalid phone number';
+    // const phone = formState.phone?.trim();
+    // if (!phone || phone.length <= 3) newErrors.phone = 'Phone number is required';
+    // else if (!/^\+\d{4,}$/.test(phone)) newErrors.phone = 'Invalid phone number';
 
     // ✅ Dynamic Children Validation
     if (formState.role === 'parent') {
@@ -299,6 +300,57 @@ export function SignUpView() {
             />
 
             <ErrorCaption caption={errorState.confirmPassword} />
+          </FormControl>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-2">
+          <div className="flex-1">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                className="!hidden md:!flex"
+                label="Select Date of Birth"
+                value={formState.dob}
+                onChange={(newValue) => handleChange('dob', newValue)}
+                slotProps={{
+                  textField: {
+                    error: !!errorState.dob,
+                    helperText: errorState.dob,
+                  },
+                }}
+              />
+
+              <MobileDatePicker
+                className={clsx('md:!hidden !flex')}
+                label="Select Date of Birth"
+                value={formState.dob}
+                onChange={(newValue) => handleChange('dob', newValue)}
+                slotProps={{
+                  textField: {
+                    error: !!errorState.dob,
+                    helperText: errorState.dob,
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </div>
+
+          <FormControl sx={{ flex: 1 }}>
+            <FormLabel id={genderId} className="!text-sm !font-bold !mb-2">
+              What's your gender? (Optional)
+            </FormLabel>
+
+            <RadioGroup
+              row
+              aria-labelledby={genderId}
+              name="row-radio-buttons-group"
+              value={formState.gender}
+              onChange={(e) => handleChange('gender', e.target.value)}
+            >
+              <FormControlLabel value="female" control={<Radio />} label="Female" />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+            </RadioGroup>
+
+            <ErrorCaption caption={errorState.gender} />
           </FormControl>
         </div>
 
