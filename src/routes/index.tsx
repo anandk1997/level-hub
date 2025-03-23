@@ -20,6 +20,7 @@ const CoachPage = lazy(() => import('src/pages/coach'));
 const ParentPage = lazy(() => import('src/pages/parent'));
 const SingleUserPage = lazy(() => import('src/pages/single-user'));
 const WelcomePage = lazy(() => import('src/pages/welcome'));
+const WelcomeBackPage = lazy(() => import('src/pages/welcome-back'));
 
 const HomePage = lazy(() => import('src/pages/home'));
 const BlogPage = lazy(() => import('src/pages/blog'));
@@ -59,6 +60,7 @@ export const router = createBrowserRouter([
       { path: route.parent, element: <ParentPage /> },
       { path: route.individual, element: <SingleUserPage /> },
       { path: route.welcome, element: <WelcomePage /> },
+      { path: route.welcomeBack, element: <WelcomeBackPage /> },
     ],
   },
 

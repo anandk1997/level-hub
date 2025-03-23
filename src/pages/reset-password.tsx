@@ -46,7 +46,7 @@ const ResetPassword = () => {
     const newErrors: Partial<typeof initialState> = {};
 
     // ✅ Validate required fields
-    if (!formState.otp) newErrors.otp = 'OTP is required';
+    if (!decodedParams.otp) newErrors.otp = 'OTP is required';
     if (!formState.password) newErrors.password = 'Password is required';
     if (!formState.confirmPassword) newErrors.confirmPassword = 'Confirm Password is required';
 
@@ -94,7 +94,7 @@ const ResetPassword = () => {
     if (error) return toast.error(getErrorMessage(error));
 
     toast.success(data.message);
-    router.push(route.welcome);
+    router.push(route.welcomeBack);
   };
 
   return (
