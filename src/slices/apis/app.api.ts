@@ -4,6 +4,7 @@ import { env } from 'src/utils/env';
 import {
   IChangePasswordArgs,
   IForgotPasswordArgs,
+  ILevelArgs,
   IResendOtpArgs,
   IResetPasswordArgs,
   ISigninArgs,
@@ -37,6 +38,7 @@ export const apiSlice = createApi({
     changePassword: builder.mutation<ISuccessRes, IChangePasswordArgs>(
       createMutationQuery('/tutor/password', 'PUT')
     ),
+    level: builder.mutation<ISuccessRes, ILevelArgs>(createMutationQuery('level')),
   }),
 });
 
@@ -48,6 +50,7 @@ export const {
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useChangePasswordMutation,
+  useLevelMutation,
 } = apiSlice;
 
 export const {} = apiSlice;

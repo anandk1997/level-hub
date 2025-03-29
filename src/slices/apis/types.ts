@@ -93,3 +93,7 @@ export interface IChangePasswordArgs {
   newPassword: string;
   confirmPassword: string;
 }
+
+export interface ILevelArgs {
+  levelXP: number;
+}

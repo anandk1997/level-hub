@@ -1,5 +1,6 @@
 import { Label } from 'src/components/label';
 import { SvgColor } from 'src/components/svg-color';
+import { route } from 'src/utils/constants/routes';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +28,11 @@ export const navData = [
         +3
       </Label>
     ),
+  },
+  {
+    title: 'Activities',
+    path: route.activities,
+    icon: icon('ic-blog'),
   },
   {
     title: 'Blog',
