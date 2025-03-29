@@ -9,11 +9,13 @@ import { useLocation } from 'react-router-dom';
 import { useVerifyOtpMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
-import { useRouter } from 'src/routes/hooks';
+import { usePathname, useRouter } from 'src/routes/hooks';
 import { decodeQueryParams, encodeQueryParams } from 'src/utils';
+import { otpKey } from 'src/utils/constants';
 
 export const OtpVerify = ({ navigatePath }: IOtpVerify) => {
   const location = useLocation();
+  const pathname = usePathname();
   const router = useRouter();
 
   const decodedParams = decodeQueryParams(location.search);
@@ -24,7 +26,7 @@ export const OtpVerify = ({ navigatePath }: IOtpVerify) => {
 
   const handleOtpComplete = (otp: string) => setOtp(otp);
 
-  const path = encodeQueryParams(navigatePath, { ...decodedParams, otp });
+  const path = encodeQueryParams(navigatePath, { ...decodedParams });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -35,6 +37,7 @@ export const OtpVerify = ({ navigatePath }: IOtpVerify) => {
     const { error, data } = await verifyOtp({ email: decodedParams.email, otp });
 
     if (error) return toast.error(getErrorMessage(error));
+    if (pathname === route.otpReset) sessionStorage.setItem(otpKey, otp);
 
     toast.success(data.message);
     setOtp('');

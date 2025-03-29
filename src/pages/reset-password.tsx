@@ -14,6 +14,7 @@ import { ErrorCaption } from 'src/sections/auth/_components/ErrorCaption';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
 import useFocusInput from 'src/hooks/useFocusInput';
+import { otpKey } from 'src/utils/constants';
 
 const ResetPassword = () => {
   const location = useLocation();
@@ -42,11 +43,13 @@ const ResetPassword = () => {
     setErrorState((prev) => ({ ...prev, [key]: '' }));
   };
 
+  const otp = sessionStorage.getItem(otpKey);
+
   const validate = () => {
     const newErrors: Partial<typeof initialState> = {};
 
     // ✅ Validate required fields
-    if (!decodedParams.otp) newErrors.otp = 'OTP is required';
+    if (!otp) newErrors.otp = 'OTP is required';
     if (!formState.password) newErrors.password = 'Password is required';
     if (!formState.confirmPassword) newErrors.confirmPassword = 'Confirm Password is required';
 
@@ -87,11 +90,13 @@ const ResetPassword = () => {
 
     const { error, data } = await resetPassword({
       email: decodedParams.email,
-      otp: decodedParams.otp,
+      otp: otp!,
       password: formState.password,
     });
 
     if (error) return toast.error(getErrorMessage(error));
+
+    sessionStorage.removeItem(otpKey);
 
     toast.success(data.message);
     router.push(route.welcomeBack);
