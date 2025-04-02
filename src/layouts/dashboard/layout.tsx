@@ -97,12 +97,12 @@ export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
                   data={[
                     {
                       label: 'Home',
-                      href: '/',
+                      href: route.index,
                       icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
                     },
                     {
-                      label: 'Profile',
-                      href: '#',
+                      label: 'Change Password',
+                      href: route.changePassword,
                       icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
                     },
                     {

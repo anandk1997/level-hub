@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createMutationQuery, headers } from './config';
 import { env } from 'src/utils/env';
 import {
+  IActArgs,
   IChangePasswordArgs,
   IForgotPasswordArgs,
   ILevelArgs,
@@ -36,9 +37,10 @@ export const apiSlice = createApi({
       createMutationQuery('/password/reset')
     ),
     changePassword: builder.mutation<ISuccessRes, IChangePasswordArgs>(
-      createMutationQuery('/tutor/password', 'PUT')
+      createMutationQuery('/password/change')
     ),
-    level: builder.mutation<ISuccessRes, ILevelArgs>(createMutationQuery('level')),
+    level: builder.mutation<ISuccessRes, ILevelArgs>(createMutationQuery('/level')),
+    addActivity: builder.mutation<ISuccessRes, IActArgs>(createMutationQuery('/addActivity')),
   }),
 });
 
@@ -51,6 +53,7 @@ export const {
   useResetPasswordMutation,
   useChangePasswordMutation,
   useLevelMutation,
+  useAddActivityMutation,
 } = apiSlice;
 
 export const {} = apiSlice;

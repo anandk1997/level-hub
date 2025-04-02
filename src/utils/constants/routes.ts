@@ -21,6 +21,7 @@ export const route = Object.freeze({
   welcomeBack: '/welcome-back',
 
   activities: '/activities',
+  changePassword: '/change-password',
 
   404: '/404',
   '*': '*',

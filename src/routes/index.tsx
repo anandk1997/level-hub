@@ -27,6 +27,7 @@ const BlogPage = lazy(() => import('src/pages/blog'));
 const ActivitiesPage = lazy(() => import('src/pages/activities'));
 const UserPage = lazy(() => import('src/pages/user'));
 const ProductsPage = lazy(() => import('src/pages/products'));
+const ChangePasswordPage = lazy(() => import('src/pages/change-password'));
 const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
       { path: route.products, element: <ProductsPage /> },
       { path: route.blog, element: <BlogPage /> },
       { path: route.activities, element: <ActivitiesPage /> },
+      { path: route.changePassword, element: <ChangePasswordPage /> },
     ],
   },
 

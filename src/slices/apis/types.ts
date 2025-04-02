@@ -97,3 +97,10 @@ export interface IChangePasswordArgs {
 export interface ILevelArgs {
   levelXP: number;
 }
+
+export interface IActArgs {
+  name: string;
+  xp: string;
+  description: string;
+  videoLink: string;
+}
