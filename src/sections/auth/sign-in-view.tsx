@@ -21,8 +21,8 @@ import { Checkbox } from '@mui/material';
 import { useSigninMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
-import { IFormAtom, useSigninAtom } from 'src/store/jotai/signin';
-import { ErrorCaption } from './_components/ErrorCaption';
+import { useSigninAtom } from 'src/store/jotai/signin';
+import { ErrorCaption } from '../../components/ErrorCaption';
 import Cookies from 'js-cookie';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
@@ -31,44 +31,11 @@ import { tokenKey } from 'src/utils/constants';
 export function SignInView() {
   const router = useRouter();
 
-  const { formState, setFormState, errorState, setErrorState } = useSigninAtom();
+  const { formState, errorState, handleChange, validate } = useSigninAtom();
 
   const [signin, { isLoading }] = useSigninMutation();
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleChange = (key: keyof IFormAtom, value: any) => {
-    setFormState((prev) => ({ ...prev, [key]: value }));
-
-    setErrorState((prev) => ({ ...prev, [key]: '' }));
-  };
-
-  const validate = () => {
-    const newErrors: Record<string, string | Record<string, string>[] | undefined> = {};
-
-    // Common required fields
-    const requiredFields: [keyof IFormAtom, string][] = [
-      ['email', 'Email is required'],
-      ['password', 'Password is required'],
-    ];
-
-    // ✅ Validate required fields
-    requiredFields.forEach(([key, message]) => {
-      if (!formState[key]) newErrors[key] = message;
-    });
-
-    // ✅ Email validation
-    const email = formState.email?.trim();
-    if (!email) newErrors.email = 'Email is required';
-    else if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-      newErrors.email = 'Invalid email address';
-    }
-
-    // ✅ Set error state
-    setErrorState(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -10,7 +10,7 @@ import { FormControl } from '@mui/material';
 import { Iconify } from 'src/components/iconify';
 import { autofillStyles } from 'src/sections/auth/sign-up-view';
 import { cn, decodeQueryParams } from 'src/utils';
-import { ErrorCaption } from 'src/sections/auth/_components/ErrorCaption';
+import { ErrorCaption } from 'src/components/ErrorCaption';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
 import useFocusInput from 'src/hooks/useFocusInput';

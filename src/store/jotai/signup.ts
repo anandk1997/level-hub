@@ -112,12 +112,109 @@ export const useSignupAtom = () => {
     });
   };
 
+  const handleChange = (key: keyof IFormAtom, value: any) => {
+    setFormState((prev) => ({ ...prev, [key]: value }));
+
+    if (key === 'role') {
+      setErrorState((prev) => ({
+        ...prev,
+        gymName: '',
+        dob: '',
+        month: '',
+        day: '',
+        year: '',
+        gender: '',
+        childrens: '',
+        childrenData: [],
+      }));
+    }
+
+    setErrorState((prev) => ({ ...prev, [key]: '' }));
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, string | Record<string, string>[] | undefined> = {};
+
+    // Common required fields
+    const requiredFields: [keyof IFormAtom, string][] = [
+      ['firstName', 'First name is required'],
+      ['lastName', 'Last name is required'],
+      ['password', 'Password is required'],
+      ['confirmPassword', 'Confirm password is required'],
+      ['role', 'Role is required'],
+      ['agreeToTerms', 'You must agree to the terms'],
+    ];
+
+    // Role-specific fields using a Record for better type safety
+    const roleSpecificFields: Partial<Record<RoleType, [keyof IFormAtom, string][]>> = {
+      gym: [['gymName', 'Gym Name is required']],
+      parent: [['childrens', 'Please specify no. of childrens']],
+    };
+
+    if (formState.role && formState.role in roleSpecificFields) {
+      requiredFields.push(...(roleSpecificFields[formState.role as RoleType] ?? []));
+    }
+
+    // ✅ Validate required fields
+    requiredFields.forEach(([key, message]) => {
+      if (!formState[key]) newErrors[key] = message;
+    });
+
+    // ✅ Email validation
+    const email = formState.email?.trim();
+    if (!email) newErrors.email = 'Email is required';
+    else if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      newErrors.email = 'Invalid email address';
+    }
+
+    // ✅ Password match validation
+    if (
+      formState.password &&
+      formState.confirmPassword &&
+      formState.password !== formState.confirmPassword
+    ) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    // ✅ Phone number validation
+    // const phone = formState.phone?.trim();
+    // if (!phone || phone.length <= 3) newErrors.phone = 'Phone number is required';
+    // else if (!/^\+\d{4,}$/.test(phone)) newErrors.phone = 'Invalid phone number';
+
+    // ✅ Dynamic Children Validation
+    if (formState.role === 'parent') {
+      const childErrors: Record<string, string>[] = [];
+
+      formState.childrenData.forEach((child, index) => {
+        const childError: Record<string, string> = {};
+
+        if (!child.age) childError.age = `Child ${index + 1} age is required`;
+        if (!child.gender) childError.gender = `Child ${index + 1} gender is required`;
+
+        childErrors.push(childError);
+      });
+
+      // Add child errors to `newErrors`
+      if (childErrors.some((child) => Object.keys(child).length > 0)) {
+        newErrors.childrenData = childErrors;
+      }
+    }
+
+    // ✅ Set error state
+    setErrorState(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   return {
     formState,
     setFormState,
     errorState,
-    setErrorState,
+
     updateChildrenData,
     setNumberOfChildren,
+
+    handleChange,
+    validate,
   };
 };

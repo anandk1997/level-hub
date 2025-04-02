@@ -103,4 +103,7 @@ export interface IActArgs {
   xp: string;
   description: string;
   videoLink: string;
+  recurring: boolean;
+  selectedDate: string;
+  selectedDays: string[];
 }

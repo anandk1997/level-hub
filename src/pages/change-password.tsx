@@ -16,7 +16,7 @@ import { FormControl } from '@mui/material';
 import { Iconify } from 'src/components/iconify';
 import { autofillStyles } from 'src/sections/auth/sign-up-view';
 import { cn } from 'src/utils';
-import { ErrorCaption } from 'src/sections/auth/_components/ErrorCaption';
+import { ErrorCaption } from 'src/components/ErrorCaption';
 import { route } from 'src/utils/constants/routes';
 import useFocusInput from 'src/hooks/useFocusInput';
 import { otpKey } from 'src/utils/constants';

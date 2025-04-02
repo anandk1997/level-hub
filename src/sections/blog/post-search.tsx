@@ -39,16 +39,18 @@ export function PostSearch({ posts, sx }: PostSearchProps) {
         <TextField
           {...params}
           placeholder="Search post..."
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify
-                  icon="eva:search-fill"
-                  sx={{ ml: 1, width: 20, height: 20, color: 'text.disabled' }}
-                />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify
+                    icon="eva:search-fill"
+                    sx={{ ml: 1, width: 20, height: 20, color: 'text.disabled' }}
+                  />
+                </InputAdornment>
+              ),
+            },
           }}
         />
       )}

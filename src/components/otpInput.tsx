@@ -67,7 +67,9 @@ export const OTPInput: FC<OTPInputProps> = ({ length = 6, onComplete, value = ''
           onKeyDown={(e) => handleKeyDown(index, e)}
           onFocus={handleFocus}
           variant="outlined"
-          inputProps={{ maxLength: 1, style: { textAlign: 'center', fontSize: '1.5rem' } }}
+          slotProps={{
+            htmlInput: { maxLength: 1, style: { textAlign: 'center', fontSize: '1.5rem' } },
+          }}
           sx={{ width: '16.66%' }}
         />
       ))}

@@ -118,9 +118,11 @@ function Item({ item, checked, onChange, sx, ...other }: ItemProps) {
               disableRipple
               checked={checked}
               onChange={onChange}
-              inputProps={{
-                name: item.name,
-                'aria-label': 'Checkbox demo',
+              slotProps={{
+                input: {
+                  name: item.name,
+                  'aria-label': 'Checkbox demo',
+                },
               }}
             />
           }
