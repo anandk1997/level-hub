@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 import { Box } from '@mui/material';
 
-export const TargetXP = () => {
+export const TargetXP = ({ refetchLevel }: { refetchLevel: () => void }) => {
   const [open, setOpen] = useState(false);
   const [levelXP, setLevelXP] = useState(0);
   const [error, setError] = useState('');
@@ -38,6 +38,7 @@ export const TargetXP = () => {
     if (error) return toast.error(getErrorMessage(error));
 
     toast.success(data.message);
+    refetchLevel();
     setLevelXP(0);
     setOpen(false);
   };

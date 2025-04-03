@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { createMutationQuery, headers } from './config';
+import { createGetQuery, createMutationQuery, headers } from './config';
 import { env } from 'src/utils/env';
 import {
   IActArgs,
@@ -39,8 +39,10 @@ export const apiSlice = createApi({
     changePassword: builder.mutation<ISuccessRes, IChangePasswordArgs>(
       createMutationQuery('/password/change')
     ),
+    fetchLevel: builder.query<ISuccessRes, {}>(createGetQuery('/level')),
     level: builder.mutation<ISuccessRes, ILevelArgs>(createMutationQuery('/level')),
-    addActivity: builder.mutation<ISuccessRes, IActArgs>(createMutationQuery('/addActivity')),
+    fetchActivities: builder.query<ISuccessRes, {}>(createGetQuery('/activities')),
+    addActivity: builder.mutation<ISuccessRes, IActArgs>(createMutationQuery('/activities')),
   }),
 });
 
@@ -56,4 +58,4 @@ export const {
   useAddActivityMutation,
 } = apiSlice;
 
-export const {} = apiSlice;
+export const { useFetchLevelQuery, useFetchActivitiesQuery } = apiSlice;

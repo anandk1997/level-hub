@@ -1,6 +1,29 @@
 import Cookies from 'js-cookie';
 import { tokenKey } from 'src/utils/constants';
 
+export const createMutationParamQuery = <T, P extends Record<string, any>>(
+  url: string,
+  method: 'POST' | 'PUT' | 'PATCH' = 'POST'
+) => ({
+  query: ({ params, body }: { params?: P; body: T }) => {
+    let resolvedUrl = url;
+
+    // Replace URL placeholders with actual parameters
+    if (params) {
+      resolvedUrl = Object.entries(params).reduce(
+        (acc, [key, value]) => acc.replace(`:${key}`, encodeURIComponent(value)),
+        url
+      );
+    }
+
+    return {
+      url: resolvedUrl,
+      method,
+      body,
+    };
+  },
+});
+
 export const createMutationQuery = <T>(url: string, method: 'POST' | 'PUT' | 'PATCH' = 'POST') => ({
   query: (args: T) => ({
     url,

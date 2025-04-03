@@ -40,6 +40,7 @@ export function getErrorMessage(error: unknown): string {
 export interface ISuccessRes {
   success: boolean;
   message: string;
+  resultData: any;
 }
 
 export interface ISigninRes extends ISuccessRes {
@@ -99,11 +100,14 @@ export interface ILevelArgs {
 }
 
 export interface IActArgs {
-  name: string;
-  xp: string;
+  activityId?: string;
+  title: string;
+  xp: number;
   description: string;
   videoLink: string;
-  recurring: boolean;
-  selectedDate: string;
-  selectedDays: string[];
+  isRecurring: boolean;
+  startDate: string;
+  endDate: string;
+  assignedDays: string[];
+  isSelfAssignment: boolean;
 }
