@@ -19,7 +19,7 @@ export const Activities = () => {
   const { formState, setFormState, validate } = useActivityAtom();
   const [addActivity, { isLoading: isAdding }] = useAddActivityMutation();
   const [updateActivity, { isLoading: isUpdating }] = useAddActivityMutation();
-  const { data, isFetching, refetch } = useFetchActivitiesQuery({});
+  const { data, isFetching } = useFetchActivitiesQuery({});
 
   const handleAddActivity = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +34,10 @@ export const Activities = () => {
             ...formState,
             startDate: formatStartDate,
             endDate: formatEndDate,
-          }).filter(([_, value]) => value)
+          }).filter(([_, value]) => {
+            if (Array.isArray(value)) return value.length > 0;
+            return value !== undefined && value !== null && value !== '';
+          })
         );
 
         if (formState.activityId) {
@@ -42,7 +45,6 @@ export const Activities = () => {
 
           if (error) return toast.error(getErrorMessage(error));
 
-          refetch();
           toast.success(data.message);
           setIsActivity(false);
         } else {
@@ -50,7 +52,6 @@ export const Activities = () => {
 
           if (error) return toast.error(getErrorMessage(error));
 
-          refetch();
           toast.success(data.message);
           setIsActivity(false);
         }

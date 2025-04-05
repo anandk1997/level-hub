@@ -86,10 +86,11 @@ export function SignUpView() {
       to={route.signIn}
       linkTitle="Login"
     >
-      <form className="flex flex-col gap-2" onSubmit={handleSignIn}>
+      <form noValidate className="flex flex-col gap-2" onSubmit={handleSignIn}>
         <div className="flex flex-col md:flex-row gap-2">
           <TextField
             fullWidth
+            required
             error={!!errorState.firstName}
             helperText={errorState.firstName}
             name="firstName"
@@ -101,6 +102,7 @@ export function SignUpView() {
 
           <TextField
             fullWidth
+            required
             error={!!errorState.lastName}
             helperText={errorState.lastName}
             name="lastName"
@@ -114,6 +116,7 @@ export function SignUpView() {
         <div className="flex flex-col md:flex-row gap-2">
           <TextField
             fullWidth
+            required
             error={!!errorState.email}
             helperText={errorState.email}
             name="email"

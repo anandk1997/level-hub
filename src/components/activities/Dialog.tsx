@@ -82,8 +82,9 @@ export const ActivityDialog = ({
             fullWidth
             name="description"
             label="Task Description (Optional)"
+            placeholder="Task Description (Optional)"
             multiline
-            rows={10}
+            rows={5}
             error={!!errorState.description}
             helperText={errorState.description}
             value={formState.description}
@@ -94,6 +95,7 @@ export const ActivityDialog = ({
             fullWidth
             name="videoLink"
             label="Video Link (Optional)"
+            placeholder="Video Link (Optional)"
             error={!!errorState.videoLink}
             helperText={errorState.videoLink}
             value={formState.videoLink}

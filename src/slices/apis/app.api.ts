@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { createGetQuery, createMutationQuery, headers } from './config';
+import { createGetQuery, createMutationQuery, fetchConfig, headers } from './config';
 import { env } from 'src/utils/env';
 import {
   IActArgs,
@@ -23,6 +23,9 @@ export const apiSlice = createApi({
     prepareHeaders: headers,
   }),
 
+  ...fetchConfig,
+  tagTypes: ['activities', 'level'],
+
   endpoints: (builder) => ({
     signin: builder.mutation<ISigninRes, ISigninArgs>(createMutationQuery('/signin')),
     signup: builder.mutation<ISuccessRes, ISignupArgs>(createMutationQuery('/signup')),
@@ -39,10 +42,24 @@ export const apiSlice = createApi({
     changePassword: builder.mutation<ISuccessRes, IChangePasswordArgs>(
       createMutationQuery('/password/change')
     ),
-    fetchLevel: builder.query<ISuccessRes, {}>(createGetQuery('/level')),
-    level: builder.mutation<ISuccessRes, ILevelArgs>(createMutationQuery('/level')),
-    fetchActivities: builder.query<ISuccessRes, {}>(createGetQuery('/activities')),
-    addActivity: builder.mutation<ISuccessRes, IActArgs>(createMutationQuery('/activities')),
+
+    fetchLevel: builder.query<ISuccessRes, {}>({
+      ...createGetQuery('/level'),
+      providesTags: ['level'],
+    }),
+    level: builder.mutation<ISuccessRes, ILevelArgs>({
+      ...createMutationQuery('/level'),
+      invalidatesTags: (result, error) => (result && !error ? ['level'] : []),
+    }),
+
+    fetchActivities: builder.query<ISuccessRes, {}>({
+      ...createGetQuery('/activity'),
+      providesTags: ['activities'],
+    }),
+    addActivity: builder.mutation<ISuccessRes, IActArgs>({
+      ...createMutationQuery('/activity'),
+      invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
+    }),
   }),
 });
 

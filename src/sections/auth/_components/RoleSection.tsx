@@ -53,7 +53,7 @@ export const RoleSection = ({
       </div>
 
       {!!errorState.role && (
-        <div className="flex justify-center items-center m-auto border border-red-500 m-w-50 rounded-md">
+        <div className="flex justify-center items-center border border-red-500 m-w-50 rounded-md">
           <Alert severity="error">{errorState.role}</Alert>
         </div>
       )}

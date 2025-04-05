@@ -71,3 +71,10 @@ export const headers = (headers: Headers) => {
 
   return headers;
 };
+
+export const fetchConfig = {
+  // refetchOnReconnect: true,
+  // refetchOnFocus: true,
+
+  refetchOnMountOrArgChange: true,
+};

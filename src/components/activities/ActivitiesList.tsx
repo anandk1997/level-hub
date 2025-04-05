@@ -11,6 +11,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import IncompleteCircleIcon from '@mui/icons-material/IncompleteCircle';
 import EditSquareIcon from '@mui/icons-material/EditSquare';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { IconButton } from '@mui/material';
 
 export function ActivitiesList({
   activities,
@@ -54,31 +55,6 @@ export function ActivitiesList({
                 overflow: 'hidden',
               }}
             >
-              {/* Header Row Inside the Card */}
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  fontWeight: 'bold',
-                  p: 1,
-                  borderRadius: 1,
-                }}
-              >
-                <Typography variant="h6" sx={{ flex: 1, whiteSpace: 'nowrap' }}>
-                  Title
-                </Typography>
-                <Typography variant="h6" sx={{ flex: 2, whiteSpace: 'nowrap' }}>
-                  Description
-                </Typography>
-                <Typography variant="h6" sx={{ flex: 1, whiteSpace: 'nowrap' }}>
-                  XP
-                </Typography>
-                <Typography variant="h6" sx={{ flex: 1, whiteSpace: 'nowrap' }}>
-                  Actions
-                </Typography>
-              </Box>
-
               {/* Content Row */}
               <Box
                 sx={{
@@ -127,10 +103,26 @@ export function ActivitiesList({
 
                 {/* Action Button */}
 
-                <button onClick={() => onUpdate(activity)}>
-                  <EditSquareIcon className="cursor-pointer hover:!text-[#09C0F0] text-black" />
-                </button>
+                <IconButton
+                  className={cn(
+                    'group !border !border-transparent !text-white hover:!bg-white !flex !rounded-full disabled:!text-white disabled:cursor-none',
+                    '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
+                    {
+                      '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
+                        activity.isRecurring,
+                    }
+                  )}
+                  component="div"
+                  onClick={() => onUpdate(activity)}
+                >
+                  <EditSquareIcon
+                    className="!text-sm"
+                    // className="cursor-pointer hover:!text-[#09C0F0] text-black"
+                  />
+                </IconButton>
+
                 <Button
+                  component="div"
                   variant="contained"
                   className={cn(
                     'group h-5 !border !border-transparent hover:!bg-white !flex !rounded-full disabled:!text-white disabled:cursor-none !max-w-fit',
@@ -140,7 +132,6 @@ export function ActivitiesList({
                         activity.isRecurring,
                     }
                   )}
-                  // disabled
                   startIcon={!activity.isRecurring ? <CheckCircleIcon /> : <IncompleteCircleIcon />}
                   sx={{ flex: 1, whiteSpace: 'nowrap' }}
                 >
