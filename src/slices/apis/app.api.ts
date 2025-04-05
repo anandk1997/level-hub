@@ -30,14 +30,17 @@ export const apiSlice = createApi({
     signin: builder.mutation<ISigninRes, ISigninArgs>(createMutationQuery('/signin')),
     signup: builder.mutation<ISuccessRes, ISignupArgs>(createMutationQuery('/signup')),
 
-    verifyOtp: builder.mutation<ISuccessRes, IVerifyOtpArgs>(createMutationQuery('/otp/verify')),
+    otpSignup: builder.mutation<ISuccessRes, IVerifyOtpArgs>(createMutationQuery('/otp/verify')),
+    otpReset: builder.mutation<ISuccessRes, IVerifyOtpArgs>(
+      createMutationQuery('/password/verify')
+    ),
     resendOtp: builder.mutation<ISuccessRes, IResendOtpArgs>(createMutationQuery('/otp/resend')),
 
     forgotPassword: builder.mutation<ISuccessRes, IForgotPasswordArgs>(
       createMutationQuery('/password/forgot')
     ),
     resetPassword: builder.mutation<ISuccessRes, IResetPasswordArgs>(
-      createMutationQuery('/password/reset')
+      createMutationQuery('/password/reset', 'PUT')
     ),
     changePassword: builder.mutation<ISuccessRes, IChangePasswordArgs>(
       createMutationQuery('/password/change')
@@ -65,7 +68,8 @@ export const apiSlice = createApi({
 
 export const {
   useSignupMutation,
-  useVerifyOtpMutation,
+  useOtpSignupMutation,
+  useOtpResetMutation,
   useResendOtpMutation,
   useSigninMutation,
   useForgotPasswordMutation,

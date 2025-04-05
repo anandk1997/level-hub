@@ -33,13 +33,14 @@ import { getErrorMessage } from 'src/slices/apis/types';
 import toast from 'react-hot-toast';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
-import { encodeQueryParams } from 'src/utils';
+import { cn, encodeQueryParams } from 'src/utils';
 
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DatePicker, DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { RadioGroup } from '@mui/material';
+import { Dayjs } from 'dayjs';
 
 export function SignUpView() {
   const router = useRouter();
@@ -77,6 +78,18 @@ export function SignUpView() {
 
       router.push(path);
     }
+  };
+
+  const dobProps: Partial<DatePickerProps<any>> = {
+    label: 'Select Date of Birth (Optional)',
+    value: formState.dob,
+    onChange: (newValue: Dayjs) => handleChange('dob', newValue),
+    slotProps: {
+      textField: {
+        error: !!errorState.dob,
+        helperText: errorState.dob,
+      },
+    },
   };
 
   return (
@@ -153,7 +166,7 @@ export function SignUpView() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-2">
-          <FormControl fullWidth variant="outlined">
+          <FormControl fullWidth required variant="outlined">
             <InputLabel
               className={clsx({ '!text-red-500': errorState.password })}
               htmlFor="outlined-adornment-password"
@@ -182,7 +195,7 @@ export function SignUpView() {
             <ErrorCaption caption={errorState.password} />
           </FormControl>
 
-          <FormControl fullWidth variant="outlined">
+          <FormControl fullWidth required variant="outlined">
             <InputLabel
               className={clsx({ '!text-red-500': errorState.confirmPassword })}
               htmlFor="outlined-adornment-confirm-password"
@@ -215,36 +228,13 @@ export function SignUpView() {
         <div className="flex flex-col md:flex-row gap-2">
           <div className="flex-1">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                className="!hidden md:!flex"
-                label="Select Date of Birth"
-                value={formState.dob}
-                onChange={(newValue) => handleChange('dob', newValue)}
-                slotProps={{
-                  textField: {
-                    error: !!errorState.dob,
-                    helperText: errorState.dob,
-                  },
-                }}
-              />
-
-              <MobileDatePicker
-                className={clsx('md:!hidden !flex')}
-                label="Select Date of Birth"
-                value={formState.dob}
-                onChange={(newValue) => handleChange('dob', newValue)}
-                slotProps={{
-                  textField: {
-                    error: !!errorState.dob,
-                    helperText: errorState.dob,
-                  },
-                }}
-              />
+              <DatePicker className="!hidden md:!flex" {...dobProps} />
+              <MobileDatePicker className={clsx('md:!hidden !flex')} {...dobProps} />
             </LocalizationProvider>
           </div>
 
           <FormControl sx={{ flex: 1 }}>
-            <FormLabel id={genderId} className="!text-sm !font-bold !mb-2">
+            <FormLabel id={genderId} className="!text-sm !font-bold">
               What's your gender? (Optional)
             </FormLabel>
 
@@ -267,7 +257,9 @@ export function SignUpView() {
 
         <>
           <FormControlLabel
-            className="!flex !mr-auto"
+            className={cn('!flex !mr-auto', {
+              '-mb-3': errorState.agreeToTerms,
+            })}
             control={
               <Checkbox
                 checked={formState.agreeToTerms}
@@ -277,7 +269,7 @@ export function SignUpView() {
             label={'I agree to all the Terms and Privacy policies'}
           />
 
-          <ErrorCaption caption={errorState.agreeToTerms} />
+          <ErrorCaption caption={errorState.agreeToTerms} className="!ms-3" />
         </>
 
         <Button

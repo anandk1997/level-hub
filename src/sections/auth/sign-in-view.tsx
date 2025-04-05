@@ -57,10 +57,11 @@ export function SignInView() {
       to={route.signUp}
       linkTitle="Signup"
     >
-      <form onSubmit={handleSignIn}>
+      <form noValidate onSubmit={handleSignIn}>
         <Box display="flex" flexDirection="column" alignItems="flex-end">
           <TextField
             fullWidth
+            required
             name="email"
             label="Email address"
             error={!!errorState.email}
@@ -70,7 +71,7 @@ export function SignInView() {
             sx={{ mb: 3, ...autofillStyles }}
           />
 
-          <FormControl fullWidth variant="outlined">
+          <FormControl fullWidth required variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
 
             <OutlinedInput

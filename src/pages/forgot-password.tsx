@@ -9,6 +9,7 @@ import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
 import useFocusInput from 'src/hooks/useFocusInput';
 import { encodeQueryParams } from 'src/utils';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -53,45 +54,50 @@ const ForgotPassword = () => {
   };
 
   return (
-    <CardLayout
-      title="Forgot Password"
-      message="Don’t worry, happens to all of us. Enter your email below to recover your password"
-      to={route.signIn}
-      linkTitle="Login"
-    >
-      <form onSubmit={handleSubmit}>
-        <TextField
-          inputRef={(el) => (inputsRef.current = el)}
-          fullWidth
-          name="email"
-          label="Email address"
-          error={!!error}
-          helperText={error}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          sx={{ ...autofillStyles }}
-        />
+    <>
+      <HelmetTitle title="Forgot Password" />
 
-        <Button
-          fullWidth
-          size="large"
-          type="submit"
-          color="inherit"
-          variant="contained"
-          disabled={isLoading}
-          className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !mt-4"
-        >
-          {isLoading ? (
-            <CircularProgress
-              className="!text-white group-hover:!text-[#09C0F0]"
-              sx={{ scale: '.5' }}
-            />
-          ) : (
-            'Submit'
-          )}
-        </Button>
-      </form>
-    </CardLayout>
+      <CardLayout
+        title="Forgot Password"
+        message="Don’t worry, happens to all of us. Enter your email below to recover your password"
+        to={route.signIn}
+        linkTitle="Login"
+      >
+        <form noValidate onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            required
+            inputRef={(el) => (inputsRef.current = el)}
+            name="email"
+            label="Email address"
+            error={!!error}
+            helperText={error}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            sx={{ ...autofillStyles }}
+          />
+
+          <Button
+            fullWidth
+            size="large"
+            type="submit"
+            color="inherit"
+            variant="contained"
+            disabled={isLoading}
+            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !mt-4"
+          >
+            {isLoading ? (
+              <CircularProgress
+                className="!text-white group-hover:!text-[#09C0F0]"
+                sx={{ scale: '.5' }}
+              />
+            ) : (
+              'Submit'
+            )}
+          </Button>
+        </form>
+      </CardLayout>
+    </>
   );
 };
 

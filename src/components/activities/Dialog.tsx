@@ -8,7 +8,12 @@ import { Drawer } from '@mui/material';
 
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DatePicker, MobileDatePicker } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  DatePicker,
+  MobileDatePicker,
+  DatePickerProps,
+} from '@mui/x-date-pickers';
 import { useActivityAtom } from 'src/store/jotai/activities';
 import { ErrorCaption } from '../ErrorCaption';
 import { cn } from 'src/utils';
@@ -32,7 +37,7 @@ export const ActivityDialog = ({
 
   return (
     <Drawer anchor={'right'} open={open} onClose={onClose}>
-      <form className="p-2" onSubmit={onSubmit}>
+      <form noValidate className="p-2" onSubmit={onSubmit}>
         <header className="flex justify-between items-center gap-2 border-b border-gray-300 pb-1 mb-2">
           <Typography>{dialogTitle}</Typography>
 
@@ -58,6 +63,7 @@ export const ActivityDialog = ({
           <div className="flex flex-col md:flex-row gap-2">
             <TextField
               fullWidth
+              required
               name="name"
               label="Task Name"
               error={!!errorState.title}
@@ -68,6 +74,7 @@ export const ActivityDialog = ({
 
             <TextField
               fullWidth
+              required
               type="number"
               name="xp"
               label="XP"
@@ -179,70 +186,48 @@ function RecurringDateSelector() {
     return date.isBefore(new Date(), 'day');
   };
 
+  const startDateProps: Partial<DatePickerProps<any>> = {
+    label: !formState.isRecurring ? 'Select Date' : 'Select Start Date',
+    value: formState.startDate,
+    onChange: (newValue: Dayjs) => handleChange('startDate', newValue),
+    shouldDisableDate: disablePastDates,
+    slotProps: {
+      textField: {
+        required: true,
+        error: !!errorState.startDate,
+        helperText: errorState.startDate,
+      },
+    },
+  };
+
+  const endDateProps: Partial<DatePickerProps<any>> = {
+    label: 'Select End Date',
+    value: formState.endDate,
+    onChange: (newValue: Dayjs) => handleChange('endDate', newValue),
+    shouldDisableDate: disablePastDates,
+    slotProps: {
+      textField: {
+        required: true,
+        error: !!errorState.endDate,
+        helperText: errorState.endDate,
+      },
+    },
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <>
-        <DatePicker
-          className="!hidden md:!flex"
-          label="Select Start Date"
-          value={formState.startDate}
-          onChange={(newValue) => handleChange('startDate', newValue)}
-          shouldDisableDate={disablePastDates}
-          slotProps={{
-            textField: {
-              error: !!errorState.startDate,
-              helperText: errorState.startDate,
-            },
-          }}
-        />
-
-        <MobileDatePicker
-          className={cn('md:!hidden !flex')}
-          label="Select Start Date"
-          value={formState.startDate}
-          onChange={(newValue) => handleChange('startDate', newValue)}
-          shouldDisableDate={disablePastDates}
-          slotProps={{
-            textField: {
-              error: !!errorState.startDate,
-              helperText: errorState.startDate,
-            },
-          }}
-        />
-      </>
-
-      <>
-        <DatePicker
-          className="!hidden md:!flex"
-          label="Select End Date"
-          value={formState.endDate}
-          onChange={(newValue) => handleChange('endDate', newValue)}
-          shouldDisableDate={disablePastDates}
-          slotProps={{
-            textField: {
-              error: !!errorState.endDate,
-              helperText: errorState.endDate,
-            },
-          }}
-        />
-
-        <MobileDatePicker
-          className={cn('md:!hidden !flex')}
-          label="Select Start Date"
-          value={formState.endDate}
-          onChange={(newValue) => handleChange('endDate', newValue)}
-          shouldDisableDate={disablePastDates}
-          slotProps={{
-            textField: {
-              error: !!errorState.endDate,
-              helperText: errorState.endDate,
-            },
-          }}
-        />
+        <DatePicker {...startDateProps} className="!hidden md:!flex" />
+        <MobileDatePicker {...startDateProps} className="md:!hidden !flex" />
       </>
 
       {formState.isRecurring && (
         <>
+          <>
+            <DatePicker {...endDateProps} className="!hidden md:!flex" />
+            <MobileDatePicker {...endDateProps} className={cn('md:!hidden !flex')} />
+          </>
+
           <ToggleButtonGroup
             value={formState.assignedDays}
             onChange={(_event: React.MouseEvent<HTMLElement>, newDays: string[]) =>

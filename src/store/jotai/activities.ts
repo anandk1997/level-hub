@@ -54,8 +54,8 @@ export const useActivityAtom = () => {
     setErrorState((prev) => ({ ...prev, [key]: '' }));
 
     if (key === 'isRecurring') {
-      setFormState((prev) => ({ ...prev, assignedDays: [] }));
-      setErrorState((prev) => ({ ...prev, assignedDays: '' }));
+      setFormState((prev) => ({ ...prev, assignedDays: [], endDate: null }));
+      setErrorState((prev) => ({ ...prev, assignedDays: '', endDate: '' }));
     }
   };
 
@@ -67,7 +67,6 @@ export const useActivityAtom = () => {
       ['title', 'Name is required'],
       ['xp', 'XP is required'],
       ['startDate', 'Please select start date'],
-      ['endDate', 'Please select end date'],
     ];
 
     // ✅ Validate required fields
@@ -78,6 +77,7 @@ export const useActivityAtom = () => {
     // ✅ If isRecurring is true, validate assignedDays
     if (formState.isRecurring && (!formState.assignedDays || formState.assignedDays.length === 0)) {
       newErrors.assignedDays = 'Please select at least one day for recurrence';
+      newErrors.endDate = 'Please select end date';
     }
 
     // ✅ Set error state

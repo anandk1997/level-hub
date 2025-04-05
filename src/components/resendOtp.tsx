@@ -25,12 +25,12 @@ export const ResendOtp = ({ email }: { email: string }) => {
     setIsResendDisabled(true);
   }, []);
 
-  const handleResendOtp = () => {
+  const handleResendOtp = async () => {
     if (!email) return toast.error('Email is required');
 
     const apiCall = pathname === route.otpReset ? forgotPassword : resendOtp;
 
-    handleApiCall(apiCall);
+    await handleApiCall(apiCall);
   };
 
   useToastLoading(isResending || isLoading, 'Resending OTP!');

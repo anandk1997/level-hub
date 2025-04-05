@@ -37,25 +37,31 @@ export const RoleSection = ({
   return (
     <>
       {/* Role Selection */}
-      <div className="flex flex-col gap-2">
-        {roles.map((row, index) => (
-          <div key={index} className="flex flex-col md:flex-row gap-2">
-            {row.map((role) => (
-              <RoleButton
-                key={role.key}
-                role={role}
-                selectedRole={formState.role}
-                onSelect={handleChange}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      <FormControl required component="fieldset">
+        <FormLabel component="legend" className="!font-bold mb-1">
+          Select Role
+        </FormLabel>
+
+        <div className="flex flex-col gap-2">
+          {roles.map((row, index) => (
+            <div key={index} className="flex flex-col md:flex-row gap-2">
+              {row.map((role) => (
+                <RoleButton
+                  key={role.key}
+                  role={role}
+                  selectedRole={formState.role}
+                  onSelect={handleChange}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </FormControl>
 
       {!!errorState.role && (
-        <div className="flex justify-center items-center border border-red-500 m-w-50 rounded-md">
-          <Alert severity="error">{errorState.role}</Alert>
-        </div>
+        <Alert className="max-w-fit" severity="error">
+          {errorState.role}
+        </Alert>
       )}
 
       {/* Gym Owner Section */}

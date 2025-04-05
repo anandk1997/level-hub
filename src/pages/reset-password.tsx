@@ -15,6 +15,7 @@ import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
 import useFocusInput from 'src/hooks/useFocusInput';
 import { otpKey } from 'src/utils/constants';
+import { HelmetTitle } from 'src/components/HelmetTitle';
 
 const ResetPassword = () => {
   const location = useLocation();
@@ -49,7 +50,10 @@ const ResetPassword = () => {
     const newErrors: Partial<typeof initialState> = {};
 
     // ✅ Validate required fields
-    if (!otp) newErrors.otp = 'OTP is required';
+    if (!otp) {
+      toast.error('OTP is required');
+      newErrors.otp = 'OTP is required';
+    }
     if (!formState.password) newErrors.password = 'Password is required';
     if (!formState.confirmPassword) newErrors.confirmPassword = 'Confirm Password is required';
 
@@ -103,92 +107,96 @@ const ResetPassword = () => {
   };
 
   return (
-    <CardLayout
-      title="Reset Password"
-      message="Your previous password has been reseted. Please set a new password for your account."
-      to={route.signIn}
-      linkTitle="Login"
-    >
-      <form onSubmit={handleSubmit}>
-        <FormControl fullWidth variant="outlined" className="!my-2">
-          <InputLabel
-            className={cn({ '!text-red-500': errorState.password })}
-            htmlFor="outlined-adornment-password"
-          >
-            New Password
-          </InputLabel>
+    <>
+      <HelmetTitle title="Reset Password" />
 
-          <OutlinedInput
-            fullWidth
-            name="password"
-            label="New Password"
-            type={isPassword ? 'text' : 'password'}
-            inputRef={(el) => (inputsRef.current = el)}
-            error={!!errorState.password}
-            value={formState.password}
-            onChange={(e) => handleChange('password', e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={setIsPassword} edge="end">
-                  <Iconify icon={isPassword ? 'tabler:eye' : 'tabler:eye-off'} />
-                </IconButton>
-              </InputAdornment>
-            }
-            sx={{ ...autofillStyles }}
-          />
+      <CardLayout
+        title="Reset Password"
+        message="Your previous password has been reseted. Please set a new password for your account."
+        to={route.signIn}
+        linkTitle="Login"
+      >
+        <form noValidate onSubmit={handleSubmit}>
+          <FormControl fullWidth required variant="outlined" className="!my-2">
+            <InputLabel
+              className={cn({ '!text-red-500': errorState.password })}
+              htmlFor="outlined-adornment-password"
+            >
+              New Password
+            </InputLabel>
 
-          <ErrorCaption caption={errorState.password} />
-        </FormControl>
-
-        <FormControl fullWidth variant="outlined">
-          <InputLabel
-            className={cn({ '!text-red-500': errorState.confirmPassword })}
-            htmlFor="outlined-adornment-confirm-password"
-          >
-            Confirm Password
-          </InputLabel>
-
-          <OutlinedInput
-            fullWidth
-            name="confirmPassword"
-            label="Confirm Password"
-            type={isPassword1 ? 'text' : 'password'}
-            value={formState.confirmPassword}
-            onChange={(e) => handleChange('confirmPassword', e.target.value)}
-            error={!!errorState.confirmPassword}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={setIsPassword1} edge="end">
-                  <Iconify icon={isPassword1 ? 'tabler:eye' : 'tabler:eye-off'} />
-                </IconButton>
-              </InputAdornment>
-            }
-            sx={{ ...autofillStyles }}
-          />
-
-          <ErrorCaption caption={errorState.confirmPassword} />
-        </FormControl>
-
-        <Button
-          fullWidth
-          size="large"
-          type="submit"
-          color="inherit"
-          variant="contained"
-          disabled={isLoading}
-          className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !mt-4"
-        >
-          {isLoading ? (
-            <CircularProgress
-              className="!text-white group-hover:!text-[#09C0F0]"
-              sx={{ scale: '.5' }}
+            <OutlinedInput
+              fullWidth
+              name="password"
+              label="New Password"
+              type={isPassword ? 'text' : 'password'}
+              inputRef={(el) => (inputsRef.current = el)}
+              error={!!errorState.password}
+              value={formState.password}
+              onChange={(e) => handleChange('password', e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={setIsPassword} edge="end">
+                    <Iconify icon={isPassword ? 'tabler:eye' : 'tabler:eye-off'} />
+                  </IconButton>
+                </InputAdornment>
+              }
+              sx={{ ...autofillStyles }}
             />
-          ) : (
-            'Submit'
-          )}
-        </Button>
-      </form>
-    </CardLayout>
+
+            <ErrorCaption caption={errorState.password} />
+          </FormControl>
+
+          <FormControl fullWidth required variant="outlined">
+            <InputLabel
+              className={cn({ '!text-red-500': errorState.confirmPassword })}
+              htmlFor="outlined-adornment-confirm-password"
+            >
+              Confirm Password
+            </InputLabel>
+
+            <OutlinedInput
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type={isPassword1 ? 'text' : 'password'}
+              value={formState.confirmPassword}
+              onChange={(e) => handleChange('confirmPassword', e.target.value)}
+              error={!!errorState.confirmPassword}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={setIsPassword1} edge="end">
+                    <Iconify icon={isPassword1 ? 'tabler:eye' : 'tabler:eye-off'} />
+                  </IconButton>
+                </InputAdornment>
+              }
+              sx={{ ...autofillStyles }}
+            />
+
+            <ErrorCaption caption={errorState.confirmPassword} />
+          </FormControl>
+
+          <Button
+            fullWidth
+            size="large"
+            type="submit"
+            color="inherit"
+            variant="contained"
+            disabled={isLoading}
+            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !mt-4"
+          >
+            {isLoading ? (
+              <CircularProgress
+                className="!text-white group-hover:!text-[#09C0F0]"
+                sx={{ scale: '.5' }}
+              />
+            ) : (
+              'Submit'
+            )}
+          </Button>
+        </form>
+      </CardLayout>
+    </>
   );
 };
 
