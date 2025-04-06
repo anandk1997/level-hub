@@ -4,8 +4,6 @@ import { forwardRef } from 'react';
 
 import Box from '@mui/material/Box';
 
-import { RouterLink } from 'src/routes/components';
-
 import { logoClasses } from './classes';
 import { cn } from 'src/utils';
 import { Link } from 'react-router-dom';
@@ -18,7 +16,6 @@ export const LogoSection = forwardRef<HTMLDivElement, LogoProps>(
     return (
       <Box
         ref={ref}
-        component={RouterLink}
         className={cn(logoClasses.root, 'w-fit mb-4', className)}
         aria-label="Logo"
         sx={{ ...sx }}
