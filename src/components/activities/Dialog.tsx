@@ -68,7 +68,7 @@ export const ActivityDialog = ({
               label="Task Name"
               error={!!errorState.title}
               helperText={errorState.title}
-              value={formState.title}
+              value={formState.title || ''}
               onChange={(e) => handleChange('title', e.target.value)}
             />
 
@@ -80,7 +80,7 @@ export const ActivityDialog = ({
               label="XP"
               error={!!errorState.xp}
               helperText={errorState.xp}
-              value={formState.xp}
+              value={formState.xp || ''}
               onChange={(e) => handleChange('xp', Number(e.target.value))}
             />
           </div>
@@ -94,7 +94,7 @@ export const ActivityDialog = ({
             rows={5}
             error={!!errorState.description}
             helperText={errorState.description}
-            value={formState.description}
+            value={formState.description || ''}
             onChange={(e) => handleChange('description', e.target.value)}
           />
 
@@ -105,7 +105,7 @@ export const ActivityDialog = ({
             placeholder="Video Link (Optional)"
             error={!!errorState.videoLink}
             helperText={errorState.videoLink}
-            value={formState.videoLink}
+            value={formState.videoLink || ''}
             onChange={(e) => handleChange('videoLink', e.target.value)}
           />
 
@@ -229,7 +229,7 @@ function RecurringDateSelector() {
           </>
 
           <ToggleButtonGroup
-            value={formState.assignedDays}
+            value={formState.assignedDays || []}
             onChange={(_event: React.MouseEvent<HTMLElement>, newDays: string[]) =>
               handleChange('assignedDays', newDays)
             }

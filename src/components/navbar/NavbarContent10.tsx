@@ -10,12 +10,16 @@ import { NavMenu, NavMenuDrawer } from './NavItems';
 import MenuPopper from './MenuPopper';
 import { route } from 'src/utils/constants/routes';
 import { Logo } from '../logoSection';
+import { INavitemProps } from './types';
+import { useNavbarAtom } from 'src/store/jotai/navbar';
 
-export default function NavbarContent10({ navItems }: any) {
+export default function NavbarContent10({ navItems }: INavitemProps) {
   const theme = useTheme();
 
   const downMD = useMediaQuery(theme.breakpoints.down('md'));
   const downSM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const { setAnchorEl } = useNavbarAtom();
 
   return (
     <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', width: 1 }}>
@@ -46,11 +50,10 @@ export default function NavbarContent10({ navItems }: any) {
               <ContainerWrapper>
                 {navItems && (
                   <Box sx={{ mx: -2 }}>
-                    <NavMenuDrawer {...{ navItems }} />
+                    <NavMenuDrawer navItems={navItems} onClose={() => setAnchorEl(null)} />
                   </Box>
                 )}
-
-                {downSM && <AuthLinks />}
+                {downSM && <AuthLinks onClose={() => setAnchorEl(null)} />}
               </ContainerWrapper>
             </MenuPopper>
           </Box>
@@ -60,7 +63,7 @@ export default function NavbarContent10({ navItems }: any) {
   );
 }
 
-export const AuthLinks = () => (
+export const AuthLinks = ({ onClose }: { onClose?: () => void }) => (
   <Stack
     direction="row"
     sx={{
@@ -73,6 +76,9 @@ export const AuthLinks = () => (
   >
     <Link
       to={route.signIn}
+      onClick={() => {
+        if (onClose) onClose();
+      }}
       className="bg-[#080808] px-3.5 py-1.5 rounded-xl text-white !border !border-white hover:!bg-white hover:!border-black hover:!text-black"
     >
       Login
@@ -80,6 +86,9 @@ export const AuthLinks = () => (
 
     <Link
       to={route.signUp}
+      onClick={() => {
+        if (onClose) onClose();
+      }}
       className="bg-[#09C0F0] px-3.5 py-1.5 rounded-xl text-white !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
     >
       Signup

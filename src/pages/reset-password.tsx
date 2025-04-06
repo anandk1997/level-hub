@@ -2,7 +2,7 @@ import { CircularProgress, Button, OutlinedInput, InputAdornment, IconButton } f
 import { useLocation } from 'react-router-dom';
 import { useResetPasswordMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
-import { FormEvent, useReducer, useState } from 'react';
+import { FormEvent, useEffect, useReducer, useState } from 'react';
 import { getErrorMessage } from 'src/slices/apis/types';
 import { useRouter } from 'src/routes/hooks';
 import { InputLabel } from '@mui/material';
@@ -105,6 +105,10 @@ const ResetPassword = () => {
     toast.success(data.message);
     router.push(route.welcomeBack);
   };
+
+  useEffect(() => {
+    if (!otp) router.push(route.signIn);
+  }, [otp]);
 
   return (
     <>

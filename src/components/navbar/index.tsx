@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import Navbar10 from './Navbar10';
 import NavbarContent10 from './NavbarContent10';
+import { INavItem } from './types';
 
 export const Navbar = () => {
   return (
@@ -12,7 +13,7 @@ export const Navbar = () => {
   );
 };
 
-export const navItems = [
+const navItems: INavItem[] = [
   { link: 'home', title: 'Home' },
   { link: 'features', title: 'Features' },
   { link: 'reviews', title: 'Reviews' },

@@ -1,24 +1,30 @@
+import React from 'react';
 import { Button, Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { HelmetTitle } from 'src/components/HelmetTitle';
 import { Iconify } from 'src/components/iconify';
 import { route } from 'src/utils/constants/routes';
+import { INavLink } from 'src/components/navbar/types';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
+  const homeId: INavLink = 'home';
+  const featuresId: INavLink = 'features';
+  const reviewsId: INavLink = 'reviews';
+  const aboutUsId: INavLink = 'about-us';
+
   return (
     <>
       <HelmetTitle title="Dashboard" />
 
       <Container>
-        <section className="flex flex-col md:flex-row justify-around items-center gap-2 mt-4 p-3">
+        <section
+          className="flex flex-col md:flex-row justify-around items-center gap-2 mt-4 p-3"
+          id={homeId}
+        >
           <div className="flex flex-col gap-3">
             <Typography className="text-[#FF991F] !font-semibold">START TO SUCCESS</Typography>
-            <img src="/assets/images/dashboard/Introducing_level_hub.png" alt="" />
-
-            <span className="">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, magni?
-            </span>
-
+            <img src="/assets/images/dashboard/Introducing_level_hub.png" alt="Introduction" />
+            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, magni?</span>
             <div className="flex flex-col md:flex-row items-center align-middle">
               <Button className="!bg-[#09C0F0] !px-3.5 !py-1.5 !rounded-xl !text-white !text-md">
                 Learn More
@@ -28,7 +34,7 @@ const Dashboard = () => {
                 <img
                   src="/assets/images/dashboard/play_icon.png"
                   className="h-14 ml-[-10px]"
-                  alt=""
+                  alt="Play icon"
                 />
 
                 <span className="text-gray-700 font-medium text-md mb-3 ml-[-10px]">
@@ -38,8 +44,8 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="">
-            <img src="/assets/images/dashboard/phone_level_hub.png" alt="" />
+          <div>
+            <img src="/assets/images/dashboard/phone_level_hub.png" alt="Phone display" />
           </div>
         </section>
 
@@ -69,7 +75,7 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="p-3">
+        <section className="p-3" id={featuresId}>
           <h2 className="text-center text-3xl font-extrabold mb-2">Features</h2>
 
           <span className="flex flex-col text-center text-gray-600 text-md">
@@ -80,7 +86,7 @@ const Dashboard = () => {
           </span>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-10 md:gap-6 mt-12 justify-center">
-            {roles.map((item, index) => (
+            {roles.map((item: IRole, index: number) => (
               <div
                 key={index}
                 className="relative flex flex-col justify-center items-center gap-2 rounded-2xl shadow-lg p-3 bg-white border border-gray-200"
@@ -100,8 +106,8 @@ const Dashboard = () => {
                   <Iconify
                     icon="solar:arrow-right-linear"
                     width="24"
-                    className="ml-1"
                     height="24"
+                    className="ml-1"
                   />
                 </Link>
               </div>
@@ -109,7 +115,10 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="flex flex-col md:flex-row justify-between items-center gap-4 p-6">
+        <section
+          className="flex flex-col md:flex-row justify-between items-center gap-4 p-6"
+          id={reviewsId}
+        >
           <div className="flex justify-center flex-1 min-w-0">
             <img
               src="/assets/images/dashboard/testimonials.png"
@@ -136,8 +145,8 @@ const Dashboard = () => {
                 className="p-2 h-10 w-10 bg-transparent cursor-pointer flex-shrink-0"
                 onClick={() =>
                   document
-                    .getElementById('scroll-container')!
-                    .scrollBy({ left: -250, behavior: 'smooth' })
+                    .getElementById('scroll-container')
+                    ?.scrollBy({ left: -250, behavior: 'smooth' })
                 }
               >
                 ◀
@@ -177,8 +186,8 @@ const Dashboard = () => {
                 className="p-2 h-10 w-10 bg-transparent cursor-pointer flex-shrink-0"
                 onClick={() =>
                   document
-                    .getElementById('scroll-container')!
-                    .scrollBy({ left: 250, behavior: 'smooth' })
+                    .getElementById('scroll-container')
+                    ?.scrollBy({ left: 250, behavior: 'smooth' })
                 }
               >
                 ▶
@@ -188,9 +197,9 @@ const Dashboard = () => {
         </section>
       </Container>
 
-      <section className="w-full bg-[#09C0F0]">
+      <section className="w-full bg-[#09C0F0]" id={aboutUsId}>
         <Container>
-          <div className="flex flex-col md:flex-row justify-around items-center gap-2  w-full">
+          <div className="flex flex-col md:flex-row justify-around items-center gap-2 w-full">
             <div className="flex flex-col flex-1 gap-2">
               <h2 className="text-4xl text-white flex flex-col">
                 <span className="font-extralight">About the</span>
@@ -212,7 +221,7 @@ const Dashboard = () => {
             </div>
 
             <div className="flex justify-center flex-1">
-              <img src="/assets/images/dashboard/about_lh.png" className="" alt="" />
+              <img src="/assets/images/dashboard/about_lh.png" alt="About Level Hub" />
             </div>
           </div>
         </Container>
@@ -223,17 +232,31 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-const roles = [
+const roles: IRole[] = [
   {
     title: 'Gym Owner',
     icon: '/assets/images/dashboard/business_teams_icon.png',
     path: route.gym,
   },
-  { title: 'Coach', icon: '/assets/images/dashboard/coaches_icon.png', path: route.coach },
+  {
+    title: 'Coach',
+    icon: '/assets/images/dashboard/coaches_icon.png',
+    path: route.coach,
+  },
   {
     title: 'Single User',
     icon: '/assets/images/dashboard/user_icon.png',
     path: route.individual,
   },
-  { title: 'Parent', icon: '/assets/images/dashboard/user_icon.png', path: route.parent },
+  {
+    title: 'Parent',
+    icon: '/assets/images/dashboard/user_icon.png',
+    path: route.parent,
+  },
 ];
+
+export interface IRole {
+  title: string;
+  icon: string;
+  path: string;
+}

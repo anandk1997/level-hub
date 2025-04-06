@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 // @mui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -8,6 +8,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
 import Popper from '@mui/material/Popper';
 import Box from '@mui/material/Box';
+import { useNavbarAtom } from 'src/store/jotai/navbar';
 
 export default function MenuPopper({
   toggleProps,
@@ -21,7 +22,7 @@ export default function MenuPopper({
   const theme = useTheme();
 
   const anchorRef = useRef(null);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const { anchorEl, setAnchorEl } = useNavbarAtom();
 
   const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
