@@ -9,6 +9,7 @@ import { Iconify } from '../iconify';
 import { NavMenu, NavMenuDrawer } from './NavItems';
 import MenuPopper from './MenuPopper';
 import { route } from 'src/utils/constants/routes';
+import { Logo } from '../logoSection';
 
 export default function NavbarContent10({ navItems }: any) {
   const theme = useTheme();
@@ -18,9 +19,7 @@ export default function NavbarContent10({ navItems }: any) {
 
   return (
     <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', width: 1 }}>
-      <Link to={route.dashboard}>
-        <img src="/assets/images/header_logo.png" alt="logo" className="h-7.5 w-12 rounded-md" />
-      </Link>
+      <Logo />
 
       {!downMD && navItems && (
         <Box sx={{ borderRadius: 10 }}>

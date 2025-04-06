@@ -16,7 +16,7 @@ import { useRouter, usePathname } from 'src/routes/hooks';
 
 import { _myAccount } from 'src/_mock';
 import { logoutUser } from 'src/slices/reducers/auth.reducer';
-import { useAppDispatch } from 'src/store/redux';
+import { useAppDispatch, useAppSelector } from 'src/store/redux';
 import Cookies from 'js-cookie';
 import { route } from 'src/utils/constants/routes';
 import { tokenKey } from 'src/utils/constants';
@@ -36,6 +36,8 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
+
+  const { fullName, email } = useAppSelector((state) => state.auth);
 
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
@@ -94,11 +96,11 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
       >
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {_myAccount?.displayName}
+            {fullName}
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {_myAccount?.email}
+            {email}
           </Typography>
         </Box>
 

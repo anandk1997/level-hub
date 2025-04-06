@@ -2,26 +2,19 @@ import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
 import { Suspense, useEffect, useState } from 'react';
 
-import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { useTheme } from '@mui/material/styles';
 
 import { _langs, _notifications } from 'src/_mock';
 
-import { Iconify } from 'src/components/iconify';
-
 import { Main } from './main';
 import { layoutClasses } from '../classes';
 import { NavMobile, NavDesktop } from './nav';
 import { navData } from '../config-nav-dashboard';
-import { Searchbar } from '../components/searchbar';
 import { _workspaces } from '../config-nav-workspace';
 import { MenuButton } from '../components/menu-button';
 import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
-import { AccountPopover } from '../components/account-popover';
-import { LanguagePopover } from '../components/language-popover';
-import { NotificationsPopover } from '../components/notifications-popover';
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 import { Outlet, useLocation } from 'react-router-dom';
 import { LineProgress } from 'src/components/lineProgress';
@@ -31,6 +24,7 @@ import { useAppDispatch } from 'src/store/redux';
 import { useRouter } from 'src/routes/hooks';
 import { route } from 'src/utils/constants/routes';
 import { tokenKey } from 'src/utils/constants';
+import { AuthNavbar } from 'src/components/navbar/AuthNavbar';
 
 // ----------------------------------------------------------------------
 
@@ -88,32 +82,7 @@ export function DashboardLayout({ sx, header }: DashboardLayoutProps) {
                 />
               </>
             ),
-            rightArea: (
-              <Box gap={1} display="flex" alignItems="center">
-                <Searchbar />
-                <LanguagePopover data={_langs} />
-                <NotificationsPopover data={_notifications} />
-                <AccountPopover
-                  data={[
-                    {
-                      label: 'Home',
-                      href: route.index,
-                      icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
-                    },
-                    {
-                      label: 'Change Password',
-                      href: route.changePassword,
-                      icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
-                    },
-                    {
-                      label: 'Settings',
-                      href: '#',
-                      icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
-                    },
-                  ]}
-                />
-              </Box>
-            ),
+            rightArea: <AuthNavbar />,
           }}
         />
       }

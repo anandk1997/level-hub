@@ -5,10 +5,6 @@ import NavbarContent10 from './NavbarContent10';
 export const Navbar = () => {
   return (
     <Box sx={{ bgcolor: 'white' }}>
-      <div className="bg-[#09C0F0] text-center text-sm p-0.5">
-        Limited Time Offer: Get 50% Off on All Courses!
-      </div>
-
       <Navbar10>
         <NavbarContent10 navItems={navItems} />
       </Navbar10>

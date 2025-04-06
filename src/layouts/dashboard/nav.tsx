@@ -13,17 +13,13 @@ import { RouterLink } from 'src/routes/components';
 
 import { varAlpha } from 'src/theme/styles';
 
-import { Logo } from 'src/components/logo';
+import { LogoSection } from 'src/components/logoSection';
 import { Scrollbar } from 'src/components/scrollbar';
 
-import { NavUpgrade } from '../components/nav-upgrade';
-import { WorkspacesPopover } from '../components/workspaces-popover';
-
-import type { WorkspacesPopoverProps } from '../components/workspaces-popover';
+import { type WorkspacesPopoverProps } from '../components/workspaces-popover';
 
 export type NavContentProps = {
   data: { path: string; title: string; icon: React.ReactNode; info?: React.ReactNode }[];
-  slots?: { topArea?: React.ReactNode; bottomArea?: React.ReactNode };
   workspaces: WorkspacesPopoverProps['data'];
   sx?: SxProps<Theme>;
 };
@@ -31,7 +27,6 @@ export type NavContentProps = {
 export function NavDesktop({
   sx,
   data,
-  slots,
   workspaces,
   layoutQuery,
 }: NavContentProps & { layoutQuery: Breakpoint }) {
@@ -56,7 +51,7 @@ export function NavDesktop({
         ...sx,
       }}
     >
-      <NavContent data={data} slots={slots} workspaces={workspaces} />
+      <NavContent data={data} workspaces={workspaces} />
     </Box>
   );
 }
@@ -65,7 +60,6 @@ export function NavMobile({
   sx,
   data,
   open,
-  slots,
   onClose,
   workspaces,
 }: NavContentProps & { open: boolean; onClose: () => void }) {
@@ -93,21 +87,19 @@ export function NavMobile({
         },
       }}
     >
-      <NavContent data={data} slots={slots} workspaces={workspaces} />
+      <NavContent data={data} workspaces={workspaces} />
     </Drawer>
   );
 }
 
-export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
+export function NavContent({ data, sx }: NavContentProps) {
   const pathname = usePathname();
 
   return (
     <>
-      <Logo />
+      <LogoSection />
 
-      {slots?.topArea}
-
-      <WorkspacesPopover data={workspaces} sx={{ my: 2 }} />
+      {/* <WorkspacesPopover data={workspaces} sx={{ my: 2 }} /> */}
 
       <Scrollbar fillContent>
         <Box component="nav" display="flex" flex="1 1 auto" flexDirection="column" sx={sx}>
@@ -156,9 +148,7 @@ export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
         </Box>
       </Scrollbar>
 
-      {slots?.bottomArea}
-
-      <NavUpgrade />
+      {/* <NavUpgrade /> */}
     </>
   );
 }

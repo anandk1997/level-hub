@@ -1,23 +1,14 @@
 import { useState } from 'react';
 
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import {
-  Button,
-  CircularProgress,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  OutlinedInput,
-} from '@mui/material';
+import { Button, CircularProgress, FormControl, InputLabel, OutlinedInput } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
 import { Link } from 'react-router-dom';
-import { Checkbox } from '@mui/material';
 import { useSigninMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
@@ -58,74 +49,68 @@ export function SignInView() {
       linkTitle="Signup"
     >
       <form noValidate onSubmit={handleSignIn}>
-        <Box display="flex" flexDirection="column" alignItems="flex-end">
-          <TextField
+        <TextField
+          fullWidth
+          required
+          name="email"
+          label="Email address"
+          error={!!errorState.email}
+          helperText={errorState.email}
+          value={formState.email}
+          onChange={(e) => handleChange('email', e.target.value)}
+          sx={{ mb: 3, ...autofillStyles }}
+        />
+
+        <FormControl fullWidth required variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+
+          <OutlinedInput
             fullWidth
-            required
-            name="email"
-            label="Email address"
-            error={!!errorState.email}
-            helperText={errorState.email}
-            value={formState.email}
-            onChange={(e) => handleChange('email', e.target.value)}
+            name="password"
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            error={!!errorState.password}
+            value={formState.password}
+            onChange={(e) => handleChange('password', e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <Iconify icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
+                </IconButton>
+              </InputAdornment>
+            }
             sx={{ mb: 3, ...autofillStyles }}
           />
 
-          <FormControl fullWidth required variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <ErrorCaption caption={errorState.password} />
+        </FormControl>
 
-            <OutlinedInput
-              fullWidth
-              name="password"
-              label="Password"
-              type={showPassword ? 'text' : 'password'}
-              error={!!errorState.password}
-              value={formState.password}
-              onChange={(e) => handleChange('password', e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                    <Iconify icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
-                  </IconButton>
-                </InputAdornment>
-              }
-              sx={{ mb: 3, ...autofillStyles }}
+        <Link
+          to={route.forgot}
+          color="inherit"
+          className="mb-1.5 flex justify-end hover:underline text-[#FF991F] text-sm"
+        >
+          Forgot password?
+        </Link>
+
+        <Button
+          fullWidth
+          size="large"
+          type="submit"
+          color="inherit"
+          variant="contained"
+          disabled={isLoading}
+          className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
+        >
+          {isLoading ? (
+            <CircularProgress
+              className="!text-white group-hover:!text-[#09C0F0]"
+              sx={{ scale: '.5' }}
             />
-
-            <ErrorCaption caption={errorState.password} />
-          </FormControl>
-
-          <div className="flex justify-between items-center w-full">
-            <FormControlLabel className="!mb-2" control={<Checkbox />} label={'Remember me'} />
-
-            <Link
-              to={route.forgot}
-              color="inherit"
-              className="mb-1.5 hover:underline text-[#FF991F] text-sm"
-            >
-              Forgot password?
-            </Link>
-          </div>
-
-          <Button
-            fullWidth
-            size="large"
-            type="submit"
-            color="inherit"
-            variant="contained"
-            disabled={isLoading}
-            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
-          >
-            {isLoading ? (
-              <CircularProgress
-                className="!text-white group-hover:!text-[#09C0F0]"
-                sx={{ scale: '.5' }}
-              />
-            ) : (
-              'Login'
-            )}
-          </Button>
-        </Box>
+          ) : (
+            'Login'
+          )}
+        </Button>
       </form>
     </CardLayout>
   );
