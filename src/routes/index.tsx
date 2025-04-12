@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
     element: <DashboardLayout />,
 
     children: [
-      { index: true, element: <HomePage /> },
+      { path: route.dashboard, element: <HomePage /> },
       { path: route.user, element: <UserPage /> },
       { path: route.products, element: <ProductsPage /> },
       { path: route.blog, element: <BlogPage /> },
@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
     element: <AuthLayout />,
 
     children: [
-      { path: route.dashboard, element: <Dashboard /> },
+      { index: true, element: <Dashboard /> },
       { path: route.signIn, element: <SignInPage /> },
       { path: route.signUp, element: <SignUpPage /> },
       { path: route.otpSignup, element: <OtpSignupPage /> },

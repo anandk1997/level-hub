@@ -17,8 +17,6 @@ import { LogoSection } from 'src/components/logoSection';
 import { Scrollbar } from 'src/components/scrollbar';
 
 import { type WorkspacesPopoverProps } from '../components/workspaces-popover';
-import { matchPath } from 'react-router-dom';
-import { route } from 'src/utils/constants/routes';
 
 export type NavContentProps = {
   data: { path: string; title: string; icon: React.ReactNode; info?: React.ReactNode }[];
@@ -107,13 +105,7 @@ export function NavContent({ data, sx }: NavContentProps) {
         <Box component="nav" display="flex" flex="1 1 auto" flexDirection="column" sx={sx}>
           <Box component="ul" gap={0.5} display="flex" flexDirection="column">
             {data.map((item) => {
-              console.log('pathname..............', pathname);
-              console.log('item.path..............', item.path);
               const isActived = pathname.includes(item.path);
-
-              // const isActived = pathname.includes('settings')
-              //   ? pathname.includes(item.path)
-              //   : matchPath({ path: item.path }, pathname);
 
               return (
                 <ListItem disableGutters disablePadding key={item.title}>

@@ -23,7 +23,7 @@ export default function NavbarContent10({ navItems }: INavitemProps) {
 
   return (
     <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', width: 1 }}>
-      <Logo />
+      <Logo to={route.index} />
 
       {!downMD && navItems && (
         <Box sx={{ borderRadius: 10 }}>

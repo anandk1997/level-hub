@@ -22,7 +22,7 @@ export const route = Object.freeze({
 
   activities: '/activities',
   reports: '/reports',
-  
+
   settings: '/settings',
   account: 'account',
   changePassword: 'change-password',

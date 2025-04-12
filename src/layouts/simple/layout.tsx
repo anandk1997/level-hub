@@ -9,6 +9,7 @@ import { Main, CompactContent } from './main';
 import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
 import { Logo } from 'src/components/logoSection';
+import { route } from 'src/utils/constants/routes';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +43,7 @@ export function SimpleLayout({ sx, children, header, content }: SimpleLayoutProp
                 This is an info Alert.
               </Alert>
             ),
-            leftArea: <Logo />,
+            leftArea: <Logo to={route.index} />,
             rightArea: (
               <Link
                 href="#"

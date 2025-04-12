@@ -21,7 +21,7 @@ export function AuthLayout() {
   const layoutQuery: Breakpoint = 'md';
 
   useEffect(() => {
-    if (token) router.push(route.index);
+    if (token) router.push(route.dashboard);
   }, [token]);
 
   if (token) return <LineProgress />;

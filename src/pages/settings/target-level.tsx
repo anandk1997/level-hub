@@ -1,8 +1,5 @@
-
 const TargetLevel = () => {
-  return (
-    <div>TargetLevel</div>
-  )
-}
+  return <div>TargetLevel</div>;
+};
 
-export default TargetLevel
+export default TargetLevel;

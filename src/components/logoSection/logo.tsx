@@ -21,15 +21,15 @@ export const LogoSection = forwardRef<HTMLDivElement, LogoProps>(
         sx={{ ...sx }}
         {...other}
       >
-        <Logo />
+        <Logo to={route.dashboard} />
       </Box>
     );
   }
 );
 
-export const Logo = () => {
+export const Logo = ({ to }: { to: string }) => {
   return (
-    <Link to={route.dashboard}>
+    <Link to={to}>
       <img src="/assets/images/header_logo.png" alt="logo" className="h-7.5 w-12 rounded-md" />
     </Link>
   );

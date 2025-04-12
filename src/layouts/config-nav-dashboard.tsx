@@ -10,7 +10,7 @@ const icon = (name: string) => (
 export const navData = [
   {
     title: 'Dashboard',
-    path: '/',
+    path: route.dashboard,
     icon: icon('ic-analytics'),
   },
   // {

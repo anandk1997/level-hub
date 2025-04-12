@@ -17,7 +17,7 @@ export function Main({ sx, children, layoutQuery, ...other }: MainProps) {
 
   const pathname = usePathname();
 
-  const rolesPath = [route.coach, route.individual, route.parent, route.gym, route.dashboard];
+  const rolesPath = [route.coach, route.individual, route.parent, route.gym, route.index];
 
   return (
     <Box

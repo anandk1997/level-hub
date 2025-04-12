@@ -1,16 +1,16 @@
 import { List } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { route } from 'src/utils/constants/routes';
 import { INavItem, INavitemProps } from './types';
+import { useRouter } from 'src/routes/hooks';
 
 export function NavMenu({ navItems, onClose }: INavitemProps & { onClose?: () => void }) {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return navItems.map((item: INavItem, index: number) => (
     <a
       key={index}
       onClick={() => {
-        navigate(route.dashboard);
+        router.push(route.dashboard);
         if (onClose) onClose();
       }}
       href={`#${item.link}`}
