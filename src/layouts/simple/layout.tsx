@@ -1,9 +1,6 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
-
-import { RouterLink } from 'src/routes/components';
 
 import { Main, CompactContent } from './main';
 import { LayoutSection } from '../core/layout-section';
@@ -44,16 +41,16 @@ export function SimpleLayout({ sx, children, header, content }: SimpleLayoutProp
               </Alert>
             ),
             leftArea: <Logo to={route.index} />,
-            rightArea: (
-              <Link
-                href="#"
-                component={RouterLink}
-                color="inherit"
-                sx={{ typography: 'subtitle2' }}
-              >
-                Need help?
-              </Link>
-            ),
+            // rightArea: (
+            //   <Link
+            //     href="#"
+            //     component={RouterLink}
+            //     color="inherit"
+            //     sx={{ typography: 'subtitle2' }}
+            //   >
+            //     Need help?
+            //   </Link>
+            // ),
           }}
         />
       }

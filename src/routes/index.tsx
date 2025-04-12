@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
@@ -84,5 +84,5 @@ export const router = createBrowserRouter([
   },
 
   { path: route[404], element: <Page404 /> },
-  { path: route['*'], element: <Navigate to={route[404]} replace /> },
+  { path: route['*'], element: <Page404 /> },
 ]);

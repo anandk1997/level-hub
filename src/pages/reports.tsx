@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from 'src/utils';
 import { route } from 'src/utils/constants/routes';
-// import MonthPicker  from '@mui/x-date-pickers';
 
 const Reports = () => {
   const [value, setValue] = useState<Dayjs | null>(null);
@@ -36,234 +35,23 @@ const Reports = () => {
         </LocalizationProvider>{' '}
       </div>
 
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
+      {Array.from({ length: 20 }, (_, i) => (
+        <Card className="my-1 p-2 flex gap-1 justify-between items-center" key={i}>
+          <span>30 March 2025</span>
+          <span>4 Activities</span>
+          <span>500XP</span>
 
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
-      <Card className="my-1 p-2 flex gap-1 justify-between items-center">
-        <span>30 March 2025</span>
-        <span>4 Activities</span>
-        <span>500XP</span>
-
-        <Link
-          to={route.reports}
-          className={cn(
-            'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 disabled:!text-white disabled:cursor-none !max-w-fit',
-            '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
-            {
-              // '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-              //   activity.isRecurring,
-            }
-          )}
-        >
-          View
-        </Link>
-      </Card>
+          <Link
+            to={route.reports}
+            className={cn(
+              'group h-5 !border !border-transparent hover:!bg-white !flex justify-center items-center !rounded-full px-3 py-2 text-white disabled:!text-white disabled:cursor-none !max-w-fit',
+              '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]'
+            )}
+          >
+            View
+          </Link>
+        </Card>
+      ))}
     </>
   );
 };
