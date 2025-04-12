@@ -17,7 +17,7 @@ export const AuthNavbar = () => {
 const menuData = [
   {
     label: 'Home',
-    href: route.index,
+    href: route.dashboard,
     icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
   },
   {
@@ -27,7 +27,7 @@ const menuData = [
   },
   {
     label: 'Settings',
-    href: '#',
+    href: route.settings,
     icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
   },
 ];

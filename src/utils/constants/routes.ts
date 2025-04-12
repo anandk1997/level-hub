@@ -24,9 +24,9 @@ export const route = Object.freeze({
   reports: '/reports',
 
   settings: '/settings',
-  account: 'account',
-  changePassword: 'change-password',
-  targetLevel: 'target-level',
+  account: '/settings/account',
+  changePassword: '/settings/change-password',
+  targetLevel: '/settings/target-level',
 
   404: '/404',
   '*': '*',

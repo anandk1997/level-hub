@@ -280,7 +280,9 @@ function RecurringDateSelector() {
             ))}
           </ToggleButtonGroup>
 
-          <ErrorCaption caption={errorState.assignedDays} />
+          <div className="text-center -mt-2">
+            <ErrorCaption caption={errorState.assignedDays} />
+          </div>
         </>
       )}
     </LocalizationProvider>

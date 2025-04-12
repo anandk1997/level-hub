@@ -10,7 +10,7 @@ export function NavMenu({ navItems, onClose }: INavitemProps & { onClose?: () =>
     <a
       key={index}
       onClick={() => {
-        router.push(route.dashboard);
+        router.push(route.index);
         if (onClose) onClose();
       }}
       href={`#${item.link}`}
