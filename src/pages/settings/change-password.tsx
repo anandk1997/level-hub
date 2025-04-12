@@ -5,6 +5,7 @@ import {
   InputAdornment,
   IconButton,
   Box,
+  Typography,
 } from '@mui/material';
 import { useChangePasswordMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
@@ -103,26 +104,29 @@ const ChangePassword = () => {
           borderRadius: 2,
           display: 'flex',
           flexDirection: 'column',
-          bgcolor: 'white',
           margin: 'auto',
           height: '80vh',
           alignItems: 'center',
-          justifyContent: 'center',
         }}
       >
         <form onSubmit={handleSubmit}>
-          <FormControl fullWidth variant="outlined" className="!my-2">
+          <h1 className="font-bold text-xl">Change Password</h1>
+          <Typography className="text-gray-500 !mb-4">
+            Your previous password has been reseted. Please set a new password for your account.
+          </Typography>
+
+          <FormControl fullWidth variant="outlined" className="!mt-2">
             <InputLabel
               className={cn({ '!text-red-500': errorState.password })}
               htmlFor="outlined-adornment-password"
             >
-              Current Password
+              Enter Old Password
             </InputLabel>
 
             <OutlinedInput
               fullWidth
               name="password"
-              label="New Password"
+              label="Old Password"
               type={isPassword ? 'text' : 'password'}
               inputRef={(el) => (inputsRef.current = el)}
               error={!!errorState.password}
@@ -146,7 +150,7 @@ const ChangePassword = () => {
               className={cn({ '!text-red-500': errorState.newPassword })}
               htmlFor="outlined-adornment-newPassword"
             >
-              New Password
+              Enter New Password
             </InputLabel>
 
             <OutlinedInput
@@ -168,6 +172,12 @@ const ChangePassword = () => {
               sx={{ ...autofillStyles }}
             />
 
+            {!errorState.newPassword && (
+              <Typography variant="caption" className={cn('!ms-2 !mt-0.5')}>
+                Use 8 or more characters with a mix of letters, numbers & symbols
+              </Typography>
+            )}
+
             <ErrorCaption caption={errorState.newPassword} />
           </FormControl>
 
@@ -176,7 +186,7 @@ const ChangePassword = () => {
               className={cn({ '!text-red-500': errorState.confirmPassword })}
               htmlFor="outlined-adornment-confirm-password"
             >
-              Confirm Password
+              Confirm New Password
             </InputLabel>
 
             <OutlinedInput
@@ -196,6 +206,12 @@ const ChangePassword = () => {
               }
               sx={{ ...autofillStyles }}
             />
+
+            {!errorState.confirmPassword && (
+              <Typography variant="caption" className={cn('!ms-2 !mt-0.5')}>
+                Use 8 or more characters with a mix of letters, numbers & symbols
+              </Typography>
+            )}
 
             <ErrorCaption caption={errorState.confirmPassword} />
           </FormControl>
