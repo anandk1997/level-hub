@@ -1,6 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { createGetQuery, createMutationQuery, fetchConfig, headers } from './config';
-import { env } from 'src/utils/env';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import {
+  baseQueryWith401Handler,
+  createGetQuery,
+  createMutationQuery,
+  fetchConfig,
+} from './config';
 import {
   IActArgs,
   IChangePasswordArgs,
@@ -17,11 +21,7 @@ import {
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-
-  baseQuery: fetchBaseQuery({
-    baseUrl: env.API_URL,
-    prepareHeaders: headers,
-  }),
+  baseQuery: baseQueryWith401Handler,
 
   ...fetchConfig,
   tagTypes: ['activities', 'level'],

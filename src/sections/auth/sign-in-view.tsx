@@ -36,7 +36,7 @@ export function SignInView() {
 
       if (error) return toast.error(getErrorMessage(error));
 
-      Cookies.set(tokenKey, data.resultData.token, { expires: 7 });
+      Cookies.set(tokenKey, data.resultData.token, { expires: 1 });
       router.push(route.index);
     }
   };

@@ -1,5 +1,13 @@
+import { FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { BaseQueryFn } from '@reduxjs/toolkit/query';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import Cookies from 'js-cookie';
+import toast from 'react-hot-toast';
 import { tokenKey } from 'src/utils/constants';
+import { env } from 'src/utils/env';
+import { getErrorMessage } from './types';
+import { logoutUser } from '../reducers/auth.reducer';
+import { route } from 'src/utils/constants/routes';
 
 export const createMutationParamQuery = <T, P extends Record<string, any>>(
   url: string,
@@ -62,7 +70,7 @@ export const createGetWithParamsQuery = <T extends Record<string, any>>(url: str
   },
 });
 
-export const headers = (headers: Headers) => {
+const headers = (headers: Headers) => {
   const token = Cookies.get(tokenKey);
 
   headers.set('Authorization', `Bearer ${token}`);
@@ -77,4 +85,30 @@ export const fetchConfig = {
   // refetchOnFocus: true,
 
   refetchOnMountOrArgChange: true,
+};
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: env.API_URL,
+  prepareHeaders: headers,
+});
+
+// Define the custom base query that checks for 401 status code
+export const baseQueryWith401Handler: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  const result = await baseQuery(args, api, extraOptions);
+
+  const { error } = result;
+
+  if (error) toast.error(getErrorMessage(error));
+
+  if (error && error.status === 401) {
+    Cookies.remove(tokenKey);
+    api.dispatch(logoutUser());
+    setTimeout(() => (window.location.href = route.signIn), 1500);
+  }
+
+  return result;
 };

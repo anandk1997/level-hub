@@ -36,7 +36,16 @@ export const ActivityDialog = ({
   const { formState, errorState, handleChange } = useActivityAtom();
 
   return (
-    <Drawer anchor={'right'} open={open} onClose={onClose}>
+    <Drawer
+      anchor={'right'}
+      slotProps={{
+        paper: {
+          className: 'w-[70%] md:w-[50%]',
+        },
+      }}
+      open={open}
+      onClose={onClose}
+    >
       <form noValidate className="p-2" onSubmit={onSubmit}>
         <header className="flex justify-between items-center gap-2 border-b border-gray-300 pb-1 mb-2">
           <Typography>{dialogTitle}</Typography>
@@ -216,18 +225,22 @@ function RecurringDateSelector() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <>
-        <DatePicker {...startDateProps} className="!hidden md:!flex" />
-        <MobileDatePicker {...startDateProps} className="md:!hidden !flex" />
-      </>
+      <div className="flex flex-col md:flex-row gap-2">
+        <>
+          <DatePicker {...startDateProps} className="!hidden md:!flex flex-1" />
+          <MobileDatePicker {...startDateProps} className="md:!hidden !flex flex-1" />
+        </>
+
+        {formState.isRecurring && (
+          <>
+            <DatePicker {...endDateProps} className="!hidden md:!flex flex-1" />
+            <MobileDatePicker {...endDateProps} className={cn('md:!hidden !flex flex-1')} />
+          </>
+        )}
+      </div>
 
       {formState.isRecurring && (
         <>
-          <>
-            <DatePicker {...endDateProps} className="!hidden md:!flex" />
-            <MobileDatePicker {...endDateProps} className={cn('md:!hidden !flex')} />
-          </>
-
           <ToggleButtonGroup
             value={formState.assignedDays || []}
             onChange={(_event: React.MouseEvent<HTMLElement>, newDays: string[]) =>

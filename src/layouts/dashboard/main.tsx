@@ -7,14 +7,21 @@ import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 
 import { layoutClasses } from 'src/layouts/classes';
+import { cn } from 'src/utils';
+import { route } from 'src/utils/constants/routes';
+import { useLocation } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 export function Main({ children, sx, ...other }: BoxProps) {
+  const { pathname } = useLocation();
+
   return (
     <Box
       component="main"
-      className={layoutClasses.main}
+      className={cn(layoutClasses.main, 'bg-[#f5f6fa]', {
+        'p-3': !pathname.includes(route.settings),
+      })}
       sx={{
         display: 'flex',
         flex: '1 1 auto',

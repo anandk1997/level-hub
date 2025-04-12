@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
+import { SettingsLayout } from 'src/layouts/settings';
 import { route } from 'src/utils/constants/routes';
 
 // ----------------------------------------------------------------------
@@ -25,9 +26,13 @@ const WelcomeBackPage = lazy(() => import('src/pages/welcome-back'));
 const HomePage = lazy(() => import('src/pages/home'));
 const BlogPage = lazy(() => import('src/pages/blog'));
 const ActivitiesPage = lazy(() => import('src/pages/activities'));
+const ReportsPage = lazy(() => import('src/pages/reports'));
+const AccountPage = lazy(() => import('src/pages/settings/account'));
+const ChangePasswordPage = lazy(() => import('src/pages/settings/change-password'));
+const TargetLevelPage = lazy(() => import('src/pages/settings/target-level'));
+
 const UserPage = lazy(() => import('src/pages/user'));
 const ProductsPage = lazy(() => import('src/pages/products'));
-const ChangePasswordPage = lazy(() => import('src/pages/change-password'));
 const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
@@ -43,7 +48,17 @@ export const router = createBrowserRouter([
       { path: route.products, element: <ProductsPage /> },
       { path: route.blog, element: <BlogPage /> },
       { path: route.activities, element: <ActivitiesPage /> },
-      { path: route.changePassword, element: <ChangePasswordPage /> },
+      { path: route.reports, element: <ReportsPage /> },
+
+      {
+        path: route.settings,
+        element: <SettingsLayout />,
+        children: [
+          { path: route.account, element: <AccountPage /> },
+          { path: route.changePassword, element: <ChangePasswordPage /> },
+          { path: route.targetLevel, element: <TargetLevelPage /> },
+        ],
+      },
     ],
   },
 
