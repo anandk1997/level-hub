@@ -111,3 +111,8 @@ export interface IActArgs {
   assignedDays: string[];
   isSelfAssignment: boolean;
 }
+
+export interface IActivityApprove {
+  activityIds: number[];
+  remarks: string;
+}

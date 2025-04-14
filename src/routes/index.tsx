@@ -8,7 +8,7 @@ import { route } from 'src/utils/constants/routes';
 
 // ----------------------------------------------------------------------
 
-const Dashboard = lazy(() => import('src/pages/dashboard'));
+const HomePage = lazy(() => import('src/pages'));
 const SignInPage = lazy(() => import('src/pages/sign-in'));
 const SignUpPage = lazy(() => import('src/pages/sign-up'));
 const ForgotPassword = lazy(() => import('src/pages/forgot-password'));
@@ -23,7 +23,7 @@ const SingleUserPage = lazy(() => import('src/pages/single-user'));
 const WelcomePage = lazy(() => import('src/pages/welcome'));
 const WelcomeBackPage = lazy(() => import('src/pages/welcome-back'));
 
-const HomePage = lazy(() => import('src/pages/home'));
+const DashboardPage = lazy(() => import('src/pages/home'));
 const BlogPage = lazy(() => import('src/pages/blog'));
 const ActivitiesPage = lazy(() => import('src/pages/activities'));
 const ReportsPage = lazy(() => import('src/pages/reports'));
@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
     element: <DashboardLayout />,
 
     children: [
-      { path: route.dashboard, element: <HomePage /> },
+      { path: route.dashboard, element: <DashboardPage /> },
       { path: route.user, element: <UserPage /> },
       { path: route.products, element: <ProductsPage /> },
       { path: route.blog, element: <BlogPage /> },
@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
     element: <AuthLayout />,
 
     children: [
-      { index: true, element: <Dashboard /> },
+      { index: true, element: <HomePage /> },
       { path: route.signIn, element: <SignInPage /> },
       { path: route.signUp, element: <SignUpPage /> },
       { path: route.otpSignup, element: <OtpSignupPage /> },

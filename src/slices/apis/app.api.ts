@@ -7,6 +7,7 @@ import {
 } from './config';
 import {
   IActArgs,
+  IActivityApprove,
   IChangePasswordArgs,
   IForgotPasswordArgs,
   ILevelArgs,
@@ -63,6 +64,10 @@ export const apiSlice = createApi({
       ...createMutationQuery('/activity'),
       invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
     }),
+    approveActivity: builder.mutation<ISuccessRes, IActivityApprove>({
+      ...createMutationQuery('/activity/approve', "PUT"),
+      invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
+    }),
   }),
 });
 
@@ -77,6 +82,7 @@ export const {
   useChangePasswordMutation,
   useLevelMutation,
   useAddActivityMutation,
+  useApproveActivityMutation
 } = apiSlice;
 
 export const { useFetchLevelQuery, useFetchActivitiesQuery } = apiSlice;
