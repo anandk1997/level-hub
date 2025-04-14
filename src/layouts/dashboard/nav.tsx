@@ -50,6 +50,7 @@ export function NavDesktop({
         [theme.breakpoints.up(layoutQuery)]: { display: 'flex' },
         ...sx,
       }}
+      className="!border-r !border-gray-300"
     >
       <NavContent data={data} workspaces={workspaces} />
     </Box>

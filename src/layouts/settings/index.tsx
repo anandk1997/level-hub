@@ -5,6 +5,7 @@ import { useRouter } from 'src/routes/hooks';
 import { cn } from 'src/utils';
 import { route } from 'src/utils/constants/routes';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import { AccountCircle, LockOpen, TrackChanges } from '@mui/icons-material';
 
 export const SettingsLayout = () => {
   const { pathname } = useLocation();
@@ -51,19 +52,19 @@ const menu = [
     title: 'Account',
     description: '',
     path: route.account,
-    icon: '',
+    icon: <AccountCircle />,
   },
   {
     title: 'Change Password',
     description: '',
     path: route.changePassword,
-    icon: '',
+    icon: <LockOpen />,
   },
   {
     title: 'Set Target Level',
     description: '',
     path: route.targetLevel,
-    icon: '',
+    icon: <TrackChanges />,
   },
 ];
 
@@ -85,11 +86,19 @@ const SettingsMenu = () => {
         <Link
           key={item.path}
           to={item.path}
-          className={cn('px-5 py-1 border-b border-gray-300', {
+          className={cn('px-5 py-1 border-b border-gray-300 flex flex-col', {
             'bg-[#F3FCFE]': pathname.includes(item.path),
           })}
         >
-          {item.title}
+          <span className="flex gap-1 font-bold">
+            {item.icon}
+
+            <span>{item.title}</span>
+          </span>
+
+          <span className="text-gray-400 text-sm">
+            Lorem Ipsum is simply dummy text of the printing and typesetting.
+          </span>
         </Link>
       ))}
     </div>

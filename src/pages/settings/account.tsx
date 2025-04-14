@@ -1,5 +1,7 @@
 const Account = () => {
-  return <div>Account</div>;
+  return (
+    <div className="flex justify-center items-center h-[70vh] font-bold text-5xl">Coming Soon</div>
+  );
 };
 
 export default Account;

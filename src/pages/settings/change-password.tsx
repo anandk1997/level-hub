@@ -96,19 +96,7 @@ const ChangePassword = () => {
 
   return (
     <Container>
-      <Box
-        sx={{
-          py: 5,
-          px: 3,
-          width: 1,
-          borderRadius: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          margin: 'auto',
-          height: '80vh',
-          alignItems: 'center',
-        }}
-      >
+      <Box sx={{ py: 5, px: 3 }} className="md:max-w-[70%] lg:max-w-[60%]">
         <form onSubmit={handleSubmit}>
           <h1 className="font-bold text-xl">Change Password</h1>
           <Typography className="text-gray-500 !mb-4">
