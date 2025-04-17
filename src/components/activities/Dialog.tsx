@@ -20,6 +20,15 @@ import { cn } from 'src/utils';
 import { Dayjs } from 'dayjs';
 import { AntSwitch } from './Switch';
 
+import ReactPlayer from 'react-player';
+
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+import { useState } from 'react';
+
 export const ActivityDialog = ({
   open,
   isLoading,
@@ -187,7 +196,7 @@ const daysOfWeek: DayOption[] = [
   { label: 'S', value: 'saturday' },
 ];
 
-function RecurringDateSelector() {
+export function RecurringDateSelector() {
   const { formState, errorState, handleChange } = useActivityAtom();
 
   // Function to disable past dates
@@ -286,5 +295,113 @@ function RecurringDateSelector() {
         </>
       )}
     </LocalizationProvider>
+  );
+}
+
+export function VideoPreviewDialog({
+  open,
+  setOpen,
+  link,
+}: {
+  link: string;
+  open: boolean;
+  setOpen: () => void;
+}) {
+  const [loading, setLoading] = useState(true);
+
+  const handleReady = () => setLoading(false);
+
+  return (
+    <Dialog fullWidth maxWidth={'md'} open={open} onClose={setOpen}>
+      <DialogTitle>Optional sizes</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          You can set my maximum width and whether to adapt or not.
+        </DialogContentText>
+
+        {loading && (
+          <div className="flex justify-center items-center h-[360px] m-auto">
+            <CircularProgress
+              className="!text-[#09C0F0] group-hover:!text-[#09C0F0]"
+              sx={{ scale: '1.5' }}
+            />
+          </div>
+        )}
+
+        <div
+          className={cn({
+            'h-0 opacity-0': loading,
+          })}
+        >
+          <ReactPlayer
+            url={link}
+            playing={false}
+            controls={true}
+            width="100%"
+            // height="360px"
+            onReady={handleReady}
+          />
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={setOpen}>Close</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+export function ApproveDialog({
+  isOpen,
+  setOpen,
+  isLoading,
+  onSubmit,
+}: {
+  isOpen: boolean;
+  isLoading: boolean;
+  setOpen: () => void;
+  onSubmit: () => void;
+}) {
+  return (
+    <Dialog fullWidth maxWidth={'sm'} open={isOpen} onClose={setOpen}>
+      <DialogTitle className="text-center">Approve Activity</DialogTitle>
+
+      <DialogContent>
+        <DialogContentText className="text-center">
+          Are you sure you want to approve this activity
+        </DialogContentText>
+      </DialogContent>
+
+      <DialogActions className="!flex !justify-center !pb-3">
+        <Button
+          size="large"
+          color="inherit"
+          variant="contained"
+          className="group h-5 !bg-[white] !border !border-black !text-black hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
+          disabled={isLoading}
+          onClick={setOpen}
+        >
+          Cancel
+        </Button>
+
+        <Button
+          size="large"
+          type="submit"
+          color="inherit"
+          variant="contained"
+          className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
+          disabled={isLoading}
+          onClick={onSubmit}
+        >
+          {isLoading ? (
+            <CircularProgress
+              className="!text-white group-hover:!text-[#09C0F0]"
+              sx={{ scale: '.5' }}
+            />
+          ) : (
+            'Approve'
+          )}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

@@ -12,6 +12,14 @@ import IncompleteCircleIcon from '@mui/icons-material/IncompleteCircle';
 import EditSquareIcon from '@mui/icons-material/EditSquare';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { IconButton } from '@mui/material';
+import { Checkbox } from '@mui/material';
+import { useApproveActivityMutation } from 'src/slices/apis/app.api';
+import { useReducer, useState } from 'react';
+import toast from 'react-hot-toast';
+import { getErrorMessage } from 'src/slices/apis/types';
+
+import { PlayCircle, VerifiedUser } from '@mui/icons-material';
+import { ApproveDialog, VideoPreviewDialog } from './Dialog';
 
 export function ActivitiesList({
   activities,
@@ -20,18 +28,62 @@ export function ActivitiesList({
   activities: IActivity[];
   onUpdate: (activity: IActivity) => void;
 }) {
+  const [ids, setIds] = useState<number[]>([]);
+  const [video, setVideo] = useState('');
+
+  const [isVideo, setIsVideo] = useReducer((open) => !open, false);
+  const [isApprove, setIsApprove] = useReducer((open) => !open, false);
+
+  const [approve, { isLoading }] = useApproveActivityMutation();
+
+  const onChange = (id: number) => {
+    const tasksCompleted = (ids: number[]) =>
+      ids.includes(id) ? ids.filter((value) => value !== id) : [...ids, id];
+
+    setIds((ids) => tasksCompleted(ids));
+  };
+
+  const handleApprove = async () => {
+    const { data, error } = await approve({ activityIds: ids, remarks: 'jhg' });
+
+    if (error) return toast.error(getErrorMessage(error));
+
+    toast.success(data?.message);
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <div className="flex justify-between items-center mt-2 px-2">
         <Typography className="!font-bold">Activities List</Typography>
 
-        <Button
-          className="!bg-white !text-black !rounded-none !border !border-gray-200 !font-light"
-          startIcon={<FilterAltIcon />}
-        >
-          Filter
-        </Button>
+        <div>
+          <Button
+            className="!bg-white !text-black !rounded-none !border !border-gray-200 !font-light !me-1"
+            startIcon={<FilterAltIcon />}
+          >
+            Filter
+          </Button>
+
+          <button
+            className={cn('cursor-pointer disabled:cursor-default text-gray-300', {
+              'text-[#09C0F0]': ids.length,
+            })}
+            disabled={!ids.length}
+            onClick={setIsApprove}
+          >
+            <VerifiedUser />
+          </button>
+        </div>
       </div>
+
+      <ApproveDialog
+        isOpen={isApprove}
+        setOpen={setIsApprove}
+        isLoading={isLoading}
+        onSubmit={handleApprove}
+      />
+
+      <VideoPreviewDialog open={isVideo} setOpen={setIsVideo} link={video} />
 
       {activities?.map((activity) => (
         <Card key={activity.id} sx={{ marginY: 2, width: '100%' }}>
@@ -76,6 +128,13 @@ export function ActivitiesList({
                     textOverflow: 'ellipsis',
                   }}
                 >
+                  <Checkbox
+                    disableRipple
+                    checked={ids.includes(activity.id)}
+                    onChange={() => onChange(activity.id)}
+                    disabled={!!activity?.activityHistory?.length}
+                  />
+
                   {activity.title}
                 </Typography>
 
@@ -125,18 +184,46 @@ export function ActivitiesList({
                   component="div"
                   variant="contained"
                   className={cn(
-                    'group h-5 !border !border-transparent hover:!bg-white !flex !rounded-full disabled:!text-white disabled:cursor-none !max-w-fit',
+                    'group h-5 !border !border-transparent hover:!bg-white !flex !rounded-full disabled:!text-white disabled:cursor-none',
                     '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
                     {
                       '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-                        activity.isRecurring,
+                        !!!activity?.activityHistory?.length,
+
+                      '!cursor-default': !!activity?.activityHistory?.length,
                     }
                   )}
-                  startIcon={!activity.isRecurring ? <CheckCircleIcon /> : <IncompleteCircleIcon />}
+                  startIcon={
+                    !!activity?.activityHistory?.length ? (
+                      <CheckCircleIcon />
+                    ) : (
+                      <IncompleteCircleIcon />
+                    )
+                  }
                   sx={{ flex: 1, whiteSpace: 'nowrap' }}
+                  onClick={() => {
+                    if (!!activity?.activityHistory?.length) return;
+
+                    setIds([activity.id]);
+                    setIsApprove();
+                  }}
                 >
-                  {!activity.isRecurring ? 'Completed' : 'Pending'}
+                  {!!activity?.activityHistory?.length ? 'Completed' : 'Pending'}
                 </Button>
+
+                <IconButton
+                  component="div"
+                  disabled={!activity.videoLink}
+                  className={cn('cursor-pointer disabled:cursor-default text-gray-300', {
+                    '!text-[#09C0F0]': activity.videoLink,
+                  })}
+                  onClick={() => {
+                    setIsVideo();
+                    setVideo(activity.videoLink);
+                  }}
+                >
+                  <PlayCircle sx={{ fontSize: 35 }} />
+                </IconButton>
               </Box>
             </CardContent>
           </CardActionArea>
@@ -161,4 +248,12 @@ export interface IActivity {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+
+  activityHistory: {
+    id: number;
+    approvalDate: string;
+    assigneeId: number;
+    approvedByName: string;
+    approvedById: number;
+  }[];
 }

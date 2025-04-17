@@ -57,7 +57,7 @@ export const apiSlice = createApi({
     }),
 
     fetchActivities: builder.query<ISuccessRes, {}>({
-      ...createGetQuery('/activity'),
+      ...createMutationQuery('/activity/list'),
       providesTags: ['activities'],
     }),
     addActivity: builder.mutation<ISuccessRes, IActArgs>({
@@ -65,7 +65,7 @@ export const apiSlice = createApi({
       invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
     }),
     approveActivity: builder.mutation<ISuccessRes, IActivityApprove>({
-      ...createMutationQuery('/activity/approve', "PUT"),
+      ...createMutationQuery('/activity/approve', 'PUT'),
       invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
     }),
   }),
@@ -82,7 +82,7 @@ export const {
   useChangePasswordMutation,
   useLevelMutation,
   useAddActivityMutation,
-  useApproveActivityMutation
+  useApproveActivityMutation,
 } = apiSlice;
 
 export const { useFetchLevelQuery, useFetchActivitiesQuery } = apiSlice;
