@@ -26,6 +26,7 @@ const WelcomeBackPage = lazy(() => import('src/pages/welcome-back'));
 const DashboardPage = lazy(() => import('src/pages/home'));
 const BlogPage = lazy(() => import('src/pages/blog'));
 const ActivitiesPage = lazy(() => import('src/pages/activities'));
+const ActivityPage = lazy(() => import('src/pages/activities/[id]'));
 const ReportsPage = lazy(() => import('src/pages/reports'));
 const AccountPage = lazy(() => import('src/pages/settings/account'));
 const ChangePasswordPage = lazy(() => import('src/pages/settings/change-password'));
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
       { path: route.products, element: <ProductsPage /> },
       { path: route.blog, element: <BlogPage /> },
       { path: route.activities, element: <ActivitiesPage /> },
+      { path: route.activity, element: <ActivityPage /> },
       { path: route.reports, element: <ReportsPage /> },
 
       {

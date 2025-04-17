@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import {
   baseQueryWith401Handler,
   createGetQuery,
+  createGetWithParamsQuery,
   createMutationQuery,
   fetchConfig,
 } from './config';
@@ -60,6 +61,9 @@ export const apiSlice = createApi({
       ...createMutationQuery('/activity/list'),
       providesTags: ['activities'],
     }),
+    fetchActivity: builder.query<ISuccessRes, { id: string }>({
+      ...createGetWithParamsQuery('/activity/:id'),
+    }),
     addActivity: builder.mutation<ISuccessRes, IActArgs>({
       ...createMutationQuery('/activity'),
       invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
@@ -85,4 +89,4 @@ export const {
   useApproveActivityMutation,
 } = apiSlice;
 
-export const { useFetchLevelQuery, useFetchActivitiesQuery } = apiSlice;
+export const { useFetchLevelQuery, useFetchActivityQuery, useFetchActivitiesQuery } = apiSlice;

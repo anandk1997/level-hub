@@ -21,6 +21,7 @@ export const route = Object.freeze({
   welcomeBack: '/welcome-back',
 
   activities: '/activities',
+  activity: '/activities/:id',
   reports: '/reports',
 
   settings: '/settings',

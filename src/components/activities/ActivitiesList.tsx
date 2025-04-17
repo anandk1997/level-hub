@@ -14,12 +14,14 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { IconButton } from '@mui/material';
 import { Checkbox } from '@mui/material';
 import { useApproveActivityMutation } from 'src/slices/apis/app.api';
-import { useReducer, useState } from 'react';
+import { ChangeEvent, useReducer, useState } from 'react';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 
 import { PlayCircle, VerifiedUser } from '@mui/icons-material';
 import { ApproveDialog, VideoPreviewDialog } from './Dialog';
+import { useRouter } from 'src/routes/hooks';
+import { route } from 'src/utils/constants/routes';
 
 export function ActivitiesList({
   activities,
@@ -28,6 +30,7 @@ export function ActivitiesList({
   activities: IActivity[];
   onUpdate: (activity: IActivity) => void;
 }) {
+  const router = useRouter();
   const [ids, setIds] = useState<number[]>([]);
   const [video, setVideo] = useState('');
 
@@ -36,11 +39,9 @@ export function ActivitiesList({
 
   const [approve, { isLoading }] = useApproveActivityMutation();
 
-  const onChange = (id: number) => {
-    const tasksCompleted = (ids: number[]) =>
-      ids.includes(id) ? ids.filter((value) => value !== id) : [...ids, id];
-
-    setIds((ids) => tasksCompleted(ids));
+  const onChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+    e.stopPropagation();
+    setIds((ids) => (ids.includes(id) ? ids.filter((value) => value !== id) : [...ids, id]));
   };
 
   const handleApprove = async () => {
@@ -98,6 +99,9 @@ export function ActivitiesList({
                 },
               },
             }}
+            onClick={() => {
+              router.push(`${route.activities}/${activity.id}`);
+            }}
           >
             <CardContent
               sx={{
@@ -131,7 +135,8 @@ export function ActivitiesList({
                   <Checkbox
                     disableRipple
                     checked={ids.includes(activity.id)}
-                    onChange={() => onChange(activity.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => onChange(e, activity.id)}
                     disabled={!!activity?.activityHistory?.length}
                   />
 
@@ -172,12 +177,12 @@ export function ActivitiesList({
                     }
                   )}
                   component="div"
-                  onClick={() => onUpdate(activity)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onUpdate(activity);
+                  }}
                 >
-                  <EditSquareIcon
-                    className="!text-sm"
-                    // className="cursor-pointer hover:!text-[#09C0F0] text-black"
-                  />
+                  <EditSquareIcon className="!text-sm" />
                 </IconButton>
 
                 <Button
@@ -201,7 +206,8 @@ export function ActivitiesList({
                     )
                   }
                   sx={{ flex: 1, whiteSpace: 'nowrap' }}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     if (!!activity?.activityHistory?.length) return;
 
                     setIds([activity.id]);
@@ -217,7 +223,8 @@ export function ActivitiesList({
                   className={cn('cursor-pointer disabled:cursor-default text-gray-300', {
                     '!text-[#09C0F0]': activity.videoLink,
                   })}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setIsVideo();
                     setVideo(activity.videoLink);
                   }}
