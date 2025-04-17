@@ -12,6 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { VideoPreviewDialog } from 'src/components/activities/Dialog';
+import { LineProgress } from 'src/components/lineProgress';
 
 export default function ActivityDetail() {
   const { id } = useParams<{ id: string }>();
@@ -19,10 +20,10 @@ export default function ActivityDetail() {
 
   const [openVideo, setOpenVideo] = useState(false);
 
-  if (isLoading) return <Typography>Loading…</Typography>;
+  if (isLoading) return <LineProgress />
   if (error || !data?.resultData?.activity) return <Typography>Error loading activity</Typography>;
 
-  const activity = data.resultData.activity;
+  const activity = data?.resultData?.activity;
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
