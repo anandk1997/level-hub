@@ -20,7 +20,7 @@ export default function ActivityDetail() {
 
   const [openVideo, setOpenVideo] = useState(false);
 
-  if (isLoading) return <LineProgress />
+  if (isLoading) return <LineProgress />;
   if (error || !data?.resultData?.activity) return <Typography>Error loading activity</Typography>;
 
   const activity = data?.resultData?.activity;

@@ -5,6 +5,8 @@ import { HelmetTitle } from 'src/components/HelmetTitle';
 import { Iconify } from 'src/components/iconify';
 import { route } from 'src/utils/constants/routes';
 import { INavLink } from 'src/components/navbar/types';
+import { East, West } from '@mui/icons-material';
+import { Rating } from '@mui/material';
 
 const Dashboard: React.FC = () => {
   const homeId: INavLink = 'home';
@@ -116,7 +118,7 @@ const Dashboard: React.FC = () => {
         </section>
 
         <section
-          className="flex flex-col md:flex-row justify-between items-center gap-4 p-6"
+          className="flex flex-col md:flex-row justify-between items-center gap-4 pl-6 pr-2 py-6"
           id={reviewsId}
         >
           <div className="flex justify-center flex-1 min-w-0">
@@ -142,55 +144,57 @@ const Dashboard: React.FC = () => {
 
             <div className="relative w-full overflow-hidden flex items-center">
               <button
-                className="p-2 h-10 w-10 bg-transparent cursor-pointer flex-shrink-0"
+                className="h-10 w-5 bg-transparent cursor-pointer flex-shrink-0"
                 onClick={() =>
                   document
                     .getElementById('scroll-container')
                     ?.scrollBy({ left: -250, behavior: 'smooth' })
                 }
               >
-                ◀
+                <West />
               </button>
 
               <div
                 id="scroll-container"
-                className="flex gap-6 overflow-x-auto h-auto max-h-[300px] w-full pb-4 pr-2 scrollbar-hide snap-x snap-mandatory"
+                className="flex gap-6 overflow-x-auto h-auto max-h-[300px] w-full pb-2 pr-2 scrollbar-hide snap-x snap-mandatory"
               >
                 {[
-                  { title: 'SINGLE USER', icon: '/assets/images/dashboard/user_icon.png' },
-                  { title: 'COACHES', icon: '/assets/images/dashboard/coaches_icon.png' },
+                  { title: 'Judy Robert', icon: '/assets/images/dashboard/user_icon.png' },
+                  { title: 'Tony White', icon: '/assets/images/dashboard/coaches_icon.png' },
                   {
-                    title: 'BUSINESS/TEAMS',
+                    title: 'Judy Robert',
                     icon: '/assets/images/dashboard/business_teams_icon.png',
                   },
                 ].map((item, index) => (
-                  <div
-                    key={index}
-                    className="relative flex flex-col justify-center items-center gap-2 rounded-2xl h-28 min-w-[200px] md:min-w-[250px] p-6 bg-[#F4F4F4] snap-center"
-                  >
-                    <img
-                      src={item.icon}
-                      alt={item.title}
-                      className="absolute -top-6 w-14 h-14 object-cover rounded-full"
-                    />
-                    <h3 className="font-bold text-lg mt-5">{item.title}</h3>
-                    <p className="text-center text-gray-600 line-clamp-2">
-                      Schedule and reserve classrooms at one campus or multiple campuses. Keep
-                      detailed records of student attendance.
-                    </p>
+                  <div key={index} className="flex flex-col items-center gap-4">
+                    <div className="relative flex flex-col justify-center items-center gap-2 rounded-2xl min-w-[200px] md:min-w-[250px] p-3 bg-[#F4F4F4] snap-center">
+                      <img
+                        src={item.icon}
+                        alt={item.title}
+                        className="absolute -bottom-6 w-10 h-10 object-cover rounded-full"
+                      />
+                      <p className="text-center text-gray-600 line-clamp-2">
+                        Schedule and reserve classrooms at one campus or multiple campuses. Keep
+                        detailed records of student attendance.
+                      </p>
+
+                      <Rating name="read-only" value={2} readOnly />
+                    </div>
+
+                    <div className="font-bold">{item.title}</div>
                   </div>
                 ))}
               </div>
 
               <button
-                className="p-2 h-10 w-10 bg-transparent cursor-pointer flex-shrink-0"
+                className="h-10 w-5 bg-transparent cursor-pointer flex-shrink-0"
                 onClick={() =>
                   document
                     .getElementById('scroll-container')
                     ?.scrollBy({ left: 250, behavior: 'smooth' })
                 }
               >
-                ▶
+                <East />
               </button>
             </div>
           </div>
@@ -198,9 +202,9 @@ const Dashboard: React.FC = () => {
       </Container>
 
       <section className="w-full bg-[#09C0F0]" id={aboutUsId}>
-        <Container>
+        <Container className="!p-0">
           <div className="flex flex-col md:flex-row justify-around items-center gap-2 w-full">
-            <div className="flex flex-col flex-1 gap-2">
+            <div className="flex flex-col flex-1 gap-2  p-2">
               <h2 className="text-4xl text-white flex flex-col">
                 <span className="font-extralight">About the</span>
                 <span className="font-extrabold">Level Hub</span>
@@ -220,8 +224,12 @@ const Dashboard: React.FC = () => {
               </button>
             </div>
 
-            <div className="flex justify-center flex-1">
-              <img src="/assets/images/dashboard/about_lh.png" alt="About Level Hub" />
+            <div className="flex justify-center flex-1 w-full">
+              <img
+                src="/assets/images/dashboard/about_lh.png"
+                alt="About Level Hub"
+                className="w-full h-full"
+              />
             </div>
           </div>
         </Container>
