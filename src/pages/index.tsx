@@ -5,7 +5,7 @@ import { HelmetTitle } from 'src/components/HelmetTitle';
 import { Iconify } from 'src/components/iconify';
 import { route } from 'src/utils/constants/routes';
 import { INavLink } from 'src/components/navbar/types';
-import { East, West } from '@mui/icons-material';
+import { East, PlayCircleFilledWhiteOutlined, West } from '@mui/icons-material';
 import { Rating } from '@mui/material';
 
 const Dashboard: React.FC = () => {
@@ -27,21 +27,14 @@ const Dashboard: React.FC = () => {
             <Typography className="text-[#FF991F] !font-semibold">START TO SUCCESS</Typography>
             <img src="/assets/images/dashboard/Introducing_level_hub.png" alt="Introduction" />
             <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, magni?</span>
-            <div className="flex flex-col md:flex-row items-center align-middle">
+            <div className="flex flex-col md:flex-row md:gap-1.5 items-center align-middle">
               <Button className="!bg-[#09C0F0] !px-3.5 !py-1.5 !rounded-xl !text-white !text-md">
                 Learn More
               </Button>
 
-              <Button className="!flex !mt-3">
-                <img
-                  src="/assets/images/dashboard/play_icon.png"
-                  className="h-14 ml-[-10px]"
-                  alt="Play icon"
-                />
-
-                <span className="text-gray-700 font-medium text-md mb-3 ml-[-10px]">
-                  Watch how it works
-                </span>
+              <Button className="!flex !justify-center !items-center gap-1.5 !text-lg !font-light !text-gray-700">
+                <PlayCircleFilledWhiteOutlined sx={{ fontSize: 40, color: '#FF991F' }} />
+                Watch how it works
               </Button>
             </div>
           </div>
