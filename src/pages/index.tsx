@@ -149,7 +149,7 @@ const Dashboard: React.FC = () => {
 
               <div
                 id="scroll-container"
-                className="flex gap-6 overflow-x-auto h-auto max-h-[300px] w-full pb-2 pr-2 scrollbar-hide snap-x snap-mandatory"
+                className="flex gap-6 overflow-x-auto h-auto max-h-[300px] w-full pb-2 pr-2 scrollbar-hide snap-x snap-mandatory scrollbar-none"
               >
                 {[
                   { title: 'Judy Robert', icon: '/assets/images/dashboard/user_icon.png' },
