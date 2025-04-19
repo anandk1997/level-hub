@@ -80,10 +80,23 @@ export const useActivityAtom = () => {
       newErrors.endDate = 'Please select end date';
     }
 
-    // ✅ Set error state
-    setErrorState(newErrors);
+    // ✅ Validate video link (if provided)
+    const videoLink = formState.videoLink?.trim();
 
-    return Object.keys(newErrors).length === 0;
+    if (videoLink) {
+      const isValidYoutube =
+        /^https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+$/i.test(videoLink);
+      const isValidVimeo = /^https?:\/\/(www\.)?vimeo\.com\/\d+$/i.test(videoLink);
+
+      if (!isValidYoutube && !isValidVimeo) {
+        newErrors.videoLink = 'Only valid YouTube or Vimeo links are allowed';
+      }
+    }
+
+    // Set error state
+    setErrorState((prev) => ({ ...prev, ...newErrors }));
+
+    return Object.keys(errorState).length === 0;
   };
 
   return {

@@ -27,7 +27,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { OutlinedInput } from '@mui/material';
 import { FormControl } from '@mui/material';
 
@@ -44,7 +44,18 @@ export const ActivityDialog = ({
   onSubmit: (e: React.FormEvent) => Promise<string | undefined>;
   dialogTitle: string;
 }) => {
-  const { formState, errorState, handleChange } = useActivityAtom();
+  const { formState, errorState, setErrorState, handleChange } = useActivityAtom();
+
+  const [isPlayable, setIsPlayable] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!ReactPlayer.canPlay(formState.videoLink) && formState.videoLink) {
+      setIsPlayable(false);
+      setErrorState((prev) => ({ ...prev, videoLink: 'Please provide a valid video link' }));
+    } else {
+      setIsPlayable(null);
+    }
+  }, [formState.videoLink]);
 
   const [isVideo, setIsVideo] = useReducer((open) => !open, false);
 
@@ -59,6 +70,13 @@ export const ActivityDialog = ({
       open={open}
       onClose={onClose}
     >
+      <ReactPlayer
+        url={formState.videoLink}
+        onReady={() => setIsPlayable(true)}
+        onError={() => setIsPlayable(false)}
+        className="hidden"
+      />
+
       <VideoPreviewDialog open={isVideo} setOpen={setIsVideo} link={formState.videoLink} />
 
       <form noValidate className="p-2" onSubmit={onSubmit}>
@@ -138,7 +156,7 @@ export const ActivityDialog = ({
                   <button
                     className="bg-[#FF991F] text-black rounded-full cursor-pointer disabled:cursor-default disabled:bg-gray-300 disabled:border-none disabled:hover:bg-gray-300 disabled:hover:text-black border border-[#FF991F] px-2 hover:bg-white hover:text-[#FF991F]"
                     type="button"
-                    disabled={!formState.videoLink}
+                    disabled={!formState.videoLink || !isPlayable}
                     onClick={setIsVideo}
                   >
                     Preview
@@ -386,11 +404,13 @@ export function ApproveDialog({
 }) {
   return (
     <Dialog fullWidth maxWidth={'sm'} open={isOpen} onClose={setOpen}>
-      <DialogTitle className="text-center">Approve Activity</DialogTitle>
+      <DialogTitle className="text-center">
+        Are you sure you want to complete this activity
+      </DialogTitle>
 
       <DialogContent>
         <DialogContentText className="text-center">
-          Are you sure you want to approve this activity
+          Your action notify the coach or parent once you complete this activity
         </DialogContentText>
       </DialogContent>
 
@@ -421,7 +441,7 @@ export function ApproveDialog({
               sx={{ scale: '.5' }}
             />
           ) : (
-            'Approve'
+            'Yes'
           )}
         </Button>
       </DialogActions>
