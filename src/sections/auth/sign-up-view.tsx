@@ -33,7 +33,7 @@ import { getErrorMessage } from 'src/slices/apis/types';
 import toast from 'react-hot-toast';
 import { route } from 'src/utils/constants/routes';
 import { CardLayout } from 'src/layouts/auth/cardLayout';
-import { cn, encodeQueryParams } from 'src/utils';
+import { cn, encodeQueryParams, filterValues } from 'src/utils';
 
 import { DatePicker, DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -59,7 +59,7 @@ export function SignUpView() {
     const formattedDate = formState.dob!?.toDate().toISOString().split('T')[0];
 
     if (validate()) {
-      const { error } = await signup({
+      const payload = {
         firstName: formState.firstName,
         lastName: formState.lastName,
         email: formState.email,
@@ -68,7 +68,11 @@ export function SignUpView() {
         dob: formattedDate,
         phone: formState.phone,
         type: formState.role,
-      });
+      };
+
+      const filteredFormState: any = filterValues(payload);
+
+      const { error } = await signup(filteredFormState);
 
       if (error) return toast.error(getErrorMessage(error));
 

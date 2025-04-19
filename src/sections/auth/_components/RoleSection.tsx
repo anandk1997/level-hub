@@ -1,11 +1,8 @@
-import { FormHelperText, FormLabel, Radio } from '@mui/material';
-import { Alert, FormControl, FormControlLabel, RadioGroup, TextField } from '@mui/material';
+import { FormLabel } from '@mui/material';
+import { Alert, FormControl, TextField } from '@mui/material';
 import clsx from 'clsx';
 import { IFormAtom, RoleType, useSignupAtom } from 'src/store/jotai/signup';
-import { generateOptions } from './DateOfBirth';
 import { autofillStyles } from '../sign-up-view';
-import { Box } from '@mui/material';
-import { Autocomplete } from '@mui/material';
 import { route } from 'src/utils/constants/routes';
 
 export const RoleSection = ({
@@ -13,19 +10,19 @@ export const RoleSection = ({
 }: {
   handleChange: <K extends keyof IFormAtom>(key: K, value: IFormAtom[K]) => void;
 }) => {
-  const { formState, errorState, updateChildrenData, setNumberOfChildren } = useSignupAtom();
+  const { formState, errorState } = useSignupAtom();
 
   const isRole = <T extends RoleType>(validRoles: T[]) => validRoles.includes(formState.role as T);
 
   // Generate options for children's age
-  const childrensAge = generateOptions(1, 18);
+  // const childrensAge = generateOptions(1, 18);
 
-  // Handle change in number of children
-  const handleChildrenCountChange = (_: any, newValue: any) => {
-    handleChange('childrens', newValue);
-    const count = newValue ? parseInt(newValue.value) : 0;
-    setNumberOfChildren(count);
-  };
+  // // Handle change in number of children
+  // const handleChildrenCountChange = (_: any, newValue: any) => {
+  //   handleChange('childrens', newValue);
+  //   const count = newValue ? parseInt(newValue.value) : 0;
+  //   setNumberOfChildren(count);
+  // };
 
   const roles = rolesData.reduce<IRole[][]>((rows, role, index) => {
     if (index % 2 === 0) rows.push([role]);
@@ -36,6 +33,19 @@ export const RoleSection = ({
 
   return (
     <>
+      {/* Gym Owner Section */}
+      {isRole(['gym']) && (
+        <TextField
+          error={!!errorState.gymName}
+          helperText={errorState.gymName}
+          name="gymName"
+          label="Gym Name"
+          value={formState.gymName}
+          onChange={(e) => handleChange('gymName', e.target.value)}
+          sx={{ width: { xs: '100%', md: '49%' }, ...autofillStyles }}
+        />
+      )}
+
       {/* Role Selection */}
       <FormControl required component="fieldset">
         <FormLabel component="legend" className="!font-bold mb-1">
@@ -64,23 +74,11 @@ export const RoleSection = ({
         </Alert>
       )}
 
-      {/* Gym Owner Section */}
-      {isRole(['gym']) && (
-        <TextField
-          error={!!errorState.gymName}
-          helperText={errorState.gymName}
-          name="gymName"
-          label="Gym Name"
-          value={formState.gymName}
-          onChange={(e) => handleChange('gymName', e.target.value)}
-          sx={{ width: { xs: '100%', md: '49%' }, ...autofillStyles }}
-        />
-      )}
-
-      {/* Parent Section */}
-      {isRole(['parent']) && (
+      <>
+        {/* Parent Section */}
+        {/* {isRole(['parent']) && (
         <>
-          {/* Number of children */}
+          // Number of children 
           <Box sx={{ width: { xs: '100%', md: '49%' } }}>
             <Autocomplete
               options={generateOptions(1, 5)}
@@ -100,10 +98,10 @@ export const RoleSection = ({
             />
           </Box>
 
-          {/* Dynamically Render Children Inputs */}
+          // Dynamically Render Children Inputs 
           {formState.childrenData.map((child, index) => (
             <div key={index} className="flex flex-col md:flex-row gap-2">
-              {/* Age */}
+              // Age 
               <div className="flex-1">
                 <Autocomplete
                   options={childrensAge}
@@ -123,7 +121,7 @@ export const RoleSection = ({
                 />
               </div>
 
-              {/* Gender */}
+              // Gender 
               <FormControl sx={{ flex: 1 }} error={!!errorState.childrenData?.[index]?.gender}>
                 <FormLabel className="!text-sm !font-bold !mb-2">
                   Child {index + 1} Gender
@@ -149,7 +147,8 @@ export const RoleSection = ({
             </div>
           ))}
         </>
-      )}
+      )} */}
+      </>
     </>
   );
 };

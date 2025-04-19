@@ -15,7 +15,7 @@ import { ActivityDialog } from './Dialog';
 import { BorderLinearProgress, SmallAvatar } from './Styled';
 import { useAppSelector } from 'src/store/redux';
 import { Badge } from '@mui/material';
-import { cn } from 'src/utils';
+import { cn, filterValues } from 'src/utils';
 
 export const Activities = () => {
   const [isActivity, setIsActivity] = useState(false);
@@ -35,16 +35,13 @@ export const Activities = () => {
         const formatStartDate = formState.startDate!?.toDate().toISOString().split('T')[0];
         const formatEndDate = formState.endDate!?.toDate().toISOString().split('T')[0];
 
-        const filteredFormState: any = Object.fromEntries(
-          Object.entries({
-            ...formState,
-            startDate: formatStartDate,
-            endDate: formatEndDate,
-          }).filter(([_, value]) => {
-            if (Array.isArray(value)) return value.length > 0;
-            return value !== undefined && value !== null && value !== '';
-          })
-        );
+        const payload = {
+          ...formState,
+          startDate: formatStartDate,
+          endDate: formatEndDate,
+        };
+
+        const filteredFormState: any = filterValues(payload);
 
         if (formState.activityId) {
           const { data, error } = await updateActivity(filteredFormState);
