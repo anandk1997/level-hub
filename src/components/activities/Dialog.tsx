@@ -1,4 +1,4 @@
-import { Button, CircularProgress, TextField } from '@mui/material';
+import { Button, CircularProgress, InputAdornment, InputLabel, TextField } from '@mui/material';
 import { Typography } from '@mui/material';
 
 import DialogActions from '@mui/material/DialogActions';
@@ -27,7 +27,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
+import { OutlinedInput } from '@mui/material';
+import { FormControl } from '@mui/material';
 
 export const ActivityDialog = ({
   open,
@@ -44,6 +46,8 @@ export const ActivityDialog = ({
 }) => {
   const { formState, errorState, handleChange } = useActivityAtom();
 
+  const [isVideo, setIsVideo] = useReducer((open) => !open, false);
+
   return (
     <Drawer
       anchor={'right'}
@@ -55,6 +59,8 @@ export const ActivityDialog = ({
       open={open}
       onClose={onClose}
     >
+      <VideoPreviewDialog open={isVideo} setOpen={setIsVideo} link={formState.videoLink} />
+
       <form noValidate className="p-2" onSubmit={onSubmit}>
         <header className="flex justify-between items-center gap-2 border-b border-gray-300 pb-1 mb-2">
           <Typography>{dialogTitle}</Typography>
@@ -116,16 +122,33 @@ export const ActivityDialog = ({
             onChange={(e) => handleChange('description', e.target.value)}
           />
 
-          <TextField
-            fullWidth
-            name="videoLink"
-            label="Video Link (Optional)"
-            placeholder="Video Link (Optional)"
-            error={!!errorState.videoLink}
-            helperText={errorState.videoLink}
-            value={formState.videoLink || ''}
-            onChange={(e) => handleChange('videoLink', e.target.value)}
-          />
+          <FormControl fullWidth required variant="outlined">
+            <InputLabel>Video Link (Optional)</InputLabel>
+
+            <OutlinedInput
+              fullWidth
+              name="videoLink"
+              label="Video Link (Optional)"
+              placeholder="Video Link (Optional)"
+              error={!!errorState.videoLink}
+              value={formState.videoLink || ''}
+              onChange={(e) => handleChange('videoLink', e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <button
+                    className="bg-[#FF991F] text-black rounded-full cursor-pointer disabled:cursor-default disabled:bg-gray-300 disabled:border-none disabled:hover:bg-gray-300 disabled:hover:text-black border border-[#FF991F] px-2 hover:bg-white hover:text-[#FF991F]"
+                    type="button"
+                    disabled={!formState.videoLink}
+                    onClick={setIsVideo}
+                  >
+                    Preview
+                  </button>
+                </InputAdornment>
+              }
+            />
+
+            <ErrorCaption caption={errorState.videoLink} />
+          </FormControl>
 
           <div className="flex justify-between items-end gap-2">
             <div className="flex flex-col">
