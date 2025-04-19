@@ -75,10 +75,11 @@ export const decodeQueryParams = (search: string): Record<string, string> => {
   return decodedParams;
 };
 
-export const filterValues = (payload: Object) =>
+export const filterValues = (payload: Record<string, any>) =>
   Object.fromEntries(
-    Object.entries(payload).filter(([_, value]) => {
-      if (Array.isArray(value)) return value.length > 0;
-      return value !== undefined && value !== null && value !== '';
-    })
+    Object.entries(payload).filter(
+      ([, value]) =>
+        (Array.isArray(value) && value.length > 0) ||
+        (!Array.isArray(value) && value !== undefined && value !== null && value !== '')
+    )
   );
