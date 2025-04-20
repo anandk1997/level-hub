@@ -64,7 +64,7 @@ export const ActivityDialog = ({
       anchor={'right'}
       slotProps={{
         paper: {
-          className: 'w-[70%] md:w-[50%]',
+          className: 'w-[100%] md:w-[50%]',
         },
       }}
       open={open}
@@ -140,7 +140,7 @@ export const ActivityDialog = ({
             onChange={(e) => handleChange('description', e.target.value)}
           />
 
-          <FormControl fullWidth required variant="outlined">
+          <FormControl fullWidth variant="outlined">
             <InputLabel>Video Link (Optional)</InputLabel>
 
             <OutlinedInput
@@ -298,7 +298,7 @@ export function RecurringDateSelector() {
             }
             aria-label="Select Recurring Days"
             color="primary"
-            sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}
+            sx={{ display: 'flex', justifyContent: 'center' }}
             exclusive={false}
           >
             {daysOfWeek.map((day, index) => (

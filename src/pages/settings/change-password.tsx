@@ -40,6 +40,7 @@ const ChangePassword = () => {
 
   const [isPassword, setIsPassword] = useReducer((show) => !show, false);
   const [isPassword1, setIsPassword1] = useReducer((show) => !show, false);
+  const [isPassword2, setIsPassword2] = useReducer((show) => !show, false);
 
   const handleChange = (key: string, value: string) => {
     setFormState((prev) => ({ ...prev, [key]: value }));
@@ -145,15 +146,14 @@ const ChangePassword = () => {
               fullWidth
               name="newPassword"
               label="New Password"
-              type={isPassword ? 'text' : 'newPassword'}
-              inputRef={(el) => (inputsRef.current = el)}
+              type={isPassword1 ? 'text' : 'newPassword'}
               error={!!errorState.newPassword}
               value={formState.newPassword}
               onChange={(e) => handleChange('newPassword', e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={setIsPassword} edge="end">
-                    <Iconify icon={isPassword ? 'tabler:eye' : 'tabler:eye-off'} />
+                  <IconButton onClick={setIsPassword1} edge="end">
+                    <Iconify icon={isPassword1 ? 'tabler:eye' : 'tabler:eye-off'} />
                   </IconButton>
                 </InputAdornment>
               }
@@ -181,14 +181,14 @@ const ChangePassword = () => {
               fullWidth
               name="confirmPassword"
               label="Confirm Password"
-              type={isPassword1 ? 'text' : 'password'}
+              type={isPassword2 ? 'text' : 'password'}
               value={formState.confirmPassword}
               onChange={(e) => handleChange('confirmPassword', e.target.value)}
               error={!!errorState.confirmPassword}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={setIsPassword1} edge="end">
-                    <Iconify icon={isPassword1 ? 'tabler:eye' : 'tabler:eye-off'} />
+                  <IconButton onClick={setIsPassword2} edge="end">
+                    <Iconify icon={isPassword2 ? 'tabler:eye' : 'tabler:eye-off'} />
                   </IconButton>
                 </InputAdornment>
               }

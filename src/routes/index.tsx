@@ -23,7 +23,7 @@ const SingleUserPage = lazy(() => import('src/pages/single-user'));
 const WelcomePage = lazy(() => import('src/pages/welcome'));
 const WelcomeBackPage = lazy(() => import('src/pages/welcome-back'));
 
-const DashboardPage = lazy(() => import('src/pages/home'));
+const DashboardPage = lazy(() => import('src/pages/dashboard'));
 const BlogPage = lazy(() => import('src/pages/blog'));
 const ActivitiesPage = lazy(() => import('src/pages/activities'));
 const ActivityPage = lazy(() => import('src/pages/activities/[id]'));

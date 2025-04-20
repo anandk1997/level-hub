@@ -2,7 +2,7 @@ import { HelmetTitle } from 'src/components/HelmetTitle';
 
 import { OverviewAnalyticsView } from 'src/sections/overview/view';
 
-export default function Page() {
+export default function DashboardPage() {
   return (
     <>
       <HelmetTitle
