@@ -31,6 +31,8 @@ export interface IFilterAtom {
   page: number;
   pageSize: number;
   status: 'completed' | 'notCompleted' | 'all';
+  startDate?: Dayjs | null;
+  endDate?: Dayjs | null;
 }
 
 export const initialFormState: IFormAtom = {
@@ -49,6 +51,8 @@ const initialFilter: IFilterAtom = {
   page: 1,
   pageSize: 10,
   status: 'all',
+  startDate: null,
+  endDate: null,
 };
 
 export const formAtom = atom<IFormAtom>(initialFormState);

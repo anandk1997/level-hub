@@ -14,7 +14,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { IconButton } from '@mui/material';
 import { Checkbox } from '@mui/material';
 import { useApproveActivityMutation } from 'src/slices/apis/app.api';
-import { ChangeEvent, useReducer, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useReducer, useState } from 'react';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 
@@ -27,6 +27,7 @@ import { TextField } from '@mui/material';
 import { useActivityAtom } from 'src/store/jotai/activities';
 
 import { CustomRangePicker } from './DateRange';
+import { Iconify } from '../iconify';
 
 export function ActivitiesList({
   activities,
@@ -34,12 +35,14 @@ export function ActivitiesList({
   totalPages,
   currentPage,
   onPageChange,
+  setIsActivity,
 }: {
   activities: IActivity[];
   onUpdate: (activity: IActivity) => void;
   totalPages: number;
   currentPage: number;
   onPageChange: (event: ChangeEvent<unknown>, value: number) => void;
+  setIsActivity: Dispatch<SetStateAction<boolean>>;
 }) {
   const router = useRouter();
   const [ids, setIds] = useState<number[]>([]);
@@ -114,6 +117,27 @@ export function ActivitiesList({
           </button>
         </div>
       </div>
+
+      {!!!activities?.length && (
+        <>
+          <Typography className="text-center !my-3">
+            There is currently nothing to display. Please add some activities, and we will show the
+            experience points (XP) accordingly.
+          </Typography>
+
+          <Button
+            size="large"
+            type="submit"
+            color="inherit"
+            variant="contained"
+            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !flex !m-auto"
+            onClick={() => setIsActivity(true)}
+            endIcon={<Iconify icon="mingcute:add-line" />}
+          >
+            Add Activity
+          </Button>
+        </>
+      )}
 
       <ApproveDialog
         isOpen={isApprove}

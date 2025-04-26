@@ -30,6 +30,9 @@ export const Activities = () => {
     page: filters.page,
     pageSize: filters.pageSize,
     status: filters.status,
+    ...(filters.startDate && filters.endDate
+      ? { startDate: filters.startDate, endDate: filters.endDate }
+      : {}),
   });
 
   const totalCount = data?.resultData?.count || 0;
@@ -156,36 +159,14 @@ export const Activities = () => {
         </div>
       </div>
 
-      {!!!data?.resultData?.activities?.length ? (
-        <>
-          <Typography className="text-center !my-3">
-            There is currently nothing to display. Please add some activities, and we will show the
-            experience points (XP) accordingly.
-          </Typography>
-
-          <Button
-            size="large"
-            type="submit"
-            color="inherit"
-            variant="contained"
-            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !flex !m-auto"
-            onClick={() => setIsActivity(true)}
-            endIcon={<Iconify icon="mingcute:add-line" />}
-          >
-            Add Activity
-          </Button>
-        </>
-      ) : (
-        <>
-          <ActivitiesList
-            activities={data?.resultData?.activities}
-            onUpdate={handleClickDialog}
-            currentPage={filters.page}
-            onPageChange={(_e, value) => handleFilters('page', value)}
-            totalPages={totalPages}
-          />
-        </>
-      )}
+      <ActivitiesList
+        activities={data?.resultData?.activities}
+        onUpdate={handleClickDialog}
+        currentPage={filters.page}
+        onPageChange={(_e, value) => handleFilters('page', value)}
+        totalPages={totalPages}
+        setIsActivity={setIsActivity}
+      />
     </>
   );
 };
