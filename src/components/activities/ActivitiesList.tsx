@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Pagination } from '@mui/material';
 import { Typography } from '@mui/material';
 
 import { cn } from 'src/utils';
@@ -22,13 +22,24 @@ import { PlayCircle, VerifiedUser } from '@mui/icons-material';
 import { ApproveDialog, VideoPreviewDialog } from './Dialog';
 import { useRouter } from 'src/routes/hooks';
 import { route } from 'src/utils/constants/routes';
+import { Autocomplete } from '@mui/material';
+import { TextField } from '@mui/material';
+import { useActivityAtom } from 'src/store/jotai/activities';
+
+import { CustomRangePicker } from './DateRange';
 
 export function ActivitiesList({
   activities,
   onUpdate,
+  totalPages,
+  currentPage,
+  onPageChange,
 }: {
   activities: IActivity[];
   onUpdate: (activity: IActivity) => void;
+  totalPages: number;
+  currentPage: number;
+  onPageChange: (event: ChangeEvent<unknown>, value: number) => void;
 }) {
   const router = useRouter();
   const [ids, setIds] = useState<number[]>([]);
@@ -38,6 +49,8 @@ export function ActivitiesList({
   const [isApprove, setIsApprove] = useReducer((open) => !open, false);
 
   const [approve, { isLoading }] = useApproveActivityMutation();
+
+  const { filters, handleFilters } = useActivityAtom();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
     e.stopPropagation();
@@ -52,12 +65,37 @@ export function ActivitiesList({
     toast.success(data?.message);
   };
 
+  const options = [
+    { label: 'ALL', value: 'all' },
+    { label: 'Completed', value: 'completed' },
+    { label: 'Pending', value: 'notCompleted' },
+  ];
+
   return (
     <Box sx={{ width: '100%' }}>
-      <div className="flex justify-between items-center mt-2 px-2">
+      <div className="flex justify-between items-center flex-wrap mt-2 px-2">
         <Typography className="!font-bold">Activities List</Typography>
 
-        <div>
+        <div className="flex flex-wrap gap-1">
+          <CustomRangePicker />
+
+          <Autocomplete
+            className="w-15"
+            options={options}
+            getOptionLabel={(option) => option.label}
+            value={options.find((opt) => opt.value === filters.status) || null}
+            onChange={(_, value) => handleFilters('status', value?.value || '')}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Status"
+                variant="outlined"
+                placeholder="Status"
+                fullWidth
+              />
+            )}
+          />
+
           <Button
             className="!bg-white !text-black !rounded-none !border !border-gray-200 !font-light !me-1"
             startIcon={<FilterAltIcon />}
@@ -137,7 +175,7 @@ export function ActivitiesList({
                     checked={ids.includes(activity.id)}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => onChange(e, activity.id)}
-                    disabled={!!activity?.activityHistory?.length}
+                    disabled={!!activity?.completed}
                   />
 
                   {activity.title}
@@ -193,28 +231,22 @@ export function ActivitiesList({
                     '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
                     {
                       '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-                        !!!activity?.activityHistory?.length,
+                        !!!activity?.completed,
 
-                      '!cursor-default': !!activity?.activityHistory?.length,
+                      '!cursor-default': !!activity?.completed,
                     }
                   )}
-                  startIcon={
-                    !!activity?.activityHistory?.length ? (
-                      <CheckCircleIcon />
-                    ) : (
-                      <IncompleteCircleIcon />
-                    )
-                  }
+                  startIcon={!!activity?.completed ? <CheckCircleIcon /> : <IncompleteCircleIcon />}
                   sx={{ flex: 1, whiteSpace: 'nowrap' }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (!!activity?.activityHistory?.length) return;
+                    if (!!activity?.completed) return;
 
                     setIds([activity.id]);
                     setIsApprove();
                   }}
                 >
-                  {!!activity?.activityHistory?.length ? 'Completed' : 'Pending'}
+                  {!!activity?.completed ? 'Completed' : 'Pending'}
                 </Button>
 
                 <IconButton
@@ -236,6 +268,37 @@ export function ActivitiesList({
           </CardActionArea>
         </Card>
       ))}
+
+      {totalPages > 1 && (
+        <Pagination
+          className="flex justify-end"
+          count={totalPages}
+          page={currentPage}
+          onChange={onPageChange}
+          color="primary"
+          sx={{
+            '.MuiPaginationItem-root': {
+              color: 'gray',
+
+              '&:hover': {
+                border: '1px solid #09C0F0',
+                color: '#09C0F0',
+                backgroundColor: 'transparent',
+              },
+            },
+
+            '.Mui-selected': {
+              backgroundColor: '#09C0F0 !important',
+              color: 'white',
+              border: '1px solid #09C0F0 !important',
+              '&:hover': {
+                color: '#09C0F0 !important',
+                backgroundColor: 'transparent !important',
+              },
+            },
+          }}
+        />
+      )}
     </Box>
   );
 }
@@ -255,6 +318,7 @@ export interface IActivity {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+  completed: boolean;
 
   activityHistory: {
     id: number;

@@ -248,7 +248,7 @@ export function RecurringDateSelector() {
   const startDateProps: Partial<DatePickerProps<any>> = {
     label: !formState.isRecurring ? 'Select Date' : 'Select Start Date',
     value: formState.startDate,
-    onChange: (newValue: Dayjs) => handleChange('startDate', newValue),
+    onChange: (newValue) => handleChange('startDate', newValue),
     shouldDisableDate: disablePastDates,
     slotProps: {
       textField: {
@@ -262,7 +262,7 @@ export function RecurringDateSelector() {
   const endDateProps: Partial<DatePickerProps<any>> = {
     label: 'Select End Date',
     value: formState.endDate,
-    onChange: (newValue: Dayjs) => handleChange('endDate', newValue),
+    onChange: (newValue) => handleChange('endDate', newValue),
     shouldDisableDate: disablePastDates,
     slotProps: {
       textField: {

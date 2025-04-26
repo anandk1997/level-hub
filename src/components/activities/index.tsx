@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
-import { useAddActivityMutation, useFetchActivitiesQuery } from 'src/slices/apis/app.api';
+import { useUpsertActivityMutation, useFetchActivitiesQuery } from 'src/slices/apis/app.api';
 import { Iconify } from '../iconify';
 
 import { initialFormState, useActivityAtom } from 'src/store/jotai/activities';
@@ -20,45 +20,44 @@ import { cn, filterValues } from 'src/utils';
 export const Activities = () => {
   const [isActivity, setIsActivity] = useState(false);
 
-  const { formState, setFormState, setErrorState, validate } = useActivityAtom();
+  const { formState, setFormState, setErrorState, validate, filters, handleFilters } =
+    useActivityAtom();
   const { fullName } = useAppSelector((state) => state.auth);
 
-  const [addActivity, { isLoading: isAdding }] = useAddActivityMutation();
-  const [updateActivity, { isLoading: isUpdating }] = useAddActivityMutation();
-  const { data, isFetching } = useFetchActivitiesQuery({});
+  const [upsertActivity, { isLoading: isUpserting }] = useUpsertActivityMutation();
 
-  const handleAddActivity = async (e: React.FormEvent) => {
+  const { data, isFetching } = useFetchActivitiesQuery({
+    page: filters.page,
+    pageSize: filters.pageSize,
+    status: filters.status,
+  });
+
+  const totalCount = data?.resultData?.count || 0;
+  const totalPages = Math.ceil(totalCount / filters.pageSize);
+
+  const handleUpsertActivity = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      if (validate()) {
-        const formatStartDate = formState.startDate!?.toDate().toISOString().split('T')[0];
-        const formatEndDate = formState.endDate!?.toDate().toISOString().split('T')[0];
+      if (!validate()) return;
 
-        const payload = {
-          ...formState,
-          startDate: formatStartDate,
-          endDate: formatEndDate,
-        };
+      const formatStartDate = formState.startDate!?.toDate().toISOString().split('T')[0];
+      const formatEndDate = formState.endDate!?.toDate().toISOString().split('T')[0];
 
-        const filteredFormState: any = filterValues(payload);
+      const payload = {
+        ...formState,
+        startDate: formatStartDate,
+        endDate: formatEndDate,
+      };
 
-        if (formState.activityId) {
-          const { data, error } = await updateActivity(filteredFormState);
+      const filteredFormState: any = filterValues(payload);
 
-          if (error) return toast.error(getErrorMessage(error));
+      const { data, error } = await upsertActivity(filteredFormState);
 
-          toast.success(data.message);
-          setIsActivity(false);
-        } else {
-          const { data, error } = await addActivity(filteredFormState);
+      if (error) return toast.error(getErrorMessage(error));
 
-          if (error) return toast.error(getErrorMessage(error));
-
-          toast.success(data.message);
-          setIsActivity(false);
-        }
-      }
+      toast.success(data.message);
+      setIsActivity(false);
     } catch (error) {
       console.error(error);
     }
@@ -96,9 +95,9 @@ export const Activities = () => {
 
         <ActivityDialog
           open={isActivity}
-          isLoading={isAdding || isUpdating}
+          isLoading={isUpserting}
           onClose={() => setIsActivity(false)}
-          onSubmit={handleAddActivity}
+          onSubmit={handleUpsertActivity}
           dialogTitle={formState.activityId ? 'Update Activity' : 'Add Activity'}
         />
 
@@ -157,7 +156,7 @@ export const Activities = () => {
         </div>
       </div>
 
-      {!!!data?.resultData?.rows?.length ? (
+      {!!!data?.resultData?.activities?.length ? (
         <>
           <Typography className="text-center !my-3">
             There is currently nothing to display. Please add some activities, and we will show the
@@ -178,7 +177,13 @@ export const Activities = () => {
         </>
       ) : (
         <>
-          <ActivitiesList activities={data?.resultData?.rows} onUpdate={handleClickDialog} />
+          <ActivitiesList
+            activities={data?.resultData?.activities}
+            onUpdate={handleClickDialog}
+            currentPage={filters.page}
+            onPageChange={(_e, value) => handleFilters('page', value)}
+            totalPages={totalPages}
+          />
         </>
       )}
     </>

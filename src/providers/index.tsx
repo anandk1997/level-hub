@@ -10,6 +10,9 @@ import { ThemeProvider } from 'src/theme/theme-provider';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+
 export const Providers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
 

@@ -27,6 +27,12 @@ interface IFormAtom {
   isSelfAssignment: boolean;
 }
 
+export interface IFilterAtom {
+  page: number;
+  pageSize: number;
+  status: 'completed' | 'notCompleted' | 'all';
+}
+
 export const initialFormState: IFormAtom = {
   title: '',
   xp: 0,
@@ -39,12 +45,22 @@ export const initialFormState: IFormAtom = {
   isSelfAssignment: false,
 };
 
+const initialFilter: IFilterAtom = {
+  page: 1,
+  pageSize: 10,
+  status: 'all',
+};
+
 export const formAtom = atom<IFormAtom>(initialFormState);
 export const errorAtom = atom<Partial<IErrorAtom>>({});
+
+export const filterAtom = atom<IFilterAtom>(initialFilter);
 
 export const useActivityAtom = () => {
   const [formState, setFormState] = useAtom(formAtom);
   const [errorState, setErrorState] = useAtom(errorAtom);
+
+  const [filters, setFilters] = useAtom(filterAtom);
 
   const handleChange = (
     key: keyof IFormAtom,
@@ -57,6 +73,10 @@ export const useActivityAtom = () => {
       setFormState((prev) => ({ ...prev, assignedDays: [], endDate: null }));
       setErrorState((prev) => ({ ...prev, assignedDays: '', endDate: '' }));
     }
+  };
+
+  const handleFilters = (key: keyof IFilterAtom, value: string | number) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   const validate = () => {
@@ -96,7 +116,9 @@ export const useActivityAtom = () => {
     // Set error state
     setErrorState((prev) => ({ ...prev, ...newErrors }));
 
-    return Object.keys(errorState).length === 0;
+    const hasErrors = Object.values({ ...errorState, ...newErrors }).some((val) => !!val);
+
+    return !hasErrors;
   };
 
   return {
@@ -107,5 +129,8 @@ export const useActivityAtom = () => {
 
     handleChange,
     validate,
+
+    filters,
+    handleFilters,
   };
 };

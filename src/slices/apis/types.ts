@@ -116,3 +116,11 @@ export interface IActivityApprove {
   activityIds: number[];
   remarks: string;
 }
+
+export interface ITempArgs {
+  templateId?: number;
+  title: string;
+  description: string;
+  videoLink: string;
+  xp: number;
+}

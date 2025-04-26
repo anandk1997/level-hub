@@ -8,11 +8,12 @@ import { AnalyticsNews } from '../analytics-news';
 import { AnalyticsTasks } from '../analytics-tasks';
 import { AnalyticsCurrentVisits } from '../analytics-current-visits';
 import { AnalyticsOrderTimeline } from '../analytics-order-timeline';
-import { AnalyticsWebsiteVisits } from '../analytics-website-visits';
+// import { AnalyticsWebsiteVisits } from '../analytics-website-visits';
 import { AnalyticsWidgetSummary } from '../analytics-widget-summary';
 import { AnalyticsTrafficBySite } from '../analytics-traffic-by-site';
 import { AnalyticsCurrentSubject } from '../analytics-current-subject';
 import { AnalyticsConversionRates } from '../analytics-conversion-rates';
+import { ApexChartss } from 'src/components/chart/activityChart';
 
 export function OverviewAnalyticsView() {
   return (
@@ -92,7 +93,7 @@ export function OverviewAnalyticsView() {
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
-          <AnalyticsWebsiteVisits
+          {/* <AnalyticsWebsiteVisits
             title="Website visits"
             subheader="(+43%) than last year"
             chart={{
@@ -102,7 +103,9 @@ export function OverviewAnalyticsView() {
                 { name: 'Team B', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
               ],
             }}
-          />
+          /> */}
+
+          <ApexChartss />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>

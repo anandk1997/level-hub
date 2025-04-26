@@ -3,6 +3,7 @@ import {
   baseQueryWith401Handler,
   createGetQuery,
   createGetWithParamsQuery,
+  createMutationParamQuery,
   createMutationQuery,
   fetchConfig,
 } from './config';
@@ -18,15 +19,17 @@ import {
   ISigninRes,
   ISignupArgs,
   ISuccessRes,
+  ITempArgs,
   IVerifyOtpArgs,
 } from './types';
+import { IFilterAtom } from 'src/store/jotai/activities';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWith401Handler,
 
   ...fetchConfig,
-  tagTypes: ['activities', 'level'],
+  tagTypes: ['activities', 'level', 'template'],
 
   endpoints: (builder) => ({
     signin: builder.mutation<ISigninRes, ISigninArgs>(createMutationQuery('/signin')),
@@ -57,20 +60,35 @@ export const apiSlice = createApi({
       invalidatesTags: (result, error) => (result && !error ? ['level'] : []),
     }),
 
-    fetchActivities: builder.query<ISuccessRes, {}>({
+    fetchActivities: builder.query<ISuccessRes, IFilterAtom>({
       ...createMutationQuery('/activity/list'),
       providesTags: ['activities'],
     }),
     fetchActivity: builder.query<ISuccessRes, { id: string }>({
       ...createGetWithParamsQuery('/activity/:id'),
     }),
-    addActivity: builder.mutation<ISuccessRes, IActArgs>({
+    upsertActivity: builder.mutation<ISuccessRes, IActArgs>({
       ...createMutationQuery('/activity'),
       invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
     }),
     approveActivity: builder.mutation<ISuccessRes, IActivityApprove>({
       ...createMutationQuery('/activity/approve', 'PUT'),
       invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
+    }),
+
+    fetchTemplates: builder.query<ISuccessRes, { search: string; page: number; pageSize: number }>({
+      ...createGetQuery('/template'),
+      providesTags: ['template'],
+    }),
+    upserTemplate: builder.mutation<ISuccessRes, ITempArgs>({
+      ...createMutationQuery('/template'),
+      invalidatesTags: (result, error) => (result && !error ? ['template'] : []),
+    }),
+    getTemplate: builder.query<ISuccessRes, { id: string }>({
+      ...createGetWithParamsQuery('/template/:id'),
+    }),
+    deleteTemplate: builder.mutation<ISuccessRes, { params: { id: string } }>({
+      ...createMutationParamQuery<void, { id: string }>('/template/:id', 'DELETE'),
     }),
   }),
 });
@@ -81,12 +99,24 @@ export const {
   useOtpResetMutation,
   useResendOtpMutation,
   useSigninMutation,
+
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useChangePasswordMutation,
+
   useLevelMutation,
-  useAddActivityMutation,
+
+  useUpsertActivityMutation,
   useApproveActivityMutation,
+
+  useUpserTemplateMutation,
+  useDeleteTemplateMutation,
 } = apiSlice;
 
-export const { useFetchLevelQuery, useFetchActivityQuery, useFetchActivitiesQuery } = apiSlice;
+export const {
+  useFetchLevelQuery,
+  useFetchActivityQuery,
+  useFetchActivitiesQuery,
+  useFetchTemplatesQuery,
+  useGetTemplateQuery,
+} = apiSlice;

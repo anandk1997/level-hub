@@ -1,14 +1,14 @@
-import { Card, TextField, Typography } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
+import { Card, Typography } from '@mui/material';
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import  { Dayjs } from 'dayjs';
+// import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from 'src/utils';
 import { route } from 'src/utils/constants/routes';
 
 const Reports = () => {
-  const [value, setValue] = useState<Dayjs | null>(null);
+  // const [value, setValue] = useState<Dayjs | null>(null);
 
   return (
     <>
@@ -20,7 +20,7 @@ const Reports = () => {
             This month you completed 200 Activities and 800XP
           </span>
         </Typography>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             views={['year', 'month']}
             label="Select Month and Year"
@@ -32,7 +32,7 @@ const Reports = () => {
               textField: (params) => <TextField {...params} helperText={null} />,
             }}
           />
-        </LocalizationProvider>{' '}
+        </LocalizationProvider>{' '} */}
       </div>
 
       {Array.from({ length: 20 }, (_, i) => (

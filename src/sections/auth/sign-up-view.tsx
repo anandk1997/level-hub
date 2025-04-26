@@ -37,10 +37,9 @@ import { cn, encodeQueryParams, filterValues } from 'src/utils';
 
 import { DatePicker, DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { RadioGroup } from '@mui/material';
-import { Dayjs } from 'dayjs';
 
 export function SignUpView() {
   const router = useRouter();
@@ -87,7 +86,7 @@ export function SignUpView() {
   const dobProps: Partial<DatePickerProps<any>> = {
     label: 'Select Date of Birth (Optional)',
     value: formState.dob,
-    onChange: (newValue: Dayjs) => handleChange('dob', newValue),
+    onChange: (newValue) => handleChange('dob', newValue),
     slotProps: {
       textField: {
         error: !!errorState.dob,
