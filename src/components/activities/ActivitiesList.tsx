@@ -10,7 +10,6 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import IncompleteCircleIcon from '@mui/icons-material/IncompleteCircle';
 import EditSquareIcon from '@mui/icons-material/EditSquare';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { IconButton } from '@mui/material';
 import { Checkbox } from '@mui/material';
 import { useApproveActivityMutation } from 'src/slices/apis/app.api';
@@ -18,16 +17,13 @@ import { ChangeEvent, Dispatch, SetStateAction, useReducer, useState } from 'rea
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 
-import { PlayCircle, VerifiedUser } from '@mui/icons-material';
+import { PlayCircle } from '@mui/icons-material';
 import { ApproveDialog, VideoPreviewDialog } from './Dialog';
 import { useRouter } from 'src/routes/hooks';
 import { route } from 'src/utils/constants/routes';
-import { Autocomplete } from '@mui/material';
-import { TextField } from '@mui/material';
-import { useActivityAtom } from 'src/store/jotai/activities';
 
-import { CustomRangePicker } from './DateRange';
 import { Iconify } from '../iconify';
+import { Filters } from './Filters';
 
 export function ActivitiesList({
   activities,
@@ -53,8 +49,6 @@ export function ActivitiesList({
 
   const [approve, { isLoading }] = useApproveActivityMutation();
 
-  const { filters, handleFilters } = useActivityAtom();
-
   const onChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
     e.stopPropagation();
     setIds((ids) => (ids.includes(id) ? ids.filter((value) => value !== id) : [...ids, id]));
@@ -68,54 +62,12 @@ export function ActivitiesList({
     toast.success(data?.message);
   };
 
-  const options = [
-    { label: 'ALL', value: 'all' },
-    { label: 'Completed', value: 'completed' },
-    { label: 'Pending', value: 'notCompleted' },
-  ];
-
   return (
     <Box sx={{ width: '100%' }}>
       <div className="flex justify-between items-center flex-wrap mt-2 px-2">
         <Typography className="!font-bold">Activities List</Typography>
 
-        <div className="flex flex-wrap gap-1">
-          <CustomRangePicker />
-
-          <Autocomplete
-            className="w-15"
-            options={options}
-            getOptionLabel={(option) => option.label}
-            value={options.find((opt) => opt.value === filters.status) || null}
-            onChange={(_, value) => handleFilters('status', value?.value || '')}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Status"
-                variant="outlined"
-                placeholder="Status"
-                fullWidth
-              />
-            )}
-          />
-
-          <Button
-            className="!bg-white !text-black !rounded-none !border !border-gray-200 !font-light !me-1"
-            startIcon={<FilterAltIcon />}
-          >
-            Filter
-          </Button>
-
-          <button
-            className={cn('cursor-pointer disabled:cursor-default text-gray-300', {
-              'text-[#09C0F0]': ids.length,
-            })}
-            disabled={!ids.length}
-            onClick={setIsApprove}
-          >
-            <VerifiedUser />
-          </button>
-        </div>
+        <Filters ids={ids} setIsApprove={setIsApprove} />
       </div>
 
       {!!!activities?.length && (
@@ -199,7 +151,7 @@ export function ActivitiesList({
                     checked={ids.includes(activity.id)}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => onChange(e, activity.id)}
-                    disabled={!!activity?.completed}
+                    disabled={activity?.completed}
                   />
 
                   {activity.title}
@@ -231,16 +183,17 @@ export function ActivitiesList({
 
                 <IconButton
                   className={cn(
-                    'group !border !border-transparent !text-white hover:!bg-white !flex !rounded-full disabled:!text-white disabled:cursor-none',
+                    'group !border !border-transparent !text-white hover:!bg-white !flex !rounded-full',
                     '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
                     {
-                      '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-                        activity.isRecurring,
+                      '!cursor-default !bg-gray-400': activity?.completed,
                     }
                   )}
                   component="div"
+                  disabled={activity?.completed}
                   onClick={(e) => {
                     e.stopPropagation();
+                    if (activity?.completed) return;
                     onUpdate(activity);
                   }}
                 >
@@ -251,26 +204,27 @@ export function ActivitiesList({
                   component="div"
                   variant="contained"
                   className={cn(
-                    'group h-5 !border !border-transparent hover:!bg-white !flex !rounded-full disabled:!text-white disabled:cursor-none',
-                    '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0]',
+                    'group h-5 !border !border-transparent hover:!bg-white md:!w-20 !flex !rounded-full disabled:!text-white disabled:cursor-none',
+                    '!bg-[#09C0F0] hover:!border-[#09C0F0] hover:!text-[#09C0F0] flex gap-1 justify-center items-center',
                     {
                       '!bg-[#FF991F] hover:!border-[#FF991F] hover:!text-[#FF991F] !text-black':
-                        !!!activity?.completed,
+                        !activity?.completed,
 
-                      '!cursor-default': !!activity?.completed,
+                      '!cursor-default': activity?.completed,
                     }
                   )}
-                  startIcon={!!activity?.completed ? <CheckCircleIcon /> : <IncompleteCircleIcon />}
-                  sx={{ flex: 1, whiteSpace: 'nowrap' }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (!!activity?.completed) return;
+                    if (activity?.completed) return;
 
                     setIds([activity.id]);
                     setIsApprove();
                   }}
                 >
-                  {!!activity?.completed ? 'Completed' : 'Pending'}
+                  {activity?.completed ? <CheckCircleIcon /> : <IncompleteCircleIcon />}
+                  <span className="hidden sm:block">
+                    {activity?.completed ? 'Completed' : 'Pending'}
+                  </span>
                 </Button>
 
                 <IconButton

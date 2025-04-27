@@ -58,7 +58,7 @@ export function CustomRangePicker() {
           handleOpen(e);
         }}
       >
-        {`${filters.startDate || 'YYYY/MM/DD'} – ${filters.endDate || 'YYYY/MM/DD'}`}
+        {!isMobile && `${filters.startDate || 'YYYY/MM/DD'} – ${filters.endDate || 'YYYY/MM/DD'}`}
         <CalendarMonth />{' '}
         {filters.startDate && filters.endDate && (
           <button className="cursor-pointer text-red-600" onClick={handleClose}>

@@ -73,7 +73,7 @@ export const apiSlice = createApi({
     }),
     approveActivity: builder.mutation<ISuccessRes, IActivityApprove>({
       ...createMutationQuery('/activity/approve', 'PUT'),
-      invalidatesTags: (result, error) => (result && !error ? ['activities'] : []),
+      invalidatesTags: (result, error) => (result && !error ? ['activities', 'level'] : []),
     }),
 
     fetchTemplates: builder.query<ISuccessRes, { search: string; page: number; pageSize: number }>({

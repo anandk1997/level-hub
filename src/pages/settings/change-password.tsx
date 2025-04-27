@@ -105,17 +105,15 @@ const ChangePassword = () => {
           </Typography>
 
           <FormControl fullWidth variant="outlined" className="!mt-2">
-            <InputLabel
-              className={cn({ '!text-red-500': errorState.password })}
-              htmlFor="outlined-adornment-password"
-            >
+            <InputLabel htmlFor="password" className={cn({ '!text-red-500': errorState.password })}>
               Enter Old Password
             </InputLabel>
 
             <OutlinedInput
+              id="password"
               fullWidth
               name="password"
-              label="Old Password"
+              label="Enter Old Password"
               type={isPassword ? 'text' : 'password'}
               inputRef={(el) => (inputsRef.current = el)}
               error={!!errorState.password}
@@ -136,17 +134,18 @@ const ChangePassword = () => {
 
           <FormControl fullWidth variant="outlined" className="!my-2">
             <InputLabel
+              htmlFor="newPassword"
               className={cn({ '!text-red-500': errorState.newPassword })}
-              htmlFor="outlined-adornment-newPassword"
             >
               Enter New Password
             </InputLabel>
 
             <OutlinedInput
+              id="newPassword"
               fullWidth
               name="newPassword"
-              label="New Password"
-              type={isPassword1 ? 'text' : 'newPassword'}
+              label="Enter New Password"
+              type={isPassword1 ? 'text' : 'password'}
               error={!!errorState.newPassword}
               value={formState.newPassword}
               onChange={(e) => handleChange('newPassword', e.target.value)}
@@ -171,16 +170,17 @@ const ChangePassword = () => {
 
           <FormControl fullWidth variant="outlined">
             <InputLabel
+              htmlFor="confirmPassword"
               className={cn({ '!text-red-500': errorState.confirmPassword })}
-              htmlFor="outlined-adornment-confirm-password"
             >
               Confirm New Password
             </InputLabel>
 
             <OutlinedInput
+              id="confirmPassword"
               fullWidth
               name="confirmPassword"
-              label="Confirm Password"
+              label="Confirm New Password"
               type={isPassword2 ? 'text' : 'password'}
               value={formState.confirmPassword}
               onChange={(e) => handleChange('confirmPassword', e.target.value)}

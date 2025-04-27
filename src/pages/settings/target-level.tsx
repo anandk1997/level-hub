@@ -1,16 +1,23 @@
 import { Button, CircularProgress, TextField } from '@mui/material';
 import { Typography } from '@mui/material';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
-import { useLevelMutation } from 'src/slices/apis/app.api';
+import { useFetchLevelQuery, useLevelMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 import { AddCircle, RemoveCircle } from '@mui/icons-material';
 import { cn } from 'src/utils';
+import { LineProgress } from 'src/components/lineProgress';
 
 const TargetLevel = () => {
+  const { data, isFetching } = useFetchLevelQuery({});
+
   const [levelXP, setLevelXP] = useState(0);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (data?.resultData?.levelXP) setLevelXP(data?.resultData?.levelXP);
+  }, [data?.resultData?.levelXP]);
 
   const [level, { isLoading }] = useLevelMutation();
 
@@ -28,23 +35,24 @@ const TargetLevel = () => {
     toast.success(data.message);
   };
 
+  if (isFetching) return <LineProgress />;
   return (
-    <div className="p-4">
-      <Typography className="!font-bold !text-2xl">Target/Level Management</Typography>
+    <div className="p-4 flex flex-col items-center md:items-start w-full">
+      <Typography className="!font-bold !text-2xl text-center">Target/Level Management</Typography>
 
-      <Typography className="!text-sm !mt-1 !mb-3">
+      <Typography className="!text-sm !mt-1 !mb-3 text-center">
         Set your target XP to display your performance as a progress bar.
       </Typography>
 
-      <form onSubmit={handleXp}>
+      <form onSubmit={handleXp} className="w-full flex flex-col items-center md:items-start">
         <div className="flex flex-col items-center gap-1 max-w-[80%] md:max-w-[50%] my-2">
-          <label className="text-gray-500">Target Level XP</label>
+          <label className="text-gray-500 text-sm">Target Level XP</label>
 
           <div className="flex items-center gap-2 mb-2">
             <button
-              className={cn('cursor-pointer', {
-                'mb-2.5': error,
-              })}
+              type="button"
+              className={cn('cursor-pointer', { 'mb-2.5': error })}
+              onClick={() => setLevelXP((prev: number) => prev - 1)}
             >
               <RemoveCircle />
             </button>
@@ -70,9 +78,9 @@ const TargetLevel = () => {
             />
 
             <button
-              className={cn('cursor-pointer', {
-                'mb-2.5': error,
-              })}
+              type="button"
+              className={cn('cursor-pointer', { 'mb-2.5': error })}
+              onClick={() => setLevelXP((prev: number) => prev + 1)}
             >
               <AddCircle />
             </button>

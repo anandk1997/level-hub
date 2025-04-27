@@ -34,6 +34,7 @@ export function getErrorMessage(error: unknown): string {
     return (error as IErrorData).message;
   }
 
+  console.error(error);
   return 'An unexpected error occurred.';
 }
 

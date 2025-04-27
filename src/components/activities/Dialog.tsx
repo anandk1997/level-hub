@@ -30,6 +30,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useReducer, useState } from 'react';
 import { OutlinedInput } from '@mui/material';
 import { FormControl } from '@mui/material';
+import { ILevel } from '.';
 
 export const ActivityDialog = ({
   open,
@@ -37,12 +38,14 @@ export const ActivityDialog = ({
   onClose,
   onSubmit,
   dialogTitle,
+  level,
 }: {
   open: boolean;
   isLoading: boolean;
   onClose: () => void;
   onSubmit: (e: React.FormEvent) => Promise<string | undefined>;
   dialogTitle: string;
+  level: ILevel;
 }) => {
   const { formState, errorState, setErrorState, handleChange } = useActivityAtom();
 
@@ -58,6 +61,14 @@ export const ActivityDialog = ({
   }, [formState.videoLink]);
 
   const [isVideo, setIsVideo] = useReducer((open) => !open, false);
+
+  useEffect(() => {
+    const remainingXp = level.levelXP - level.currentXP;
+
+    if (formState.xp > remainingXp) {
+      setErrorState((prev) => ({ ...prev, xp: 'XP can not be greater than remaining XP' }));
+    }
+  }, [formState.xp]);
 
   return (
     <Drawer
@@ -123,7 +134,11 @@ export const ActivityDialog = ({
               error={!!errorState.xp}
               helperText={errorState.xp}
               value={formState.xp || ''}
-              onChange={(e) => handleChange('xp', Number(e.target.value))}
+              slotProps={{ htmlInput: { min: 0, step: 1 } }}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d*$/.test(value)) handleChange('xp', Number(value));
+              }}
             />
           </div>
 

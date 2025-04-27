@@ -22,7 +22,7 @@ export default function ActivitiesPage() {
               </Typography>
             );
 
-          return !data?.resultData ? <TargetXP /> : <Activities />;
+          return !data?.resultData ? <TargetXP /> : <Activities level={data?.resultData} />;
         })()}
       </Box>
     </>
