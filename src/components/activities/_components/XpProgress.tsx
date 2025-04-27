@@ -2,7 +2,7 @@ import { Avatar, Typography } from '@mui/material';
 
 import { Badge } from '@mui/material';
 import { cn } from 'src/utils';
-import { ILevel } from '.';
+import { ILevel } from '..';
 import { BorderLinearProgress, SmallAvatar } from './Styled';
 import { useAppSelector } from 'src/store/redux';
 

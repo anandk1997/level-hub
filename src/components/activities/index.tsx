@@ -10,9 +10,9 @@ import dayjs from 'dayjs';
 import { initialFormState, useActivityAtom } from 'src/store/jotai/activities';
 import { filterValues } from 'src/utils';
 import { LineProgress } from '../lineProgress';
-import { ActivitiesList, IActivity } from './ActivitiesList';
-import { ActivityDialog } from './Dialog';
-import { XpProgress } from './XpProgress';
+import { ActivitiesList, IActivity } from './_components/ActivitiesList';
+import { ActivityDialog } from './_dialogs/ActivityDialog';
+import { XpProgress } from './_components/XpProgress';
 
 export const Activities = ({ level }: IActivities) => {
   const [isActivity, setIsActivity] = useState(false);

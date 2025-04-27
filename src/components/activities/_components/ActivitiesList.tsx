@@ -18,12 +18,13 @@ import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 
 import { PlayCircle } from '@mui/icons-material';
-import { ApproveDialog, VideoPreviewDialog } from './Dialog';
+import { ApproveDialog,  } from '../_dialogs/ApproveDialog';
 import { useRouter } from 'src/routes/hooks';
 import { route } from 'src/utils/constants/routes';
 
-import { Iconify } from '../iconify';
+import { Iconify } from '../../iconify';
 import { Filters } from './Filters';
+import { VideoPreviewDialog } from '../_dialogs/VideoPreview';
 
 export function ActivitiesList({
   activities,

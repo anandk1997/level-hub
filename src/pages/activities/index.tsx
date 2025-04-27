@@ -1,6 +1,6 @@
 import { HelmetTitle } from 'src/components/HelmetTitle';
 import { Box, Typography } from '@mui/material';
-import { TargetXP } from 'src/components/activities/TargetXp';
+import { TargetXP } from 'src/components/activities/_components/TargetXp';
 import { Activities } from 'src/components/activities';
 import { useFetchLevelQuery } from 'src/slices/apis/app.api';
 import { LineProgress } from 'src/components/lineProgress';

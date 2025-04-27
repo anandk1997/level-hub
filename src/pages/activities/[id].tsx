@@ -11,7 +11,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
-import { VideoPreviewDialog } from 'src/components/activities/Dialog';
+import { VideoPreviewDialog } from 'src/components/activities/_dialogs/VideoPreview';
 import { LineProgress } from 'src/components/lineProgress';
 
 export default function ActivityDetail() {
