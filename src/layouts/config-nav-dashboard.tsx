@@ -39,6 +39,11 @@ export const navData = [
     icon: icon('ic-blog'),
   },
   {
+    title: 'Templates',
+    path: route.templates,
+    icon: icon('ic-blog'),
+  },
+  {
     title: 'Settings',
     path: route.settings,
     icon: icon('ic-blog'),

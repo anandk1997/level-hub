@@ -18,7 +18,7 @@ import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 
 import { PlayCircle } from '@mui/icons-material';
-import { ApproveDialog,  } from '../_dialogs/ApproveDialog';
+import { ApproveDialog } from '../_dialogs/ApproveDialog';
 import { useRouter } from 'src/routes/hooks';
 import { route } from 'src/utils/constants/routes';
 

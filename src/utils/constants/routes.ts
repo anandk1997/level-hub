@@ -24,6 +24,8 @@ export const route = Object.freeze({
   activity: '/activities/:id',
   reports: '/reports',
 
+  templates: '/templates',
+
   settings: '/settings',
   account: '/settings/account',
   changePassword: '/settings/change-password',

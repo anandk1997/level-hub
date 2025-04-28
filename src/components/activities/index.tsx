@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { useFetchActivitiesQuery, useUpsertActivityMutation } from 'src/slices/apis/app.api';
@@ -13,9 +13,11 @@ import { LineProgress } from '../lineProgress';
 import { ActivitiesList, IActivity } from './_components/ActivitiesList';
 import { ActivityDialog } from './_dialogs/ActivityDialog';
 import { XpProgress } from './_components/XpProgress';
+import { TemplatesDialog } from './_dialogs/Templates';
 
 export const Activities = ({ level }: IActivities) => {
   const [isActivity, setIsActivity] = useState(false);
+  const [isTemplate, setIsTemplate] = useReducer((prev) => !prev, false);
 
   const { formState, setFormState, setErrorState, validate, filters, handleFilters } =
     useActivityAtom();
@@ -99,7 +101,10 @@ export const Activities = ({ level }: IActivities) => {
           onClose={() => setIsActivity(false)}
           onSubmit={handleUpsertActivity}
           dialogTitle={formState.activityId ? 'Update Activity' : 'Add Activity'}
+          setIsTemplate={setIsTemplate}
         />
+
+        <TemplatesDialog open={isTemplate} onClose={setIsTemplate} />
 
         <Button
           size="large"

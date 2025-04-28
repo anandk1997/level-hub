@@ -31,6 +31,7 @@ export const ActivityDialog = ({
   onSubmit,
   dialogTitle,
   level,
+  setIsTemplate,
 }: IActivityDialog) => {
   const { formState, errorState, setErrorState, handleChange } = useActivityAtom();
 
@@ -86,7 +87,7 @@ export const ActivityDialog = ({
               variant="contained"
               className="!h-2 !bg-[white] !border !border-[#09C0F0] !text-[#09C0F0] !text-sm !mr-4"
               disabled={isLoading}
-              onClick={onClose}
+              onClick={setIsTemplate}
             >
               Load Activity Template
             </Button>
@@ -242,4 +243,5 @@ interface IActivityDialog {
   onSubmit: (e: React.FormEvent) => Promise<string | undefined>;
   dialogTitle: string;
   level: ILevel;
+  setIsTemplate: () => void;
 }

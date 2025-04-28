@@ -84,7 +84,7 @@ export const apiSlice = createApi({
       ...createMutationQuery('/template'),
       invalidatesTags: (result, error) => (result && !error ? ['template'] : []),
     }),
-    getTemplate: builder.query<ISuccessRes, { id: string }>({
+    getTemplate: builder.query<ISuccessRes, { id: number }>({
       ...createGetWithParamsQuery('/template/:id'),
     }),
     deleteTemplate: builder.mutation<ISuccessRes, { params: { id: string } }>({

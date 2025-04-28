@@ -12,7 +12,7 @@ const TemplatePage = () => {
     const payload = {
       description: 'test',
       title: 'test',
-      videoLink: 'test',
+      videoLink: 'https://www.youtube.com/watch?v=X2G8YEYKI38',
       xp: 2,
     };
 
