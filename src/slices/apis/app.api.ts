@@ -48,7 +48,7 @@ export const apiSlice = createApi({
       createMutationQuery('/password/reset', 'PUT')
     ),
     changePassword: builder.mutation<ISuccessRes, IChangePasswordArgs>(
-      createMutationQuery('/password/change')
+      createMutationQuery('/password/change', 'PUT')
     ),
 
     fetchLevel: builder.query<ISuccessRes, {}>({

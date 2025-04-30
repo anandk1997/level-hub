@@ -11,20 +11,16 @@ import { useChangePasswordMutation } from 'src/slices/apis/app.api';
 import toast from 'react-hot-toast';
 import { FormEvent, useReducer, useState } from 'react';
 import { getErrorMessage } from 'src/slices/apis/types';
-import { useRouter } from 'src/routes/hooks';
 import { InputLabel } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { Iconify } from 'src/components/iconify';
 import { autofillStyles } from 'src/sections/auth/sign-up-view';
 import { cn } from 'src/utils';
 import { ErrorCaption } from 'src/components/ErrorCaption';
-import { route } from 'src/utils/constants/routes';
 import useFocusInput from 'src/hooks/useFocusInput';
-import { otpKey } from 'src/utils/constants';
 import { Container } from '@mui/material';
 
 const ChangePassword = () => {
-  const router = useRouter();
   const { inputsRef } = useFocusInput();
 
   const [changePassword, { isLoading }] = useChangePasswordMutation();
@@ -89,10 +85,8 @@ const ChangePassword = () => {
 
     if (error) return toast.error(getErrorMessage(error));
 
-    sessionStorage.removeItem(otpKey);
-
     toast.success(data.message);
-    router.push(route.welcomeBack);
+    setFormState(initialState);
   };
 
   return (
