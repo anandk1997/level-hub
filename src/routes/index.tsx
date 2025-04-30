@@ -33,7 +33,7 @@ const AccountPage = lazy(() => import('src/pages/settings/account'));
 const ChangePasswordPage = lazy(() => import('src/pages/settings/change-password'));
 const TargetLevelPage = lazy(() => import('src/pages/settings/target-level'));
 
-const TemplatePage = lazy(() => import('src/pages/template'));
+const TemplatePage = lazy(() => import('src/pages/templates'));
 
 const UserPage = lazy(() => import('src/pages/user'));
 const ProductsPage = lazy(() => import('src/pages/products'));

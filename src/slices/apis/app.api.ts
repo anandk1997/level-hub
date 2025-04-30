@@ -89,6 +89,7 @@ export const apiSlice = createApi({
     }),
     deleteTemplate: builder.mutation<ISuccessRes, { params: { id: string } }>({
       ...createMutationParamQuery<void, { id: string }>('/template/:id', 'DELETE'),
+      invalidatesTags: (result, error) => (result && !error ? ['template'] : []),
     }),
   }),
 });

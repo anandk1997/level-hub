@@ -12,28 +12,21 @@ import { Drawer } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 
-import { useActivityAtom } from 'src/store/jotai/activities';
-import { AntSwitch } from '../_components/Switch';
+import { useTemplateAtom } from 'src/store/jotai/templates';
 
 import ReactPlayer from 'react-player';
 
 import { FormControl, OutlinedInput } from '@mui/material';
-import { useEffect, useReducer, useState } from 'react';
-import { VideoPreviewDialog } from '../../VideoPreview';
+import { FormEvent, useEffect, useReducer, useState } from 'react';
 import { ErrorCaption } from 'src/components/ErrorCaption';
-import { RecurringDateSelector } from './RecurringDateSelector';
-import { ILevel } from '..';
+import { VideoPreviewDialog } from 'src/components/VideoPreview';
+import { useUpserTemplateMutation } from 'src/slices/apis/app.api';
+import { filterValues } from 'src/utils';
+import { getErrorMessage } from 'src/slices/apis/types';
+import toast from 'react-hot-toast';
 
-export const ActivityDialog = ({
-  open,
-  isLoading,
-  onClose,
-  onSubmit,
-  dialogTitle,
-  level,
-  setIsTemplate,
-}: IActivityDialog) => {
-  const { formState, errorState, setErrorState, handleChange } = useActivityAtom();
+export const TemplateDialog = ({ open, onClose }: IActivityDialog) => {
+  const { formState, errorState, setErrorState, handleChange, validate } = useTemplateAtom();
 
   const [isPlayable, setIsPlayable] = useState<boolean | null>(null);
 
@@ -48,13 +41,22 @@ export const ActivityDialog = ({
 
   const [isVideo, setIsVideo] = useReducer((open) => !open, false);
 
-  useEffect(() => {
-    const remainingXp = level.levelXP - level.currentXP;
+  const [upsertTemplate, { isLoading: isUpserting }] = useUpserTemplateMutation();
 
-    if (formState.xp > remainingXp) {
-      setErrorState((prev) => ({ ...prev, xp: 'XP can not be greater than remaining XP' }));
-    }
-  }, [formState.xp]);
+  const handleUpsert = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    const filteredFormState: any = filterValues(formState);
+
+    const { data, error } = await upsertTemplate(filteredFormState);
+
+    if (error) return toast.error(getErrorMessage(error));
+
+    toast.success(data.message);
+    onClose();
+  };
 
   return (
     <Drawer
@@ -76,25 +78,14 @@ export const ActivityDialog = ({
 
       <VideoPreviewDialog open={isVideo} setOpen={setIsVideo} link={formState.videoLink} />
 
-      <form noValidate className="p-2" onSubmit={onSubmit}>
+      <form noValidate className="p-2" onSubmit={handleUpsert}>
         <header className="flex justify-between items-center gap-2 border-b border-gray-300 pb-1 mb-2">
-          <Typography>{dialogTitle}</Typography>
+          <Typography>{!formState.templateId ? 'Add New Template' : 'Update Template'}</Typography>
 
           <div className="flex items-center">
-            <Button
-              size="large"
-              color="inherit"
-              variant="contained"
-              className="!h-2 !bg-[white] !border !border-[#09C0F0] !text-[#09C0F0] !text-sm !mr-4"
-              disabled={isLoading}
-              onClick={setIsTemplate}
-            >
-              Load Activity Template
-            </Button>
-
             <IconButton
               aria-label="close"
-              disabled={isLoading}
+              disabled={isUpserting}
               onClick={onClose}
               sx={(theme) => ({
                 position: 'absolute',
@@ -181,24 +172,6 @@ export const ActivityDialog = ({
 
             <ErrorCaption caption={errorState.videoLink} />
           </FormControl>
-
-          <div className="flex justify-between items-end gap-2">
-            <div className="flex flex-col">
-              <div className="font-bold">Recurring</div>
-
-              <div className="text-gray-400 text-sm">
-                Disabled will allow this state to one time
-              </div>
-            </div>
-
-            <AntSwitch
-              slotProps={{ input: { 'aria-label': 'ant design' } }}
-              checked={formState.isRecurring}
-              onChange={(e) => handleChange('isRecurring', e.target.checked)}
-            />
-          </div>
-
-          <RecurringDateSelector />
         </section>
 
         <DialogActions className="flex justify-center mt-2">
@@ -207,7 +180,7 @@ export const ActivityDialog = ({
             color="inherit"
             variant="contained"
             className="group h-5 !bg-[white] !border !border-black !text-black hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
-            disabled={isLoading}
+            disabled={isUpserting}
             onClick={onClose}
           >
             Cancel
@@ -219,9 +192,9 @@ export const ActivityDialog = ({
             color="inherit"
             variant="contained"
             className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
-            disabled={isLoading}
+            disabled={isUpserting}
           >
-            {isLoading ? (
+            {isUpserting ? (
               <CircularProgress
                 className="!text-white group-hover:!text-[#09C0F0]"
                 sx={{ scale: '.5' }}
@@ -238,10 +211,5 @@ export const ActivityDialog = ({
 
 interface IActivityDialog {
   open: boolean;
-  isLoading: boolean;
   onClose: () => void;
-  onSubmit: (e: React.FormEvent) => Promise<string | undefined>;
-  dialogTitle: string;
-  level: ILevel;
-  setIsTemplate: () => void;
 }

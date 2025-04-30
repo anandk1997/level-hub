@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Drawer } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useEffect, useReducer, useState, useRef } from 'react';
-import { VideoPreviewDialog } from './VideoPreview';
+import { VideoPreviewDialog } from '../../VideoPreview';
 import { useFetchTemplatesQuery } from 'src/slices/apis/app.api';
 import { PlayCircleOutline } from '@mui/icons-material';
 import debounce from 'lodash.debounce'; // using lodash.debounce

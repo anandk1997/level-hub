@@ -1,4 +1,4 @@
-import { Button, Pagination } from '@mui/material';
+import { Button } from '@mui/material';
 import { Typography } from '@mui/material';
 
 import { cn } from 'src/utils';
@@ -18,13 +18,14 @@ import toast from 'react-hot-toast';
 import { getErrorMessage } from 'src/slices/apis/types';
 
 import { PlayCircle } from '@mui/icons-material';
-import { ApproveDialog } from '../_dialogs/ApproveDialog';
+import { ConfirmationDialog } from '../../ConfirmationDialog';
 import { useRouter } from 'src/routes/hooks';
 import { route } from 'src/utils/constants/routes';
 
 import { Iconify } from '../../iconify';
 import { Filters } from './Filters';
-import { VideoPreviewDialog } from '../_dialogs/VideoPreview';
+import { VideoPreviewDialog } from '../../VideoPreview';
+import { Pagination } from 'src/components/Pagination';
 
 export function ActivitiesList({
   activities,
@@ -92,9 +93,11 @@ export function ActivitiesList({
         </>
       )}
 
-      <ApproveDialog
-        isOpen={isApprove}
-        setOpen={setIsApprove}
+      <ConfirmationDialog
+        title="Are you sure you want to complete this activity"
+        message="Your action notify the coach or parent once you complete this activity"
+        onOpen={isApprove}
+        onClose={setIsApprove}
         isLoading={isLoading}
         onSubmit={handleApprove}
       />
@@ -248,36 +251,7 @@ export function ActivitiesList({
         </Card>
       ))}
 
-      {totalPages > 1 && (
-        <Pagination
-          className="flex justify-end"
-          count={totalPages}
-          page={currentPage}
-          onChange={onPageChange}
-          color="primary"
-          sx={{
-            '.MuiPaginationItem-root': {
-              color: 'gray',
-
-              '&:hover': {
-                border: '1px solid #09C0F0',
-                color: '#09C0F0',
-                backgroundColor: 'transparent',
-              },
-            },
-
-            '.Mui-selected': {
-              backgroundColor: '#09C0F0 !important',
-              color: 'white',
-              border: '1px solid #09C0F0 !important',
-              '&:hover': {
-                color: '#09C0F0 !important',
-                backgroundColor: 'transparent !important',
-              },
-            },
-          }}
-        />
-      )}
+      <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={onPageChange} />
     </Box>
   );
 }
