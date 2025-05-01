@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, IconButton } from '@mui/material';
 
 import DialogActions from '@mui/material/DialogActions';
 
@@ -8,10 +8,10 @@ import ReactPlayer from 'react-player';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 
 export function VideoPreviewDialog({
   open,
@@ -28,11 +28,21 @@ export function VideoPreviewDialog({
 
   return (
     <Dialog fullWidth maxWidth={'md'} open={open} onClose={setOpen}>
-      <DialogTitle>Optional sizes</DialogTitle>
+      <DialogTitle>Video Preview</DialogTitle>
+
       <DialogContent>
-        <DialogContentText>
-          You can set my maximum width and whether to adapt or not.
-        </DialogContentText>
+        <IconButton
+          aria-label="close"
+          onClick={setOpen}
+          sx={(theme) => ({
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}
+        >
+          <CloseIcon />
+        </IconButton>
 
         {loading && (
           <div className="flex justify-center items-center h-[360px] m-auto">

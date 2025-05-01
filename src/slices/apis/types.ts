@@ -125,3 +125,12 @@ export interface ITempArgs {
   videoLink: string;
   xp: number;
 }
+
+export interface IUpdateProfile {
+  firstName: string;
+  lastName?: string;
+  phone?: string;
+  gender?: 'male' | 'female' | 'others';
+  dob?: string;
+  organizationName?: string;
+}

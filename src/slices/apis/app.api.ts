@@ -20,6 +20,7 @@ import {
   ISignupArgs,
   ISuccessRes,
   ITempArgs,
+  IUpdateProfile,
   IVerifyOtpArgs,
 } from './types';
 import { IFilterAtom } from 'src/store/jotai/activities';
@@ -29,7 +30,7 @@ export const apiSlice = createApi({
   baseQuery: baseQueryWith401Handler,
 
   ...fetchConfig,
-  tagTypes: ['activities', 'level', 'template'],
+  tagTypes: ['activities', 'level', 'template', 'profile'],
 
   endpoints: (builder) => ({
     signin: builder.mutation<ISigninRes, ISigninArgs>(createMutationQuery('/signin')),
@@ -50,6 +51,15 @@ export const apiSlice = createApi({
     changePassword: builder.mutation<ISuccessRes, IChangePasswordArgs>(
       createMutationQuery('/password/change', 'PUT')
     ),
+
+    getProfile: builder.query<ISuccessRes, {}>({
+      ...createGetQuery('/profile'),
+      providesTags: ['profile'],
+    }),
+    updateProfile: builder.mutation<ISuccessRes, IUpdateProfile>({
+      ...createMutationQuery('/profile', 'PUT'),
+      invalidatesTags: (result, error) => (result && !error ? ['profile'] : []),
+    }),
 
     fetchLevel: builder.query<ISuccessRes, {}>({
       ...createGetQuery('/level'),
@@ -112,6 +122,7 @@ export const {
 
   useUpserTemplateMutation,
   useDeleteTemplateMutation,
+  useUpdateProfileMutation,
 } = apiSlice;
 
 export const {
@@ -120,4 +131,5 @@ export const {
   useFetchActivitiesQuery,
   useFetchTemplatesQuery,
   useGetTemplateQuery,
+  useGetProfileQuery,
 } = apiSlice;
