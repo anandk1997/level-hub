@@ -34,7 +34,6 @@ export const Activities = ({ level }: IActivities) => {
   });
 
   const totalCount = data?.resultData?.count || 0;
-  const totalPages = Math.ceil(totalCount / filters.pageSize);
 
   const handleUpsertActivity = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +61,15 @@ export const Activities = ({ level }: IActivities) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handlePageChange = (_event: unknown, newPage: number) => {
+    handleFilters('page', newPage + 1);
+  };
+
+  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleFilters('pageSize', parseInt(event.target.value, 10));
+    handleFilters('page', 1);
   };
 
   useEffect(() => {
@@ -125,8 +133,10 @@ export const Activities = ({ level }: IActivities) => {
         activities={data?.resultData?.activities}
         onUpdate={handleClickDialog}
         currentPage={filters.page}
-        onPageChange={(_e, value) => handleFilters('page', value)}
-        totalPages={totalPages}
+        totalCount={totalCount}
+        rowsPerPage={filters.pageSize}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
         setIsActivity={setIsActivity}
       />
     </>

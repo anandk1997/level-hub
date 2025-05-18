@@ -30,18 +30,13 @@ import { Pagination } from 'src/components/Pagination';
 export function ActivitiesList({
   activities,
   onUpdate,
-  totalPages,
+  totalCount,
   currentPage,
   onPageChange,
   setIsActivity,
-}: {
-  activities: IActivity[];
-  onUpdate: (activity: IActivity) => void;
-  totalPages: number;
-  currentPage: number;
-  onPageChange: (event: ChangeEvent<unknown>, value: number) => void;
-  setIsActivity: Dispatch<SetStateAction<boolean>>;
-}) {
+  rowsPerPage,
+  onRowsPerPageChange,
+}: IActivitiesList) {
   const router = useRouter();
   const [ids, setIds] = useState<number[]>([]);
   const [video, setVideo] = useState('');
@@ -251,7 +246,13 @@ export function ActivitiesList({
         </Card>
       ))}
 
-      <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={onPageChange} />
+      <Pagination
+        totalCount={totalCount}
+        currentPage={currentPage}
+        rowsPerPage={rowsPerPage}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+      />
     </Box>
   );
 }
@@ -280,4 +281,15 @@ export interface IActivity {
     approvedByName: string;
     approvedById: number;
   }[];
+}
+
+interface IActivitiesList {
+  activities: IActivity[];
+  onUpdate: (activity: IActivity) => void;
+  totalCount: number;
+  currentPage: number;
+  onPageChange: (event: unknown, value: number) => void;
+  setIsActivity: Dispatch<SetStateAction<boolean>>;
+  rowsPerPage: number;
+  onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

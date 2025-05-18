@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef, useReducer } from 'react';
 import {
   Button,
   CircularProgress,
@@ -5,16 +6,15 @@ import {
   Skeleton,
   TextField,
   Typography,
+  Drawer,
+  IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Drawer } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import { useEffect, useReducer, useState, useRef } from 'react';
+import { PlayCircleOutline } from '@mui/icons-material';
+import ReactPlayer from 'react-player';
+import { useDebounce } from 'use-debounce';
 import { VideoPreviewDialog } from '../../VideoPreview';
 import { useFetchTemplatesQuery } from 'src/slices/apis/app.api';
-import { PlayCircleOutline } from '@mui/icons-material';
-import debounce from 'lodash.debounce'; // using lodash.debounce
-import ReactPlayer from 'react-player';
 import { cn } from 'src/utils';
 import { useActivityAtom } from 'src/store/jotai/activities';
 
@@ -23,90 +23,85 @@ export const TemplatesDialog = ({ open, onClose }: ITemplatesDialog) => {
   const [link, setLink] = useState('');
 
   const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [debouncedSearch] = useDebounce(search, 300);
   const [page, setPage] = useState(1);
+  const [isLast, setIslast] = useState(false);
 
   const { isFetching, isLoading, data } = useFetchTemplatesQuery(
     { page, pageSize: 10, search: debouncedSearch },
-    { skip: !open }
+    { skip: !open || isLast }
   );
 
   const [templates, setTemplates] = useState<ITemplates[]>([]);
-  const drawerRef = useRef<HTMLDivElement | null>(null);
 
   const [template, setTemplate] = useState<ITemplates | null>(null);
   const [templateId, setTemplateId] = useState<number | null>(null);
+  const drawerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!open) {
-      setTemplateId(null);
+    if (data?.resultData?.templates?.length < 10) {
+      setIslast(true);
     }
-  }, [open]);
-
-  // Debounced function to update debouncedSearch
-  const debounceSearch = useRef(
-    debounce((value: string) => {
-      setDebouncedSearch(value);
-      setPage(1);
-      setTemplates([]);
-    }, 300)
-  ).current;
-
-  useEffect(() => {
-    if (open) {
-      debounceSearch(search);
-    }
-  }, [search, open, debounceSearch]);
-
-  useEffect(() => {
-    return () => {
-      debounceSearch.cancel(); // cancel debounce on unmount
-    };
-  }, [debounceSearch]);
-
-  useEffect(() => {
-    if (data?.resultData?.templates) {
-      if (page === 1) {
-        setTemplates(data.resultData.templates);
-      } else {
-        setTemplates((prev) => [...prev, ...data.resultData.templates]);
-      }
-    }
-  }, [data, page, isFetching]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!drawerRef.current) return;
-
-      const { scrollTop, clientHeight, scrollHeight } = drawerRef.current;
-      if (scrollTop + clientHeight >= scrollHeight - 100 && !isFetching) {
-        setPage((prev) => prev + 1);
-      }
-    };
-
-    const drawer = drawerRef.current;
-    drawer?.addEventListener('scroll', handleScroll);
-
-    return () => {
-      drawer?.removeEventListener('scroll', handleScroll);
-    };
-  }, [isFetching]);
+  }, [data?.resultData?.templates?.length]);
 
   useEffect(() => {
     if (!open) {
       setPage(1);
       setTemplates([]);
       setSearch('');
-      setDebouncedSearch('');
+      setTemplateId(null);
+      setIslast(false);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (open && data?.resultData?.templates) {
+      setTemplates(data.resultData.templates);
+    }
+  }, [open, data?.resultData?.templates]);
+
+  useEffect(() => {
+    setPage(1);
+    setTemplates([]);
+    setIslast(false);
+  }, [debouncedSearch]);
+
+  // Append or replace templates on fetch
+  useEffect(() => {
+    const fetched = data?.resultData?.templates;
+    if (!fetched) return;
+
+    if (page === 1) {
+      setTemplates(fetched);
+    } else {
+      setTemplates((prev) => [...prev, ...fetched]);
+    }
+  }, [data?.resultData?.templates, page]);
+
+  // Infinite scroll
+  useEffect(() => {
+    const onScroll = () => {
+      if (isLast) return;
+      const drawer = drawerRef.current;
+      if (!drawer) return;
+      const { scrollTop, clientHeight, scrollHeight } = drawer;
+      if (scrollTop + clientHeight >= scrollHeight - 100 && !isFetching) {
+        setPage((p) => p + 1);
+      }
+    };
+
+    drawerRef.current?.addEventListener('scroll', onScroll);
+    return () => {
+      drawerRef.current?.removeEventListener('scroll', onScroll);
+    };
+  }, [isFetching]);
 
   return (
     <Drawer
       anchor="right"
-      slotProps={{ paper: { className: 'w-[100%] md:w-[50%] !bg-[#f5f6fa]' } }}
       open={open}
       onClose={onClose}
+      slotProps={{ paper: { className: 'w-[100%] md:w-[50%] !bg-[#f5f6fa]' } }}
     >
       <VideoPreviewDialog open={isVideo} setOpen={setIsVideo} link={link} />
 
@@ -140,6 +135,7 @@ export const TemplatesDialog = ({ open, onClose }: ITemplatesDialog) => {
               label="Search Templates"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              className="!sticky !top-0"
             />
           </form>
 
@@ -220,85 +216,79 @@ const Template = ({
   onApply: () => void;
 }) => {
   const [loading, setLoading] = useState(true);
+  const { setFormState } = useActivityAtom();
 
   const handleReady = () => setLoading(false);
 
-  const { setFormState } = useActivityAtom();
-
   return (
-    <>
-      <div className="p-2">
-        <div className="flex justify-between">
-          <span className="text-2xl font-bold">{data?.title}</span>
-          <span className="text-lg font-bold text-[#09C0F0]">{data?.xp} XP</span>
-        </div>
+    <div className="p-2">
+      <div className="flex justify-between">
+        <span className="text-2xl font-bold">{data?.title}</span>
+        <span className="text-lg font-bold text-[#09C0F0]">{data?.xp} XP</span>
+      </div>
 
-        <p className="mt-2 text-gray-500">{data?.description}</p>
+      <p className="mt-2 text-gray-500">{data?.description}</p>
 
-        {loading && (
-          <div className="flex justify-center items-center h-[360px] m-auto">
-            <CircularProgress
-              className="!text-[#09C0F0] group-hover:!text-[#09C0F0]"
-              sx={{ scale: '1.5' }}
-            />
-          </div>
-        )}
-
-        <div className={cn('my-2', { 'h-0 opacity-0': loading })}>
-          <ReactPlayer
-            url={data?.videoLink}
-            playing={false}
-            controls={true}
-            width="100%"
-            onReady={handleReady}
+      {loading && (
+        <div className="flex justify-center items-center h-[360px] m-auto">
+          <CircularProgress
+            className="!text-[#09C0F0] group-hover:!text-[#09C0F0]"
+            sx={{ scale: '1.5' }}
           />
         </div>
+      )}
 
+      <div className={cn('my-2', { 'h-0 opacity-0': loading })}>
+        <ReactPlayer
+          url={data?.videoLink}
+          playing={false}
+          controls
+          width="100%"
+          onReady={handleReady}
+        />
+      </div>
+
+      <Button
+        type="button"
+        variant="contained"
+        className="!bg-[#09C0F0] !rounded-full !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !flex gap-0.5 !justify-center !items-center disabled:!cursor-default disabled:!text-white disabled:!bg-gray-300"
+        disabled={!data?.videoLink}
+      >
+        <PlayCircleOutline />
+        Preview
+      </Button>
+
+      <DialogActions className="flex justify-center mt-2">
         <Button
-          type="button"
-          color="inherit"
+          size="large"
           variant="contained"
-          className="!bg-[#09C0F0] !rounded-full !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !flex gap-0.5 !justify-center !items-center disabled:!cursor-default disabled:!text-white disabled:!bg-gray-300"
-          disabled={!data?.videoLink}
+          className="group h-5 !bg-[white] !border !border-black !text-black hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
+          onClick={onClose}
         >
-          <PlayCircleOutline />
-          Preview
+          Cancel
         </Button>
 
-        <DialogActions className="flex justify-center mt-2">
-          <Button
-            size="large"
-            color="inherit"
-            variant="contained"
-            className="group h-5 !bg-[white] !border !border-black !text-black hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
-            onClick={onClose}
-          >
-            Cancel
-          </Button>
+        <Button
+          size="large"
+          type="button"
+          variant="contained"
+          className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
+          onClick={() => {
+            setFormState((prev) => ({
+              ...prev,
+              description: data?.description!,
+              title: data?.title!,
+              videoLink: data?.videoLink!,
+              xp: data?.xp!,
+            }));
 
-          <Button
-            size="large"
-            type="submit"
-            color="inherit"
-            variant="contained"
-            className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] w-[48%]"
-            onClick={() => {
-              setFormState((prev) => ({
-                ...prev,
-                description: data?.description!,
-                title: data?.title!,
-                videoLink: data?.videoLink!,
-                xp: data?.xp!,
-              }));
-
-              onClose();
-              onApply();
-            }}
-          >
-            Apply
-          </Button>
-        </DialogActions>
-      </div>
-    </>
+            onClose();
+            onApply();
+          }}
+        >
+          Apply
+        </Button>
+      </DialogActions>
+    </div>
   );
 };

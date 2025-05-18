@@ -1,43 +1,42 @@
-import { Pagination as MuiPagination } from '@mui/material';
-import { ChangeEvent } from 'react';
+import { TablePagination } from '@mui/material';
 
-export const Pagination = ({ totalPages, currentPage, onPageChange }: IPagination) => {
+export const Pagination = ({
+  totalCount,
+  currentPage,
+  rowsPerPage,
+  onPageChange,
+  onRowsPerPageChange,
+}: ITablePaginationProps) => {
+  // const totalPages = Math.ceil(totalCount / rowsPerPage);
+
   return (
-    totalPages > 1 && (
-      <MuiPagination
-        className="flex justify-end"
-        count={totalPages}
-        page={currentPage}
-        onChange={onPageChange}
-        color="primary"
-        sx={{
-          '.MuiPaginationItem-root': {
-            color: 'gray',
-
-            '&:hover': {
-              border: '1px solid #09C0F0',
-              color: '#09C0F0',
-              backgroundColor: 'transparent',
-            },
-          },
-
-          '.Mui-selected': {
-            backgroundColor: '#09C0F0 !important',
-            color: 'white',
-            border: '1px solid #09C0F0 !important',
-            '&:hover': {
-              color: '#09C0F0 !important',
-              backgroundColor: 'transparent !important',
-            },
-          },
-        }}
-      />
-    )
+    <TablePagination
+      component="div"
+      count={totalCount}
+      page={currentPage - 1}
+      rowsPerPage={rowsPerPage}
+      onPageChange={onPageChange}
+      onRowsPerPageChange={onRowsPerPageChange}
+      rowsPerPageOptions={[5, 10, 25, 50]}
+      sx={{
+        '.MuiTablePagination-toolbar': {
+          justifyContent: 'flex-end',
+        },
+        '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows': {
+          color: 'gray',
+        },
+        '.MuiSelect-icon': {
+          color: 'gray',
+        },
+      }}
+    />
   );
 };
 
-interface IPagination {
-  totalPages: number;
+interface ITablePaginationProps {
+  totalCount: number;
   currentPage: number;
-  onPageChange: (event: ChangeEvent<unknown>, value: number) => void;
+  rowsPerPage: number;
+  onPageChange: (e: unknown, newPage: number) => void;
+  onRowsPerPageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

@@ -41,7 +41,6 @@ const TemplatePage = () => {
   }, [isTemplate]);
 
   const totalCount = data?.resultData?.count || 0;
-  const totalPages = Math.ceil(totalCount / filters.pageSize);
 
   const onUpdate = (activity: ITemplate) => {
     setFormState({
@@ -216,9 +215,14 @@ const TemplatePage = () => {
         ))}
 
         <Pagination
+          totalCount={totalCount}
           currentPage={filters.page}
-          onPageChange={(_e, value) => handleFilters('page', value)}
-          totalPages={totalPages}
+          rowsPerPage={filters.pageSize}
+          onPageChange={(_e, newPage) => handleFilters('page', newPage + 1)}
+          onRowsPerPageChange={(e) => {
+            handleFilters('pageSize', parseInt(e.target.value, 10));
+            handleFilters('page', 1);
+          }}
         />
       </div>
     </>
