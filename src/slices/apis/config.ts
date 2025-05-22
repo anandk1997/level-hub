@@ -104,11 +104,11 @@ export const baseQueryWith401Handler: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions);
 
-  const { error } = result;
+  const { error } = result as IError;
 
   if (error) toast.error(getErrorMessage(error));
 
-  if (error && error.status === 401) {
+  if (error && error.status === 401 && error?.data?.code === 'InvalidTokenException') {
     Cookies.remove(tokenKey);
     api.dispatch(logoutUser());
     setTimeout(() => (window.location.href = route.signIn), 1500);
@@ -116,3 +116,15 @@ export const baseQueryWith401Handler: BaseQueryFn<
 
   return result;
 };
+
+interface IError {
+  error: {
+    status: number;
+    data: {
+      success: boolean;
+      message: string;
+      code: string;
+      resultData: any;
+    };
+  };
+}
