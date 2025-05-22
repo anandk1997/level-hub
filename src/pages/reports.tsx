@@ -13,13 +13,10 @@ const Reports = () => {
   return (
     <>
       <div className="flex justify-between gap-1 mb-2">
-        <Typography className="!flex !flex-col">
-          <span className="!font-bold text-xl">Reports</span>
-
-          <span className="text-gray-500 text-sm">
-            This month you completed 200 Activities and 800XP
-          </span>
-        </Typography>
+        <div>
+          <Typography variant="h4">Reports</Typography>
+          <p className="text-gray-500 text-sm">This month you completed 200 Activities and 800XP</p>
+        </div>
         {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             views={['year', 'month']}

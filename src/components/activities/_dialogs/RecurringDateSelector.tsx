@@ -72,7 +72,7 @@ export function RecurringDateSelector() {
             }
             aria-label="Select Recurring Days"
             color="primary"
-            sx={{ display: 'flex', justifyContent: 'center' }}
+            sx={{ display: 'flex', justifyContent: 'space-around' }}
             exclusive={false}
           >
             {daysOfWeek.map((day, index) => (

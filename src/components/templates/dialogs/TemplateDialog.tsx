@@ -80,7 +80,9 @@ export const TemplateDialog = ({ open, onClose }: IActivityDialog) => {
 
       <form noValidate className="p-2" onSubmit={handleUpsert}>
         <header className="flex justify-between items-center gap-2 border-b border-gray-300 pb-1 mb-2">
-          <Typography>{!formState.templateId ? 'Add New Template' : 'Update Template'}</Typography>
+          <Typography variant="h4">
+            {!formState.templateId ? 'Add New Template' : 'Update Template'}
+          </Typography>
 
           <div className="flex items-center">
             <IconButton
@@ -89,8 +91,8 @@ export const TemplateDialog = ({ open, onClose }: IActivityDialog) => {
               onClick={onClose}
               sx={(theme) => ({
                 position: 'absolute',
-                right: 13,
-                top: 25,
+                right: 16,
+                top: 20,
                 color: theme.palette.grey[500],
                 borderRadius: 10,
                 border: '1px solid',
@@ -174,7 +176,7 @@ export const TemplateDialog = ({ open, onClose }: IActivityDialog) => {
           </FormControl>
         </section>
 
-        <DialogActions className="flex justify-center mt-2">
+        <DialogActions className="!flex !justify-center mt-2">
           <Button
             size="large"
             color="inherit"

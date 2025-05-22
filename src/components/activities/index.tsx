@@ -100,7 +100,7 @@ export const Activities = ({ level }: IActivities) => {
   return (
     <>
       <div className="flex justify-between items-center mb-2">
-        <Typography>Activities</Typography>
+        <Typography variant="h4">Activities</Typography>
 
         <ActivityDialog
           level={level}
@@ -121,7 +121,7 @@ export const Activities = ({ level }: IActivities) => {
           variant="contained"
           className="group h-5 !bg-[#09C0F0] !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0]"
           onClick={() => setIsActivity(true)}
-          endIcon={<Iconify icon="mingcute:add-line" />}
+          startIcon={<Iconify icon="mingcute:add-line" />}
         >
           Add Activity
         </Button>

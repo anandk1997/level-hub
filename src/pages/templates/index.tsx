@@ -78,9 +78,9 @@ const TemplatePage = () => {
         onSubmit={onDelete}
       />
 
-      <div className="p-2">
+      <div className="">
         <div className="flex justify-between items-center mb-2">
-          <Typography>Activity Templates</Typography>
+          <Typography variant="h4">Activity Templates</Typography>
 
           <Button
             size="large"
@@ -98,7 +98,7 @@ const TemplatePage = () => {
 
       <div className="">
         {data?.resultData?.templates?.map((template: ITemplate) => (
-          <Card key={template.id} sx={{ marginY: 2, width: '100%' }}>
+          <Card key={template.id} sx={{ marginBottom: 2, width: '100%' }}>
             <CardActionArea
               sx={{
                 cursor: 'default',

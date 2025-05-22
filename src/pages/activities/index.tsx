@@ -12,7 +12,7 @@ export default function ActivitiesPage() {
     <>
       <HelmetTitle title="Activities" />
 
-      <Box sx={{ p: 5, textAlign: 'center' }}>
+      <Box>
         {(() => {
           if (isFetching) return <LineProgress />;
           if (error)

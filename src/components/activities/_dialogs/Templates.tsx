@@ -106,14 +106,16 @@ export const TemplatesDialog = ({ open, onClose }: ITemplatesDialog) => {
       <VideoPreviewDialog open={isVideo} setOpen={setIsVideo} link={link} />
 
       <header className="border-b border-gray-300 relative">
-        <Typography className="p-2">Activity Templates</Typography>
+        <Typography variant="h5" className="p-2">
+          Activity Templates
+        </Typography>
         <IconButton
           aria-label="close"
           onClick={onClose}
           sx={(theme) => ({
             position: 'absolute',
-            right: 8,
-            top: 8,
+            right: 16,
+            top: 18,
             color: theme.palette.grey[500],
             borderRadius: 10,
             border: '1px solid',
@@ -224,7 +226,7 @@ const Template = ({
     <div className="p-2">
       <div className="flex justify-between">
         <span className="text-2xl font-bold">{data?.title}</span>
-        <span className="text-lg font-bold text-[#09C0F0]">{data?.xp} XP</span>
+        <span className="text-2xl font-bold text-[#09C0F0]">{data?.xp} XP</span>
       </div>
 
       <p className="mt-2 text-gray-500">{data?.description}</p>
@@ -248,17 +250,7 @@ const Template = ({
         />
       </div>
 
-      <Button
-        type="button"
-        variant="contained"
-        className="!bg-[#09C0F0] !rounded-full !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !flex gap-0.5 !justify-center !items-center disabled:!cursor-default disabled:!text-white disabled:!bg-gray-300"
-        disabled={!data?.videoLink}
-      >
-        <PlayCircleOutline />
-        Preview
-      </Button>
-
-      <DialogActions className="flex justify-center mt-2">
+      <DialogActions className="!flex !justify-center mt-2">
         <Button
           size="large"
           variant="contained"

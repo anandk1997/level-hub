@@ -78,14 +78,14 @@ export const ActivityDialog = ({
 
       <form noValidate className="p-2" onSubmit={onSubmit}>
         <header className="flex justify-between items-center gap-2 border-b border-gray-300 pb-1 mb-2">
-          <Typography>{dialogTitle}</Typography>
+          <Typography variant="h4">{dialogTitle}</Typography>
 
           <div className="flex items-center">
             <Button
               size="large"
               color="inherit"
               variant="contained"
-              className="!h-2 !bg-[white] !border !border-[#09C0F0] !text-[#09C0F0] !text-sm !mr-4"
+              className="!h-2 !bg-[white] !border !border-[#09C0F0] !text-[#09C0F0] !text-sm !mr-5"
               disabled={isLoading}
               onClick={setIsTemplate}
             >
@@ -201,7 +201,7 @@ export const ActivityDialog = ({
           <RecurringDateSelector />
         </section>
 
-        <DialogActions className="flex justify-center mt-2">
+        <DialogActions className="!flex !justify-center mt-2">
           <Button
             size="large"
             color="inherit"
