@@ -3,7 +3,6 @@ import { Alert, FormControl, TextField } from '@mui/material';
 import clsx from 'clsx';
 import { IFormAtom, RoleType, useSignupAtom } from 'src/store/jotai/signup';
 import { autofillStyles } from '../sign-up-view';
-import { route } from 'src/utils/constants/routes';
 
 export const RoleSection = ({
   handleChange,
@@ -34,7 +33,7 @@ export const RoleSection = ({
   return (
     <>
       {/* Gym Owner Section */}
-      {isRole(['gym']) && (
+      {isRole(['GYM.OWNER']) && (
         <TextField
           error={!!errorState.gymName}
           helperText={errorState.gymName}
@@ -154,7 +153,7 @@ export const RoleSection = ({
 };
 
 type IRole = {
-  key: string;
+  key: Exclude<RoleType, ''>;
   label: string;
   description: string;
   icon: string;
@@ -162,27 +161,27 @@ type IRole = {
 
 const rolesData: IRole[] = [
   {
-    key: route.gym.split('/')[1],
+    key: 'GYM.OWNER',
     label: 'Gym Owner',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
+    description: 'Manage gyms, coaches, and sessions.',
     icon: '/assets/icons/sign_up/gym_icon.png',
   },
   {
-    key: route.coach.split('/')[1],
+    key: 'COACH.OWNER',
     label: 'Coach',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
+    description: 'Conduct sessions and track athlete progress.',
     icon: '/assets/icons/sign_up/coach_icon.png',
   },
   {
-    key: route.individual.split('/')[1],
+    key: 'INDIVIDUAL.OWNER',
     label: 'Individual',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
+    description: 'Train independently and monitor your performance.',
     icon: '/assets/icons/sign_up/individual_icon.png',
   },
   {
-    key: route.parent.split('/')[1],
+    key: 'PARENT.OWNER',
     label: 'Parent',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
+    description: 'Track and manage your children’s progress.',
     icon: '/assets/icons/sign_up/parent_icon.png',
   },
 ];
@@ -208,7 +207,11 @@ const RoleButton: React.FC<RoleButtonProps> = ({ role, selectedRole, onSelect })
       onClick={() => onSelect('role', role.key)}
     >
       <img
-        src={isActive ? `/assets/icons/sign_up/${role.key}_active.png` : role.icon}
+        src={
+          isActive
+            ? `/assets/icons/sign_up/${role.key.split('.')[0].toLowerCase()}_active.png`
+            : role.icon
+        }
         alt={role.label}
         className="w-6 h-6"
       />

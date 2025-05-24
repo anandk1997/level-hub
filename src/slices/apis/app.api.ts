@@ -137,5 +137,5 @@ export const {
   useFetchTemplatesQuery,
   useGetTemplateQuery,
   useGetProfileQuery,
-  useFetchReportsQuery
+  useFetchReportsQuery,
 } = apiSlice;
