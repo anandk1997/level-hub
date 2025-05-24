@@ -30,7 +30,7 @@ export const apiSlice = createApi({
   baseQuery: baseQueryWith401Handler,
 
   ...fetchConfig,
-  tagTypes: ['activities', 'level', 'template', 'profile'],
+  tagTypes: ['activities', 'level', 'template', 'profile', 'reports'],
 
   endpoints: (builder) => ({
     signin: builder.mutation<ISigninRes, ISigninArgs>(createMutationQuery('/signin')),
@@ -101,6 +101,11 @@ export const apiSlice = createApi({
       ...createMutationParamQuery<void, { id: string }>('/template/:id', 'DELETE'),
       invalidatesTags: (result, error) => (result && !error ? ['template'] : []),
     }),
+
+    fetchReports: builder.query<ISuccessRes, { search: string; page: number; pageSize: number }>({
+      ...createGetQuery('/report/activity'),
+      providesTags: ['reports'],
+    }),
   }),
 });
 
@@ -132,4 +137,5 @@ export const {
   useFetchTemplatesQuery,
   useGetTemplateQuery,
   useGetProfileQuery,
+  useFetchReportsQuery
 } = apiSlice;

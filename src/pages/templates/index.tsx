@@ -1,4 +1,4 @@
-import { DeleteForeverOutlined, PlayCircle } from '@mui/icons-material';
+import { DeleteForeverOutlined, PlayCircleOutline } from '@mui/icons-material';
 import { Button, IconButton, Typography } from '@mui/material';
 import { useEffect, useReducer, useState } from 'react';
 import { Iconify } from 'src/components/iconify';
@@ -70,8 +70,8 @@ const TemplatePage = () => {
       <VideoPreviewDialog open={isVideo} setOpen={setIsVideo} link={video} />
 
       <ConfirmationDialog
-        title="Are you sure you want to complete this activity"
-        message="Your action notify the coach or parent once you complete this activity"
+        title="Are you sure you want to delete this template"
+        message="This action will permanently delete the selected template and can not be undone"
         onOpen={isDelete}
         onClose={setIsDelete}
         isLoading={isDeleting}
@@ -159,8 +159,29 @@ const TemplatePage = () => {
                     {template.description}
                   </Typography>
 
+                  <IconButton
+                    component="div"
+                    disabled={!template.videoLink}
+                    className={cn(
+                      '!bg-[#09C0F0] !rounded-full !border !border-transparent hover:!bg-white hover:!border-[#09C0F0] hover:!text-[#09C0F0] !flex gap-0.5 !justify-center !items-center disabled:!cursor-default disabled:!text-white disabled:!bg-gray-300 !text-sm !px-2 !text-white',
+                      {
+                        '!text-white !bg-gray-400': !template.videoLink,
+                      }
+                    )}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsVideo();
+                      setVideo(template.videoLink);
+                    }}
+                  >
+                    <PlayCircleOutline sx={{ fontSize: 20 }} />
+                    Preview
+                  </IconButton>
+
                   {/* XP */}
-                  <Typography sx={{ flex: 1, whiteSpace: 'nowrap', color: 'green' }}>
+                  <Typography
+                    sx={{ flex: 1, whiteSpace: 'nowrap', color: 'green', textAlign: 'center' }}
+                  >
                     {template.xp} XP
                   </Typography>
 
@@ -177,21 +198,6 @@ const TemplatePage = () => {
                     }}
                   >
                     <EditSquareIcon className="!text-sm" />
-                  </IconButton>
-
-                  <IconButton
-                    component="div"
-                    disabled={!template.videoLink}
-                    className={cn('cursor-pointer disabled:cursor-default text-gray-300', {
-                      '!text-[#09C0F0]': template.videoLink,
-                    })}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsVideo();
-                      setVideo(template.videoLink);
-                    }}
-                  >
-                    <PlayCircle sx={{ fontSize: 35 }} />
                   </IconButton>
 
                   <IconButton
