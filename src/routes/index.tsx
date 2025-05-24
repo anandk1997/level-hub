@@ -32,6 +32,7 @@ const ReportsPage = lazy(() => import('src/pages/reports'));
 const AccountPage = lazy(() => import('src/pages/settings/account'));
 const ChangePasswordPage = lazy(() => import('src/pages/settings/change-password'));
 const TargetLevelPage = lazy(() => import('src/pages/settings/target-level'));
+const SubscriptionPage = lazy(() => import('src/pages/settings/subscription'));
 
 const TemplatePage = lazy(() => import('src/pages/templates'));
 
@@ -63,6 +64,7 @@ export const router = createBrowserRouter([
           { path: route.account, element: <AccountPage /> },
           { path: route.changePassword, element: <ChangePasswordPage /> },
           { path: route.targetLevel, element: <TargetLevelPage /> },
+          { path: route.subscription, element: <SubscriptionPage /> },
         ],
       },
     ],

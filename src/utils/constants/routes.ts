@@ -30,6 +30,7 @@ export const route = Object.freeze({
   account: '/settings/account',
   changePassword: '/settings/change-password',
   targetLevel: '/settings/target-level',
+  subscription: '/settings/subscription',
 
   404: '/404',
   '*': '*',

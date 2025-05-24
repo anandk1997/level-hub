@@ -5,7 +5,7 @@ import { useRouter } from 'src/routes/hooks';
 import { cn } from 'src/utils';
 import { route } from 'src/utils/constants/routes';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import { AccountCircle, LockOpen, TrackChanges } from '@mui/icons-material';
+import { AccountCircle, LockOpen, Payment, TrackChanges } from '@mui/icons-material';
 
 export const SettingsLayout = () => {
   const { pathname } = useLocation();
@@ -50,21 +50,27 @@ export const SettingsLayout = () => {
 const menu = [
   {
     title: 'Account',
-    description: '',
+    description: 'View and edit your account details',
     path: route.account,
     icon: <AccountCircle />,
   },
   {
     title: 'Change Password',
-    description: '',
+    description: 'Update your current password securely',
     path: route.changePassword,
     icon: <LockOpen />,
   },
   {
     title: 'Set Target Level',
-    description: '',
+    description: 'Define your personal training goals',
     path: route.targetLevel,
     icon: <TrackChanges />,
+  },
+  {
+    title: 'Subscription',
+    description: 'Manage your subscription and billing details',
+    path: route.subscription,
+    icon: <Payment />,
   },
 ];
 
@@ -96,9 +102,7 @@ const SettingsMenu = () => {
             <span>{item.title}</span>
           </span>
 
-          <span className="text-gray-400 text-sm">
-            Lorem Ipsum is simply dummy text of the printing and typesetting.
-          </span>
+          <span className="text-gray-400 text-sm">{item.description}</span>
         </Link>
       ))}
     </div>
