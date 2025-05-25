@@ -24,6 +24,8 @@ const WelcomePage = lazy(() => import('src/pages/welcome'));
 const WelcomeBackPage = lazy(() => import('src/pages/welcome-back'));
 
 const DashboardPage = lazy(() => import('src/pages/dashboard'));
+const InvitesPage = lazy(() => import('src/pages/invites'));
+const UsersPage = lazy(() => import('src/pages/users'));
 const BlogPage = lazy(() => import('src/pages/blog'));
 const ActivitiesPage = lazy(() => import('src/pages/activities'));
 const ActivityPage = lazy(() => import('src/pages/activities/[id]'));
@@ -36,7 +38,6 @@ const SubscriptionPage = lazy(() => import('src/pages/settings/subscription'));
 
 const TemplatePage = lazy(() => import('src/pages/templates'));
 
-const UserPage = lazy(() => import('src/pages/user'));
 const ProductsPage = lazy(() => import('src/pages/products'));
 const Page404 = lazy(() => import('src/pages/page-not-found'));
 
@@ -49,7 +50,8 @@ export const router = createBrowserRouter([
 
     children: [
       { path: route.dashboard, element: <DashboardPage /> },
-      { path: route.user, element: <UserPage /> },
+      { path: route.invites, element: <InvitesPage /> },
+      { path: route.users, element: <UsersPage /> },
       { path: route.products, element: <ProductsPage /> },
       { path: route.blog, element: <BlogPage /> },
       { path: route.activities, element: <ActivitiesPage /> },

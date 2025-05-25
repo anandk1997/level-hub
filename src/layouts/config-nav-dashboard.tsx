@@ -1,3 +1,9 @@
+import { Assessment } from '@mui/icons-material';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import { SvgColor } from 'src/components/svg-color';
 import { route } from 'src/utils/constants/routes';
 
@@ -13,11 +19,16 @@ export const navData = [
     path: route.dashboard,
     icon: icon('ic-analytics'),
   },
-  // {
-  //   title: 'User',
-  //   path: '/user',
-  //   icon: icon('ic-user'),
-  // },
+  {
+    title: 'Invitations',
+    path: route.invites,
+    icon: <MarkEmailReadIcon />,
+  },
+  {
+    title: 'Users',
+    path: route.users,
+    icon: <AccessibilityNewIcon />,
+  },
   // {
   //   title: 'Product',
   //   path: '/products',
@@ -31,22 +42,22 @@ export const navData = [
   {
     title: 'Reports',
     path: route.reports,
-    icon: icon('ic-blog'),
+    icon: <Assessment />,
   },
   {
     title: 'Activities',
     path: route.activities,
-    icon: icon('ic-blog'),
+    icon: <ExtensionIcon />,
   },
   {
     title: 'Templates',
     path: route.templates,
-    icon: icon('ic-blog'),
+    icon: <ManageHistoryIcon />,
   },
   {
     title: 'Settings',
     path: route.settings,
-    icon: icon('ic-blog'),
+    icon: <SettingsIcon />,
   },
   // {
   //   title: 'Blog',

@@ -20,6 +20,8 @@ export const route = Object.freeze({
   welcome: '/welcome',
   welcomeBack: '/welcome-back',
 
+  users: '/users',
+  invites: '/invites',
   activities: '/activities',
   activity: '/activities/:id',
   reports: '/reports',
