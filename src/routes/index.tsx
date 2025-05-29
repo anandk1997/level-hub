@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
@@ -25,6 +25,7 @@ const WelcomeBackPage = lazy(() => import('src/pages/welcome-back'));
 
 const DashboardPage = lazy(() => import('src/pages/dashboard'));
 const InvitesPage = lazy(() => import('src/pages/invites'));
+const CreateInvitePage = lazy(() => import('src/pages/invites/create'));
 const UsersPage = lazy(() => import('src/pages/users'));
 const BlogPage = lazy(() => import('src/pages/blog'));
 const ActivitiesPage = lazy(() => import('src/pages/activities'));
@@ -50,7 +51,15 @@ export const router = createBrowserRouter([
 
     children: [
       { path: route.dashboard, element: <DashboardPage /> },
-      { path: route.invites, element: <InvitesPage /> },
+      {
+        path: route.invites,
+        element: <Outlet />,
+        children: [
+          { index: true, element: <InvitesPage /> },
+          { path: route.createInvite, element: <CreateInvitePage /> },
+        ],
+      },
+
       { path: route.users, element: <UsersPage /> },
       { path: route.products, element: <ProductsPage /> },
       { path: route.blog, element: <BlogPage /> },

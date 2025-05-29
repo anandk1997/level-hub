@@ -1,5 +1,7 @@
 import { Button } from '@mui/material';
 import { Card, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { route } from 'src/utils/constants/routes';
 
 const Invites = () => {
   return (
@@ -8,6 +10,8 @@ const Invites = () => {
         <Typography variant="h4">Invitations</Typography>
 
         <Button
+          to={route.createInvite}
+          component={Link}
           size="large"
           type="submit"
           color="inherit"

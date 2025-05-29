@@ -152,7 +152,7 @@ export const RoleSection = ({
   );
 };
 
-type IRole = {
+export type IRole = {
   key: Exclude<RoleType, ''>;
   label: string;
   description: string;

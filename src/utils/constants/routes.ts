@@ -22,6 +22,7 @@ export const route = Object.freeze({
 
   users: '/users',
   invites: '/invites',
+  createInvite: '/invites/create',
   activities: '/activities',
   activity: '/activities/:id',
   reports: '/reports',
